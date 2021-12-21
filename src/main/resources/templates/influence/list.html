@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
+
+    <th:block th:fragment="content">
+        <h1>인플루언서 전환 추가 정보
+            <span>
+                <a th:href="@{/address/register}">
+                    <button type="button" class="btn btn-outline-primary">REGISTER</button>
+                </a>
+            </span>
+        </h1>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">No</th>
+                <th scope="col">소개</th>
+                <th scope="col">
+<!--                    유튜브-->
+                    <i class="fab fa-youtube"></i>
+                </th>
+                <th scope="col">
+<!--                    아프리카-->
+                    <img src="../assets/africa.png" width="20" height="16">
+                </th>
+                <th scope="col">
+<!--                    트위치-->
+                    <i class="fab fa-twitch"></i>
+                </th>
+                <th scope="col">
+<!--                    브로드캐스트-->
+                    <i class="fas fa-broadcast-tower"></i>
+                </th>
+                <th scope="col">
+<!--                    인스타그램-->
+                    <i class="fab fa-instagram"></i>
+                </th>
+                <th scope="col">작성자</th>
+                <th scope="col">커버</th>
+                <th scope="col">요청일</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr th:each="dto : ${ result.dtoList }">
+                    <th scope="row">
+                        <a th:href="@{/influence/view(mbno=${dto.mbno},page=${result.page})}">
+                        [[${dto.mbno}]]
+                        </a>
+                    </th>
+                    <td>[[${dto.introduction}]]</td>
+                    <td>[[${dto.actyoutube}]]</td>
+                    <td>[[${dto.actafreeca}]]</td>
+                    <td>[[${dto.acttwitch}]]</td>
+                    <td>[[${dto.actbroadcast}]]</td>
+                    <td>[[${dto.actinstagram}]]</td>
+                    <td>[[${dto.actwriter}]]</td>
+                    <td>
+                        <img th:src="${(dto.coverimg1!=null) ? 'http://thefancake.com'+dto.coverimg1
+                         : 'http://thefancake.com/img/login_logo@2x.png'}"
+                             width="128"
+                        >
+                        <img th:src="${(dto.coverimg2!=null) ? 'http://thefancake.com'+dto.coverimg2
+                        : 'http://thefancake.com/img/login_logo@2x.png'}"
+                             width="128"
+                        >
+                        <img th:src="${(dto.coverimg3!=null) ? 'http://thefancake.com'+dto.coverimg3
+                         : 'http://thefancake.com/img/login_logo@2x.png'}"
+                             width="128"
+                        >
+                    </td>
+                    <td>[[${dto.reqdate}]]</td>
+                </tr>
+            </tbody>
+        </table>
+        <ul class="pagination h-100 justify-content-center align-items-center">
+            <li class="page-item" th:if="${result.prev}">
+                <a class="page-link" href="@{/influence/list(page=$(result.start-1})}" tabindex="-1">Previous</a>
+            </li>
+            <li th:class="'page-item'+${result.page==page ? 'active':''}"
+            th:each="page:${result.pageList}">
+                <a class="page-link" th:href="@{/influence/list(page=${page})}" >
+                    [[${page}]]
+                </a>
+            </li>
+            <li class="page-item" th:if="${result.next}">
+                <a class="page-link" href="@{/influence/list(page=$(result.end+1})}" tabindex="-1">Next</a>
+            </li>
+        </ul>
+
+        <div class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Modal body text goes here.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script th:inline="javascript">
+            var msg=[[${msg}]];
+            console.log(msg);
+
+            if(msg){
+                $(".modal").modal();
+            }
+        </script>
+    </th:block>
+
+</th:block>

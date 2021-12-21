@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
+
+    <th:block th:fragment="content">
+        <h1>기부 요청 정보
+            <span>
+                <a th:href="@{/donatereq/register}">
+                    <button type="button" class="btn btn-outline-primary">REGISTER</button>
+                </a>
+            </span>
+        </h1>
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">No</th>
+                <th scope="col">회원 일련번호</th>
+                <th scope="col">기부처 번호</th>
+                <th scope="col">기부금액</th>
+                <th scope="col">이름(실명)</th>
+                <th scope="col">생년월일</th>
+                <th scope="col">성별(M/F)</th>
+                <th scope="col">주소</th>
+                <th scope="col">기부 신청일자</th>
+                <th scope="col">기부 처리 상태(WAIT/COMPLETE)</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr th:each="dto : ${ result.dtoList }">
+                    <th scope="row">
+                        <a th:href="@{/donatereq/view(reqseq=${dto.reqseq},page=${result.page})}">
+                        [[${dto.reqseq}]]
+                        </a>
+                    </th>
+                    <td>[[${dto.mbno}]]</td>
+                    <td>[[${dto.donateseq}]]</td>
+                    <td>[[${dto.donateprice}]]</td>
+                    <td>[[${dto.donatepersonname}]]</td>
+                    <td>[[${dto.donatepersonbirthday}]]</td>
+                    <td>[[${dto.donatepersonsex}]]</td>
+                    <td>[[${dto.donatepersonaddr}]]</td>
+                    <td>[[${dto.donatereqdate}]]</td>
+                    <td>[[${dto.donatestatus}]]</td>
+                </tr>
+            </tbody>
+        </table>
+        <ul class="pagination h-100 justify-content-center align-items-center">
+            <li class="page-item" th:if="${result.prev}">
+                <a class="page-link" href="@{/donatereq/list(page=$(result.start-1})}" tabindex="-1">Previous</a>
+            </li>
+            <li th:class="'page-item'+${result.page==page ? 'active':''}"
+            th:each="page:${result.pageList}">
+                <a class="page-link" th:href="@{/donatereq/list(page=${page})}" >
+                    [[${page}]]
+                </a>
+            </li>
+            <li class="page-item" th:if="${result.next}">
+                <a class="page-link" href="@{/donatereq/list(page=$(result.end+1})}" tabindex="-1">Next</a>
+            </li>
+        </ul>
+
+        <div class="modal" tabindex="-1" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Modal title</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p>Modal body text goes here.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script th:inline="javascript">
+            var msg=[[${msg}]];
+            console.log(msg);
+
+            if(msg){
+                $(".modal").modal();
+            }
+        </script>
+    </th:block>
+
+</th:block>

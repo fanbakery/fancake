@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<th:block th:replace="~{/layout/basic :: setContent(~{this::content})}">
+
+    <th:block th:fragment="content">
+        <h1 class="mt-4">member register page</h1>
+
+        <form th:action="@{/memberalarm/register}" th:method="post">
+
+            <div class="form-group">
+                <label >email</label>
+                <input type="text" class="form-control" name="mb_email" placeholder="enter email">
+            </div>
+
+            <div class="form-group">
+                <label >nick</label>
+                <input type="text" class="form-control" name="mb_nick" placeholder="enter nick">
+            </div>
+
+            <div class="form-group">
+                <label >phone</label>
+                <input type="text" class="form-control" name="mb_hp" placeholder="enter phone number">
+            </div>
+
+            <button type="submit" class="btn btn-primary">등록</button>
+            <a th:href="@{/memberalarm/list}">
+                <button type="button" class="btn btn-outline-primary">목록</button>
+            </a>
+        </form>
+
+    </th:block>
+
+</th:block>
