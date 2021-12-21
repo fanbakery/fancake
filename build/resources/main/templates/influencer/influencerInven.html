@@ -1,0 +1,81 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<main id="container">
+		<div class="influencer">
+			<div class="inven">
+				<div class="info">
+					<div class="tit">안녕하세요 <strong th:text="${invenInfo.mbNick}"></strong>님<br> 누적 판매금액이 <strong th:text="${#numbers.formatDecimal(invenInfo.totalSaleAmount, 0, 'COMMA', 0, 'POINT')}"></strong>원입니다.</div>
+					<a href="/influencer/salelist" class="inner">
+					<div class="txt">
+						<div class="flex">
+							<dl class="total"><dt>전체</dt><dd th:text="${#numbers.formatDecimal(invenInfo.totalSaleCnt, 0, 'COMMA', 0, 'POINT')}"></dd></dl>
+							<dl><dt>판매 중</dt><dd th:text="${#numbers.formatDecimal(invenInfo.saleCount, 0, 'COMMA', 0, 'POINT')}"></dd></dl>
+							<dl><dt>완료</dt><dd th:text="${#numbers.formatDecimal(invenInfo.saleOutCount, 0, 'COMMA', 0, 'POINT')}"></dd></dl>
+						</div>
+					</div>
+					</a>
+				</div>
+				<div class="sell">
+					<div class="desc">
+						<div class="titbox">
+							<div class="act">
+								<a href="/settlement/summary"><span>정산하기</span><i></i></a>
+							</div>
+						</div>
+					</div>
+
+					<div class="desc" th:each="item: ${influenItemList}">
+						<span>
+							<div class="titbox">
+								<div class="tit" th:text="${item.regDate}"></div>
+							</div>
+							<div class="cntbox">
+								<ul >
+									<li th:each="product: ${item.product}">
+										<a th:href="@{/product/product(itemNo=${product.itemSeq})}" class="inner">
+											<div class="stat">
+												<span th:if="${product.itemStatus.toString().equals('SALE')}">판매진행중</span>
+												<span th:if="${!product.itemStatus.toString().equals('SALE')}">판매완료</span>
+												<i></i>
+											</div>
+											<div class="cons">
+												<div class="img"><img th:src="${product.itemImg1}" alt=""></div>
+												<div class="con" th:if="${product.itemStatus.toString().equals('SALE')}">
+													<div class="tit" th:text="${product.itemName}"></div>
+													<div class="txt">현재가격 <strong th:text="${#numbers.formatDecimal(product.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')}"></strong>원</div>
+													<div class="end">종료일자 <strong th:text="${product.saleEndDateLimit}"></strong></div>
+												</div>
+												<div class="con" th:if="${!product.itemStatus.toString().equals('SALE')}">
+													<div class="tit" th:text="${product.itemName}"></div>
+<!--													<div class="txt">낙찰가격 <strong th:text="${#numbers.formatDecimal(product.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')}"></strong>원</div>-->
+													<div class="txt">판매가격 <strong th:text="${#numbers.formatDecimal(product.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')}"></strong>원</div>
+													<div class="end">종료일 <strong th:text="${product.itemSellEndDate}"></strong></div>
+												</div>
+											</div>
+										</a>
+									</li>
+								</ul>
+							</div>
+						</span>
+					</div>
+				</div>
+			</div>
+			<div class="button">
+				<a href="/product/add" class="enroll">
+					<img src="../img/i_plus.png" alt=""><span>등록하기</span>
+				</a>
+			</div>
+		</div>
+	</main>
+	<!-- footer 영역 -->
+<!--	<th:block th:replace="fragment/footer :: footerFragment"> </th:block>-->
+
+	<!-- bottom 메뉴 영역 -->
+	<th:block th:replace="fragment/bottom_menu :: bottomMenuFragment"> </th:block>
+</body>
+</html>

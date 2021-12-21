@@ -1,0 +1,123 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>인출하기</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<button type="button" class="bt searchOpen"><img src="../img/i_search.png" alt="검색"></button>
+				<a href="alarm.html" class="bt"><img src="../img/i_alarm.png" alt="알림"></a>
+			</div>
+			<div class="search">
+				<div class="close"><i></i></div>
+				<div class="input">
+					<form>
+						<input type="text" placeholder="인플루언서명을 입력해주세요">
+						<button type="submit"></button>
+						<div class="list">
+							<ul>
+								<li>
+									<a href="#">
+										<div class="ico"><img src="../img/m_prof1.png" alt=""></div>
+										<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>				
+			</div>
+			<script>
+				$(".searchOpen").click(function(){
+					$("#header .search").addClass("sel");
+				});
+				$("#header .search .close").click(function(){
+					$("#header .search").removeClass("sel");
+				});
+				$("#header .search .input input").focus(function(){
+					$(this).siblings(".list").addClass("sel");
+				});
+				$("#header .search .input input").blur(function(){
+					$(this).siblings(".list").removeClass("sel");
+				});
+			</script>
+		</div>
+	</header>
+	<main id="container">
+		<div class="withdraw">
+			<div class="money">
+				<div class="total">
+					<dl>
+						<dt>인출 가능 금액</dt>
+						<dd>217,000원</dd>
+					</dl>
+				</div>
+				<div class="cost">
+					<dl>
+						<dt>인출금액</dt>
+						<dd>
+							<input type="text" value="0원">
+							<p>최대 217,000원</p>
+						</dd>
+					</dl>
+					<div class="button">
+						<button type="button" class="add">+10만원</button>
+						<button type="button" class="add">+5만원</button>
+						<button type="button" class="add">+1만원</button>
+						<button type="button" class="add">+1천원</button>
+					</div>
+				</div>
+			</div>
+			<div class="account">
+				<div class="titbox">
+					<div class="tit">입금 받을 은행계좌</div>
+				</div>
+				<div class="cntbox">
+					<ul>
+						<li>
+							<input type="radio" name="account" for="account1">
+							<label for="account1">
+								<div class="select"><i></i><span>선택하기</span></div>
+								<div class="bank">
+									<div class="img"><img src="../img/bank_woori.png" alt=""></div>
+									<div class="con">
+										<div class="tit">우리은행</div>
+										<div class="txt">*******748818</div>
+									</div>
+								</div>								
+							</label>
+						</li>
+						<li>
+							<input type="radio" name="account" for="account2">
+							<label for="account2">
+								<div class="select"><i></i><span>선택하기</span></div>
+								<div class="bank">
+									<div class="img"><img src="../img/bank_shinhan.png" alt=""></div>
+									<div class="con">
+										<div class="tit">신한은행</div>
+										<div class="txt">*******271922</div>
+									</div>
+								</div>								
+							</label>
+						</li>
+						<li>
+							<a href="#" class="add_account">
+								<img src="../img/i_plus.png" alt="">
+								<span>은행 추가</span>
+							</a>
+						</li>							
+					</ul>
+				</div>
+			</div>
+			<div class="bot_bt">
+				<a href="#" class="btn bt_submit">인출하기</a>
+			</div>
+		</div>
+	</main>
+</body>
+</html>

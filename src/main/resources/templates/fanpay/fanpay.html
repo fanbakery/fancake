@@ -1,0 +1,105 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>팬Pay 관리</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<button type="button" class="bt searchOpen"><img src="../img/i_search.png" alt="검색"></button>
+				<a href="alarm.html" class="bt"><img src="../img/i_alarm.png" alt="알림"></a>
+			</div>
+		</div>
+	</header>
+	<main id="container">
+		<div class="fanpay">
+			<form action="#">
+				<div class="means">
+					<ul>
+						<li>
+							<div class="head">
+								<input type="radio" name="means" id="mean1" checked>
+								<label for="mean1">
+									<div class="ico"><i></i></div>
+									<div class="tit">팬Pay</div>
+									<div class="act"><a href="/fanpay/setting">설정</a></div>
+								</label>
+							</div>
+							<div class="cons">
+								<a href="#" class="add"><i></i><span class="skip">팬PAY 추가</span></a>
+							</div>
+						</li>
+						<!--
+						<li>
+							<div class="head">
+								<input type="radio" name="means" id="mean2">
+								<label for="mean2">
+									<div class="ico"><i></i></div>
+									<div class="tit">다른결제수단</div>
+								</label>
+							</div>
+							<div class="cons">
+								<dl>
+									<dt>신용/체크카드</dt>
+									<dd><a href="#">변경</a></dd>
+								</dl>
+							</div>
+						</li>
+						-->
+					</ul>
+				</div>
+				<!--
+				<div class="bot_bt">
+					<button type="submit" class="btn bt_submit">300,000원 입찰하기</button>
+				</div>
+				-->
+			</form>
+		</div>
+	</main>
+
+
+	<div id="popup_1" class="popCmmn">
+		<div class="payment">
+			<i class="scroll"></i>
+			<div class="cons">
+				<ul>
+					<li><a href="#">신용/체크카드</a></li>
+					<li><a href="#">휴대폰 결제</a></li>
+					<li><a href="#">네이버페이</a></li>
+					<li><a href="#">카카오페이</a></li>
+					<li><a href="#">토스</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="popbg" data-num="1"></div>
+	</div>
+	<script>
+	$(function(){
+	  setPop();
+	});
+	// 팝업 세팅
+	function setPop() {
+		var popOpenBtn = $('.popOpenBtnCmmn');
+
+		//팝업 열기
+		popOpenBtn.on('click',function(){
+			var clickNum = $(this).attr('data-num');
+			$('#popup_'+clickNum).fadeIn(200);
+			$('body').css("overflow","hidden");
+		})
+
+	  //팝업 닫기
+	  $('.popbg, .popCloseBtnCmmn').on('click',function(){
+		var clickNum = $(this).attr('data-num');
+
+		$('#popup_'+clickNum).fadeOut(200);
+		  $('body').css("overflow","initial");
+	  })
+	}
+	</script>
+</body>
+</html>

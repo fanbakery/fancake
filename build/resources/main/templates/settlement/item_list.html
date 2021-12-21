@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+<head>
+    <th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+<header id="header">
+    <div class="head">
+        <div class="h1"><span>정산 내역</span></div>
+        <div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+        <div class="btn skip">
+            <a href="#" class="bt"><img src="../img/i_share.png" alt="공유하기"></a>
+            <button type="button" class="bt zzimOpen"><img src="../img/i_zzim_off.png" alt="찜하기"></button>
+        </div>
+    </div>
+</header>
+<main id="container">
+    <div class="settlement">
+        <div class="list">
+            <ul class="head">
+                <li>
+                    <div class="desc">상품 명</div>
+                    <div class="desc">판매 일자</div>
+                    <div class="desc">정산 일자</div>
+                    <div class="desc">정산 금액</div>
+                </li>
+            </ul>
+            <ul class="cons">
+                <li th:each="item: ${settlItemList}">
+                    <div class="desc">
+                        <span th:text="${item.itemName}"></span>
+                    </div>
+                    <div class="desc">
+                        <span th:text="${item.biddingSuccDate}"></span>
+                    </div>
+                    <div class="desc">
+                        <span th:text="${item.settleDay}"></span>
+                    </div>
+                    <div class="desc">
+                        <span  th:text="|${#numbers.formatDecimal(item.settlePrice, 0, 'COMMA', 0, 'POINT')} 원|"></span>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</main>
+</body>
+</html>

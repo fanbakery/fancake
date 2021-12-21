@@ -1,0 +1,122 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<main id="container">
+		<div class="influencer">
+			<div class="tablist">
+				<div class="cate">
+					<div class="tit">팬케이크 인플루언서</div>
+					<div class="sort">
+						<select id="sort" name="sort" onchange="chgList();">
+							<option value="RECENT" selected>최신순</option>
+							<option value="POPULAR">인기순</option>
+						</select>
+					</div>
+				</div>
+				<div class="list">
+					<ul id="influence_list">
+						<li th:each="item: ${influenList.lists}" >
+							<a th:href="@{/influencer/mypage(no=${item.mbNo})}" class="inner">
+								<div class="img">
+									<img th:src="${item.coverImg1}" alt="">
+									<button type="button"
+											th:class="${item.isMyZzim ? 'btn_zzim sel' : 'btn_zzim'}"
+											th:onclick="|zzim_influence('${item.mbNo}');|"
+											th:attr="id=|zzim_influence_${item.mbNo}|"
+									>
+										<i></i><span class="skip">찜한 인플루언서</span>
+									</button>
+									<i class="icon_new" th:if="${item.isNew}">NEW</i>
+								</div>
+								<div class="con">
+									<div class="tit">
+										<img th:src="${item.mbProfile}"  alt="">
+										<span th:text="${item.mbNick}">연나비</span>
+									</div>
+									<div class="txt">
+										<span th:text="|팬케이크 팔로워 ${#numbers.formatDecimal(item.zzimCnt, 0, 'COMMA', 0, 'POINT')} 명|"></span>
+										<span>트위치 / 인스타그램</span>
+									</div>
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<!-- bottom 메뉴 영역 -->
+	<th:block th:replace="fragment/bottom_menu :: bottomMenuFragment"> </th:block>
+
+	<script type="text/javascript">
+		function chgList(){
+			let orderType = $("#sort").val();
+			let pageIdx = 1;
+			let cntPerPage = 20;
+
+			$("#influence_list").empty();
+
+			// ajax 호출
+			$.getJSON("/api/influen/tabList", {"orderType":orderType, "pageIdx":pageIdx, "cntPerPage": cntPerPage},
+					function(resultObj){
+						if (!resultObj.data.lists) return;
+
+						for (var i = 0; i < resultObj.data.lists.length; i++) {
+							showDisplay(resultObj.data.lists[i]);
+						}
+					}
+			);
+		}
+
+		function showDisplay(item){
+			let strHtml = '<li>';
+			strHtml += '<a href="/influencer/mypage?no='+ item.mbNo + '" class="inner">';
+			strHtml += '<div class="img">';
+			strHtml += '<img src="'+ item.coverImg1 + '" >';
+
+			if (item.myZzim) {
+				strHtml += 	`<button type="button"
+								   class="btn_zzim sel"
+								   onclick="zzim_influence('${item.mbNo}');"
+								   id='zzim_influence_${item.mbNo}'
+							>
+							<i></i><span class="skip"></span></button>`;
+			}
+			else {
+				strHtml += 	`<button type="button"
+								   class="btn_zzim"
+								   onclick="zzim_influence('${item.mbNo}');"
+								   id='zzim_influence_${item.mbNo}'
+							>
+							<i></i><span class="skip"></span></button>`;
+			}
+
+			if (item.new) {
+				strHtml += '<i class="icon_new">NEW</i>';
+			}
+
+			let commaFollow = setComma(item.zzimCnt);
+			strHtml += `</div>
+							<div class="con">
+								<div class="tit">
+									<img src="${item.mbProfile}" alt="">
+										<span >${item.mbNick}</span>
+								</div>
+								<div class="txt">
+									<span>팬케이크 팔로워 ${commaFollow} 명</span>
+									<span>트위치 / 인스타그램</span>
+								</div>
+							</div>
+						</a>
+					</li>`;
+
+			$("#influence_list").append(strHtml);
+		}
+	</script>
+</body>
+</html>

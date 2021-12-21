@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanbakery.fancake.repository.mapper.DonationMapper">
+
+    <!--
+        it_donate table
+     -->
+
+    <select id="selectDonationList"
+            resultType="com.fanbakery.fancake.repository.model.ItDonateEntity">
+        SELECT * FROM it_donate
+        WHERE donate_use_yn = 1;
+    </select>
+
+
+
+    <!--
+        it_donate_req table
+     -->
+
+    <select id="selectDonationAmountByMb"
+            resultType="Long">
+        SELECT sum(donate_price)
+        FROM it_donate_req idr
+        WHERE mb_no = #{mbNo} AND donate_status = #{donateStatus}
+    </select>
+
+
+    <insert id="insertDonationReq"
+            parameterType="com.fanbakery.fancake.module.donation.model.ReqDonation"
+            useGeneratedKeys="true"
+            keyProperty="reqSeq">
+        INSERT INTO it_donate_req
+                (mb_no, donate_seq
+                , donate_price
+                , donate_person_name
+                , donate_person_birthday
+                , donate_person_sex
+                , donate_person_addr
+                , donate_req_date
+                , donate_status)
+        VALUES ( #{mbNo}, #{donateSeq}
+                , #{donatePrice}
+                , #{donatePersonName}
+                , #{donatePersonBirthday}
+                , #{donatePersonSex}
+                , #{donatePersonAddr}
+                , #{donateReqDate}
+                , #{donateStatus});
+    </insert>
+</mapper>

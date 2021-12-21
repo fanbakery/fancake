@@ -1,0 +1,66 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>입찰하기</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<button type="button" class="bt searchOpen"><img src="../img/i_search.png" alt="검색"></button>
+				<a href="alarm.html" class="bt"><img src="../img/i_alarm.png" alt="알림"></a>
+			</div>
+			<div class="search">
+				<div class="close"><i></i></div>
+				<div class="input">
+					<form>
+						<input type="text" placeholder="인플루언서명을 입력해주세요">
+						<button type="submit"></button>
+						<div class="list">
+							<ul>
+								<li>
+									<a href="#">
+										<div class="ico"><img src="../img/m_prof1.png" alt=""></div>
+										<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>				
+			</div>
+			<script>
+				$(".searchOpen").click(function(){
+					$("#header .search").addClass("sel");
+				});
+				$("#header .search .close").click(function(){
+					$("#header .search").removeClass("sel");
+				});
+				$("#header .search .input input").focus(function(){
+					$(this).siblings(".list").addClass("sel");
+				});
+				$("#header .search .input input").blur(function(){
+					$(this).siblings(".list").removeClass("sel");
+				});
+			</script>
+		</div>
+	</header>
+	<main id="container">
+		<div class="bidding">
+			<div class="payment">
+				<div class="tit">간편결제를 등록하시면<br>빠르게 입찰할 수 있습니다.</div>
+				<!-- <div class="txt">은행, 카드별로 계좌, 카드를 하나씩 등록할 수 있습니다.</div> -->
+				<div class="act">
+					<ul>
+						<li><span>계좌 등록하기</span><a href="#">등록</a></li>
+						<li><span>카드 등록하기</span><a href="#">등록</a></li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</main>
+</body>
+</html>

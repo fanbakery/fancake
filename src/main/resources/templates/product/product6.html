@@ -1,0 +1,123 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1 skip"><span>상품 선택화면</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn">
+				<a href="#" class="bt"><img src="../img/i_share.png" alt="공유하기"></a>
+				<button type="button" class="bt zzimOpen"><img src="../img/i_zzim_off2.png" alt="찜하기"></button>
+			</div>
+			<div class="search">
+				<div class="close"><i></i></div>
+				<div class="input">
+					<form>
+						<input type="text" placeholder="인플루언서명을 입력해주세요">
+						<button type="submit"></button>
+						<div class="list">
+							<ul>
+								<li>
+									<a href="#">
+										<div class="ico"><img src="../img/m_prof1.png" alt=""></div>
+										<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>				
+			</div>
+			<script>
+				$(".searchOpen").click(function(){
+					$("#header .search").addClass("sel");
+				});
+				$("#header .search .close").click(function(){
+					$("#header .search").removeClass("sel");
+				});
+				$("#header .search .input input").focus(function(){
+					$(this).siblings(".list").addClass("sel");
+				});
+				$("#header .search .input input").blur(function(){
+					$(this).siblings(".list").removeClass("sel");
+				});
+			</script>
+		</div>
+	</header>
+	<main id="container">
+		<div class="product">
+			<div class="image"><img src="../img/yeonnabi_img.png" alt="인플루언서 이미지"></div>
+			<div class="name">
+				<div class="ico"><img src="../img/m_prof2.png" alt=""></div>
+				<div class="tit">연나비</div>
+				<div class="txt">팬케이크 팔로워 5,000명</div>
+			</div>
+			<div class="text">
+				<div class="tit">'원신' 감우 코스프레 의상</div>
+				<div class="txt">제 2주년 방송에서 입은 원신 감우 코스프레 의상입니다 ㅎㅎ <br> 상태 아주 깨끗하고 좋아요!</div>
+			</div>
+			<div class="info">
+				<dl><dt>현재 가격</dt><dd><strong>180,000원</strong></dd></dl>
+				<dl><dt>시작 가격</dt><dd>100,000원</dd></dl>
+				<dl><dt>찜 수</dt><dd>22</dd></dl>
+				<dl><dt>입찰 수</dt><dd>12</dd></dl>
+				<dl><dt>시작일자</dt><dd>2021.08.12</dd></dl>
+				<dl><dt>종료일자</dt><dd>2021.08.12</dd></dl>
+			</div>
+			<div class="bene">
+				<dl><dt><img src="../img/i_donation.png" alt=""></dt><dd>기부 해요</dd></dl>
+				<dl><dt><img src="../img/i_sign.png" alt=""></dt><dd>친필 싸인 동봉</dd></dl>
+				<dl><dt><img src="../img/i_delivery.png" alt=""></dt><dd>평균 배송일 4일</dd></dl>
+			</div>
+			<div class="caut">
+				<p>팬베이커리(주)는 통신판매 중개자로서 통신판매의 당사자가 아니므로 개별 판매자가 등록한 상품정보에 대해서 책임은 지지 않습니다. 단 거래과정에서 검수하고 보증하는 내용에 대한 책임은 당사에 있습니다.</p>		
+			</div>
+			<div class="bt">
+				<a href="#" class="btn bt_bid popOpenBtnCmmn" data-num="1">입찰하기</a>
+			</div>
+		</div>
+	</main>
+	<div id="popup_1" class="popCmmn" style="display:block">
+		<div class="popup basic">
+			<div class="cons">
+				<div class="tit">배송지 정보 입력</div>
+				<div class="txt">입찰이 완료되었습니다.<br> 낙찰 시 배송 받을 주소를 입력해주세요.</div>
+			</div>
+			<div class="btns">
+				<a href="#" class="btn btn_03">취소</a>
+				<a href="addressbook.html" class="btn btn_01">등록하기</a>
+			</div>
+		   <div class="close popCloseBtnCmmn" data-num="1"><img src="../img/i_close.png" alt=""></div>
+		</div>
+		<div class="popbg" data-num="1"></div>
+	</div>
+	<script>
+	$(function(){
+	  setPop();
+	});
+	// 팝업 세팅
+	function setPop() {
+		var popOpenBtn = $('.popOpenBtnCmmn');
+
+		//팝업 열기
+		popOpenBtn.on('click',function(){
+			var clickNum = $(this).attr('data-num');
+			$('#popup_'+clickNum).fadeIn(200);
+			$('body').css("overflow","hidden");
+		})
+
+	  //팝업 닫기
+	  $('.popbg, .popCloseBtnCmmn').on('click',function(){
+		var clickNum = $(this).attr('data-num');
+
+		$('#popup_'+clickNum).fadeOut(200);
+		  $('body').css("overflow","initial");
+	  })
+	}
+	</script>
+</body>
+</html>

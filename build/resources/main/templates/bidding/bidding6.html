@@ -1,0 +1,100 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>입찰하기</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<button type="button" class="bt searchOpen"><img src="../img/i_search.png" alt="검색"></button>
+				<a href="alarm.html" class="bt"><img src="../img/i_alarm.png" alt="알림"></a>
+			</div>
+			<div class="search">
+				<div class="close"><i></i></div>
+				<div class="input">
+					<form>
+						<input type="text" placeholder="인플루언서명을 입력해주세요">
+						<button type="submit"></button>
+						<div class="list">
+							<ul>
+								<li>
+									<a href="#">
+										<div class="ico"><img src="../img/m_prof1.png" alt=""></div>
+										<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>				
+			</div>
+			<script>
+				$(".searchOpen").click(function(){
+					$("#header .search").addClass("sel");
+				});
+				$("#header .search .close").click(function(){
+					$("#header .search").removeClass("sel");
+				});
+				$("#header .search .input input").focus(function(){
+					$(this).siblings(".list").addClass("sel");
+				});
+				$("#header .search .input input").blur(function(){
+					$(this).siblings(".list").removeClass("sel");
+				});
+			</script>
+		</div>
+	</header>
+	<main id="container">
+		<div class="bidding">
+			<form>
+				<div class="method">
+					<ul>
+						<li>
+							<input type="radio" name="method" id="method1" checked>
+							<label for="method1">
+								<span>신용/체크카드</span>
+								<i></i>
+							</label>
+						</li>
+						<li>
+							<input type="radio" name="method" id="method2">
+							<label for="method2">
+								<span>휴대폰 결제</span>
+								<i></i>
+							</label>
+						</li>
+						<li>
+							<input type="radio" name="method" id="method3">
+							<label for="method3">
+								<span>네이버페이</span>
+								<i></i>
+							</label>
+						</li>
+						<li>
+							<input type="radio" name="method" id="method4">
+							<label for="method4">
+								<span>카카오페이</span>
+								<i></i>
+							</label>
+						</li>
+						<li>
+							<input type="radio" name="method" id="method5">
+							<label for="method5">
+								<span>토스</span>
+								<i></i>
+							</label>
+						</li>
+					</ul>
+				</div>
+				<div class="bot_bt">
+					<button type="submit" class="btn bt_submit">확인</button>
+				</div>
+			</form>
+		</div>
+	</main>
+</body>
+</html>

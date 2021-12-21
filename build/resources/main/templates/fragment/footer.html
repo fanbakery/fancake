@@ -1,0 +1,41 @@
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org">
+
+<!--footerFragment 선언-->
+<div th:fragment="footerFragment">
+    <footer id="footer">
+        <div class="cs">
+            <strong>고객센터 cs@fanbakery.com</strong>
+            <strong>02-2222-2702</strong>
+            <span>운영시간 평일 11:00 - 18:00 (토,일,공휴일 휴무)</span>
+            <span>점심시간 12:00 - 13:00</span>
+        </div>
+        <div class="info">
+            <span><a href="https://fanbakery.notion.site/5389cf8fedfe403b8f264d4588c250ab">이용약관</a></span>
+            <span><a href="https://fanbakery.notion.site/ba13de606af3444196237b0cb3d44be8">개인정보처리방침</a></span>
+        </div>
+        <div class="address">
+            <button type="button" class="addOpen"><span>사업자정보</span><i></i></button>
+            <address>
+                주식회사 팬베이커리·대표 이두한 <br>
+                사업자등록번호: 192-87-02157 <a href="#">사업자정보확인</a> <br>
+                통신판매업: 제2021-3130225-30-2-03396호 <br>
+                사업장소재지: 서울특별시 마포구 양화로 186 5층 532호(동교동 LC타워)<br>
+                호스팅서비스: AWS
+            </address>
+            <p>주식회사 팬베이커리는 통신판매중개자로서 통신판매의 당사자가 아니므로 개별 판매자가 등록한 상품정보에 대해서 책임을 지지 않습니다. 단, 거래과정에서 검수하고 보증하는 내용에 대한 책임은 당사에 있습니다.</p>
+            <div class="social">
+                <ul>
+                    <li><a href="https://www.instagram.com/fancake_official/?utm_medium=copy_link"><img src="../img/i_insta.png" alt=""><span class="skip">인스타그</span></a></li>
+                </ul>
+            </div>
+            <script>
+                $(".addOpen").click(function(){
+                    $(this).toggleClass('sel');
+                    $("address").toggleClass('hide');
+                });
+            </script>
+        </div>
+    </footer>
+</div>
+
+</html>

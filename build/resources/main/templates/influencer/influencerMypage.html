@@ -1,0 +1,166 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head skip">
+			<div class="h1"><span>인플루언서용 페이지</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<button type="button" class="bt searchOpen"><img src="../img/i_search.png" alt="검색"></button>
+				<a href="alarm.html" class="bt"><img src="../img/i_alarm.png" alt="알림"></a>
+			</div>
+		</div>
+	</header>
+	<main id="container">
+		<div class="influencer">
+			<div class="home">
+				<div class="image slider">
+					<div class="swiper-wrapper">
+						<div class="swiper-slide">
+							<img th:src="${mypage.addInfo.coverImg1}" alt="인플루언서 이미지">
+						</div>
+						<div class="swiper-slide" th:if="${mypage.addInfo.coverImg1!=null}" >
+							<img th:src="${mypage.addInfo.coverImg1}" alt="인플루언서 이미지">
+						</div>
+						<div class="swiper-slide" th:if="${mypage.addInfo.coverImg3!=null}" >
+							<img th:src="${mypage.addInfo.coverImg3}" alt="인플루언서 이미지">
+						</div>
+					</div>
+				</div>
+				<div class="info">
+					<div class="tit">
+						<div class="ico"><img th:src="${mypage.mbProfile}" alt=""></div>
+						<div class="name" th:text="${mypage.mbNick}"></div>
+					</div>
+					<div class="txt" th:text="|팬케이크 팔로워 ${#numbers.formatDecimal(mypage.zzimCnt, 0, 'COMMA', 0, 'POINT')}명|"></div>
+				</div>
+				<div class="bene">
+					<dl><dt><img src="../img/i_donation.png" alt=""></dt><dd>기부 해요</dd></dl>
+					<dl><dt><img src="../img/i_sign.png" alt=""></dt><dd>친필 싸인 동봉</dd></dl>
+					<dl><dt><img src="../img/i_delivery.png" alt=""></dt><dd>평균 배송일 4일</dd></dl>
+				</div>
+				<div class="text">
+					<div class="tit">자기 소개</div>
+					<div class="txt" th:utext="${mypage.addInfo.introduction}"></div>
+				</div>
+				<div class="rank">
+					<div class="tit">구매랭킹</div>
+					<div th:if="${#lists.isEmpty(mypage.topBuyer)}" class="txt">
+						<div class="empty">
+							<strong>😢</strong>
+							<span>아직 판매 내역이 없어요</span>
+						</div>
+					</div>
+					<div th:if="${not #lists.isEmpty(mypage.topBuyer)}" class="txt" >
+						<dl th:each="top: ${mypage.topBuyer}">
+							<dt><img th:src="${top.mbProfile}" ><span th:text="|${topStat.index+1}위|"></span></dt>
+							<dd th:text="${top.mbNick}"></dd>
+						</dl>
+					</div>
+				</div>
+				<div class="sell">
+					<div class="tit">판매 중인 상품</div>
+					<div class="list">
+						<div th:if="${#lists.isEmpty(mypage.sale)}" class="empty">
+							<strong>🤔</strong>
+							<span>현재 판매 중인 상품이 없어요</span>
+						</div>
+
+						<ul th:if="${not #lists.isEmpty(mypage.sale)}">
+							<li th:each="item: ${mypage.sale}">
+								<a th:href="@{/product/product(itemNo=${item.itemSeq})}" class="inner">
+									<div class="img"><img th:src="${item.itemImg1}" alt="">
+										<div class="adult" th:if="${item.itemAdult and session.adult==0}">
+											<span>성인용으로<br> 공개된 상품입니다.</span>
+										</div>
+										<button type="button"
+												th:class="${item.isMyZzim ? 'btn_zzim sel' : 'btn_zzim'}"
+												th:onclick="|zzim('${item.itemSeq}');|"
+												th:attr="id=|bidding_${item.itemSeq}|">
+											<i></i><span class="skip">찜한상품</span>
+										</button></div>
+									<div class="con">
+										<div class="tit" th:text="${item.itemName}"></div>
+										<div class="txt">
+											<strong th:text="|${#numbers.formatDecimal(item.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} 원|">
+											</strong><span>현재 가격</span>
+										</div>
+									</div>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				<div class="comp">
+					<div class="tit">판매 완료된 상품</div>
+
+					<div class="list">
+						<div th:if="${#lists.isEmpty(mypage.endSale)}"  class="empty">
+							<strong>😵‍</strong>
+							<span>아직 판매 완료된 상품이 없어요</span>
+						</div>
+					</div>
+
+					<div class="list">
+						<ul th:if="${not #lists.isEmpty(mypage.endSale)}">
+							<li th:each="item: ${mypage.endSale}">
+								<a th:href="@{/product/product(itemNo=${item.itemSeq})}" class="inner">
+									<div class="img">
+										<img th:src="${item.itemImg1}" alt="">
+										<div class="adult" th:if="${item.itemAdult and session.adult==0}">
+											<span>성인용으로<br> 공개된 상품입니다.</span>
+										</div>
+										<div class="soldout">
+											<span>판매 완료</span>
+										</div>
+										<button type="button"
+												th:class="${item.isMyZzim ? 'btn_zzim sel' : 'btn_zzim'}"
+												th:onclick="|zzim('${item.itemSeq}');|"
+												th:attr="id=|bidding_${item.itemSeq}|">
+											<i></i><span class="skip">찜한상품</span>
+										</button></div>
+									<div class="con">
+										<div class="tit" th:text="${item.itemName}"></div>
+										<div class="txt">
+											<strong th:text="|${#numbers.formatDecimal(item.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} 원|">
+											</strong><span>현재 가격</span>
+										</div>
+									</div>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	<!-- footer 영역 -->
+
+	<script type="text/javascript">
+		//<![CDATA[
+		$(function () {
+			var mainSwiper = new Swiper('.slider', {
+				slidesPerView:1,
+				speed:600,
+				pagination: false,
+				navigation: {
+					nextEl: '.swiper-ctrl .next',
+					prevEl: '.swiper-ctrl .prev',
+				}
+			});
+			$(".addOpen").click(function(){
+				$(this).toggleClass('sel');
+				$("address").toggleClass('hide');
+			});
+		});
+		//]]>
+	</script>
+
+	<!-- bottom 메뉴 영역 -->
+	<th:block th:replace="fragment/bottom_menu :: bottomMenuFragment"> </th:block>
+</body>
+</html>

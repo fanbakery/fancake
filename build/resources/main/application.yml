@@ -1,0 +1,83 @@
+# =====================================================
+# Boot Basic Information
+# =====================================================
+server:
+  port: 80
+  #ssl:
+  #  key-store:
+  #  key-store-password:
+  tomcat:
+    uri-encoding: UTF-8
+
+spring:
+  # DataSource
+  datasource:
+    jdbc-url: jdbc:log4jdbc:mysql://49.247.38.159:3306/fancake?characterEncoding=UTF-8&serverTimezone=Asia/Seoul&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    username: root
+    password: icandoit1!db
+    driver-class-name: net.sf.log4jdbc.sql.jdbcapi.DriverSpy
+    test-while-idle: true
+    test-on-borrow: true
+    # MYSQL 검증 쿼리문
+    validation-query: SELECT 1
+
+    max-active: 16
+    max-idle: 16
+    min-idle: 8
+    timeBetweenEvictionRunsMillis: 600000
+
+  jackson:
+    default-property-inclusion: non_null
+
+# file upload 정보
+  servlet:
+    multipart:
+#      file-size-threshold: 1MB
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  # 세션 관련 정보
+  session:
+    timeout: 5      # 분 단위 (30*24*60)
+    #store-type: jdbc
+    store-type: none
+
+# Mybatis Configuration
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: com.fanbakery.fancake.repository.model
+  configuration:
+    map-underscore-to-camel-case: true
+
+#Log Configuraion
+logging:
+  config: classpath:logback.xml
+
+
+app:
+  upload_config:
+    #테스트 서버 환경
+    #physical_path: '/root/fancake2/upload/'
+    # Linux 환경
+    #physical_path: '/home/fancake/upload/'
+    # 윈도우 환경
+    physical_path: 'C:/home/fancake/upload/'
+    url_path: '/upload'
+
+
+  nice_url: https://nice.checkplus.co.kr/CheckPlusSafeModel/service.cb
+  nice_access_token: abf22b73-5187-4af4-b4bb-31fab26789b1
+  nice_client_id: 0c7348be-d9a5-480e-8106-f952ec856301
+  nice_product_id: 2101979031
+  nice_access_token_url: https://svc.niceapi.co.kr:22001
+  nice_access_token_url_after: /digital/niceid/api/v1.0/common/crypto/token
+  nice_retrun_url: http://localhost/test/result
+  pg_referer_domain: http://thefancake.com/
+  email_port: 587
+  email_username: digitalinno@naver.com
+  email_password: Fanbakery2@
+  email_host: smtp.naver.com
+
+
+    
+  #pg_referer_domain: http://localhost

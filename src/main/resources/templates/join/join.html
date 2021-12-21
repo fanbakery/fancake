@@ -1,0 +1,174 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>가입하기</span></div>
+			<div class="pre"><a href="/login"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<button type="button" class="bt searchOpen"><img src="../img/i_search.png" alt="검색"></button>
+				<a href="alarm.html" class="bt"><img src="../img/i_alarm.png" alt="알림"></a>
+			</div>
+			<div class="search">
+				<div class="close"><i></i></div>
+				<div class="input">
+					<form>
+						<input type="text" placeholder="인플루언서명을 입력해주세요">
+						<button type="submit"></button>
+						<div class="list">
+							<ul>
+								<li>
+									<a href="#">
+										<div class="ico"><img src="../img/m_prof1.png" alt=""></div>
+										<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>				
+			</div>
+			<script>
+				$(".searchOpen").click(function(){
+					$("#header .search").addClass("sel");
+				});
+				$("#header .search .close").click(function(){
+					$("#header .search").removeClass("sel");
+				});
+				$("#header .search .input input").focus(function(){
+					$(this).siblings(".list").addClass("sel");
+				});
+				$("#header .search .input input").blur(function(){
+					$(this).siblings(".list").removeClass("sel");
+				});
+			</script>
+		</div>
+	</header>
+	<main id="container">
+		<div class="join">
+			<div class="form">
+				<form method="post" th:action="@{/join}" th:object="${joinInfoReq}" role="form">
+					<input type="hidden" name="userProfTempFileName" id="userProfTempFileName" th:value="${joinInfoReq.userProfTempFileName}">
+					<input type="hidden" name="userProfTempUrlPath" id="userProfTempUrlPath" th:value="${joinInfoReq.userProfTempUrlPath}">
+					<div class="desc">
+						<div class="flex">
+							<input type="text" id="userMail" name="userMail" th:field="*{userMail}" th:value="${joinInfoReq.userMail}" placeholder="이메일 주소 입력">
+						</div>
+						<p class="error_msg" th:if="${#fields.hasErrors('userMail')}" th:errors="*{userMail}"></p>
+						<p class="error_msg" th:if="${resultMail}" th:text="${resultMail}"></p>
+					</div>
+					<div class="desc">
+						<div class="flex">
+							<input type="password" id="userPw" name="userPw" th:field="*{userPw}" th:value="${joinInfoReq.userPw}" placeholder="비밀번호 입력">
+						</div>
+						 <p class="error_msg" th:if="${#fields.hasErrors('userPw')}" th:errors="*{userPw}"></p>
+					</div>
+					<div class="desc">
+						<div class="flex">
+							<input type="text" id="userNick" name="userNick" th:field="*{userNick}"
+								   th:value="${joinInfoReq.userNick}" placeholder="닉네임 입력">
+							<input type="file" id="userProf" onchange="upload()">
+							<label for="userProf"><i></i><span class="skip">유저 프로필 사진 등록</span></label>
+							<label for="userProf" th:style="${not #strings.isEmpty(joinInfoReq.userProfTempUrlPath) ? 'text-align: right;margin-right: 50px;display:block' : 'text-align: right;margin-right: 50px;display:none'}" id="profileLabel">
+								<img th:src="${joinInfoReq.userProfTempUrlPath}" style="width: 40px;height: 100%;margin-left: -40;" >
+							</label>
+						</div>
+						<p class="error_msg" th:if="${resultNick}" th:text="${resultNick}"></p>
+						<p class="error_msg" th:if="${#fields.hasErrors('userNick')}" th:errors="*{userNick}"></p>
+					</div>
+					<div class="desc" style="display: none">
+						<div class="flex">
+							<input type="text" id="userName" name="userName" th:field="*{userName}" th:value="${joinInfoReq.userName}" placeholder="이름 입력" readonly>
+						</div>
+						<p class="error_msg" th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}"></p>
+					</div>
+					<div class="desc">
+						<div class="flex">
+							<input type="text" id="userPhone" name="userPhone" th:field="*{userPhone}" th:value="${joinInfoReq.userPhone}" placeholder="휴대폰 번호 입력(숫자만 입력)" >
+							<a href="javascript:adultAuth('join');" class="cert">인증 수행</a>
+						</div>
+						<p class="error_msg" th:if="${resultPhone}" th:text="${resultPhone}"></p>
+						<p class="error_msg" th:if="${#fields.hasErrors('userPhone')}" th:errors="*{userPhone}"></p>
+					</div>
+					<input type="hidden" id="userCert" name="userCert" value="1" >
+					<input type="hidden" id="isAdult" name="isAdult" th:field="*{isAdult}" >
+
+					<!--<div class="desc">
+						<div class="flex">
+							<input type="text" id="userCert" name="userCert" th:field="*{userCert}" th:value="${joinInfoReq.userCert}" placeholder="인증 번호 입력(숫자만 입력)">
+							<a href="#" class="certok off">확인</a>
+						</div>
+						<p class="error_msg" th:if="${#fields.hasErrors('userCert')}" th:errors="*{userCert}"></p>
+						<p class="error_msg" th:if="${resultCert}" th:text="${resultCert}"></p>
+					</div>-->
+					<div class="agree">
+						<input type="checkbox" id="agree" name="agree">
+						<label for="agree"><i></i>
+							<span>
+								<a href="https://fanbakery.notion.site/5389cf8fedfe403b8f264d4588c250ab">
+									<strong>이용약관</strong>
+								</a>
+								 및
+								<a href="https://fanbakery.notion.site/ba13de606af3444196237b0cb3d44be8">
+									<strong>개인정보 취급방침</strong>
+								</a>
+								에 동의합니다.</span></label>
+					</div>
+					<div class="desc">
+						<p class="error_msg" th:if="${resultAgree}" th:text="${resultAgree}"></p>
+					</div>
+					<div class="desc">
+						<p class="error_msg" th:if="${result}" th:text="${result}"></p>
+					</div>
+					<div class="bot_bt">
+						<button type="submit" class="btn bt_submit"><span>가입하기</span></button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</main>
+
+</body>
+
+
+<script>
+	function upload() {
+		const userProf = $("#userProf")[0];
+		// 파일을 여러개 선택할 수 있으므로 files 라는 객체에 담긴다.
+		console.log("uploadFile: ", userProf.files)
+
+		if(userProf.files.length === 0){
+			alert("파일은 선택해주세요");
+			return;
+		}
+
+		const formData = new FormData();
+		formData.append("uploadFile", userProf.files[0]);
+
+		// 임시 파일 업로드
+		$.ajax({
+			type:"POST",
+			url: "/uploadFile/image/temp",
+			processData: false,
+			contentType: false,
+			data: formData,
+			success: function(data){
+				if (data.result) {
+					$("#profileLabel img").attr("src", data.uploadFileUrl);
+					$("#profileLabel").show();
+					$("#userProfTempFileName").val(data.uploadFileName);
+					$("#userProfTempUrlPath").val(data.uploadFileUrl);
+				}
+			},
+			err: function(err){
+				console.log("err:", err)
+			}
+		})
+	}
+
+</script>
+</html>

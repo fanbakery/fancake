@@ -1,0 +1,51 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>결제 수단 등록</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<button type="button" class="bt searchOpen"><img src="../img/i_search.png" alt="검색"></button>
+				<a href="alarm.html" class="bt"><img src="../img/i_alarm.png" alt="알림"></a>
+			</div>
+		</div>
+	</header>
+	<main id="container">
+		<div class="fanpay">
+			<form>
+				<div class="bank">
+					<dl>
+						<dt class="skip">은행선택</dt>
+						<dd>
+							<select type="bank" id="f_bank">
+								<option value="">은행 선택</option>
+								<option value="농협">농협</option>
+								<option value="신한">신한</option>
+								<option value="우리">우리</option>
+								<option value="국민">국민</option>
+							</select>
+						</dd>
+					</dl>
+					<dl>
+						<dt class="skip">계좌번호 입력</dt>
+						<dd><input type="text" id="f_number" placeholder="계좌번호 입력"></dd>
+					</dl>
+					<dl>
+						<dt class="skip">이름</dt>
+						<dd><input type="text" id="f_name" placeholder="이름" value="이두한"></dd>
+					</dl>
+				</div>
+				<div class="bot_bt">
+					<button type="submit" class="btn bt_submit" disabled>다음</button>
+				</div>
+			</form>
+		</div>
+	</main>
+
+</body>
+</html>

@@ -1,0 +1,49 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<script type="text/javascript" src="/js/jquery-1.8.3.min.js"></script>
+
+
+<input type="hidden" id="isAdult" th:value="${isAdult}">
+<input type="hidden" id="result" th:value="${responseData.resultcode}">
+<input type="hidden" id="birthdate" th:value="${responseData.birthdate}">
+<input type="hidden" id="mobile_no" th:value="${responseData.mobile_no}">
+<input type="hidden" id="pageType" th:value="${session.pageType}">
+<input type="hidden" id="name" th:value="${responseData.name}">
+
+<script type="text/javascript">
+	$(document).ready(function () {
+		let isAdult = $("#isAdult").val();
+		let result = $("#result").val();
+		let pageType = $("#pageType").val();
+
+		let name = $("#name").val();
+		let mobile_no = $("#mobile_no").val();
+
+		if (result === '0000') {
+			if (pageType === 'adult') {
+				if (isAdult) {
+					alert('성인 인증을 완료하였습니다.');
+					opener.location.reload();
+					self.close();
+				} else {
+					alert('성인이 아닙니다.');
+					self.close();
+				}
+			}
+			else {
+				// action
+				$("#isAdult",opener.document).val(isAdult);
+				$("#userPhone",opener.document).val(mobile_no);
+				$("#name",opener.document).val(name);
+
+				self.close();
+			}
+		}
+		else {
+			alert('인증처리가 실패되었습니다.')
+			self.close();
+		}
+	});
+</script>
+</html>

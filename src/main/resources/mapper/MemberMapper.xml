@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanbakery.fancake.repository.mapper.MemberMapper">
+
+    <!--
+        it_member table
+    -->
+
+    <select id="selectLikeInfluenNickByNick"
+            resultType="com.fanbakery.fancake.module.home.model.ResSearchInfluencer">
+        SELECT mb_no, mb_nick, mb_profile
+        FROM it_member im
+        where mb_signature = #{mbSignature} AND mb_nick LIKE CONCAT('%', #{mbNick}, '%')
+    </select>
+
+
+    <select id="selectCountInfluencer"
+            resultType="Long">
+        SELECT COUNT(mb_no) FROM it_member
+        WHERE mb_signature = #{mbSignature}  AND mb_is_unregistered = 0
+    </select>
+
+
+
+    <select id="selectMemberInfoByMbNo"
+            resultType="com.fanbakery.fancake.repository.model.ItMemberEntity">
+        SELECT
+            *
+        FROM it_member
+        WHERE mb_no = #{mbNo} AND mb_is_unregistered = 0
+    </select>
+
+
+    <select id="selectMemberInfoByMbNoSignature"
+            resultType="com.fanbakery.fancake.repository.model.ItMemberEntity">
+        SELECT
+            *
+        FROM it_member
+        WHERE mb_no = #{mbNo} AND mb_signature = #{mbSignature}
+                AND mb_is_unregistered = 0
+    </select>
+
+
+    <select id="selectMemberInfoByMbEmail" parameterType="String"
+            resultType="com.fanbakery.fancake.repository.model.ItMemberEntity">
+        SELECT
+            *
+        FROM it_member
+        WHERE mb_email = #{email} AND mb_is_unregistered = 0
+    </select>
+
+    <update id="updateInfluenReqStatusByMbNo"
+            parameterType="com.fanbakery.fancake.repository.model.ItMemberEntity">
+        UPDATE it_member
+        SET mb_signature = #{mbSignature}
+          , mb_signature_date = #{mbSignatureDate}
+        WHERE mb_no = #{mbNo}
+    </update>
+
+
+    <update id="updateInfluenActStatusByMbNo">
+        UPDATE it_member
+        SET mb_nick = #{mbNick}
+            , mb_profile = #{mbProfile}
+            , mb_signature = #{mbSignature}
+            , mb_signature_complete_date = #{mbSignatureCompleteDate}
+        WHERE mb_no = #{mbNo}
+    </update>
+
+
+    <update id="updateMbNickByMbNo">
+        UPDATE it_member
+        SET mb_nick = #{mbNick}
+            , mb_nick_date = now()
+        WHERE mb_no = #{mbNo}
+    </update>
+
+    <update id="updateMbPorfileByMbNo">
+        UPDATE it_member
+        SET mb_profile = #{mbProfile}
+        WHERE mb_no = #{mbNo}
+    </update>
+
+
+    <update id="updateUnregister">
+        UPDATE it_member
+        SET mb_is_unregistered = 1
+            , mb_leave_date = #{mbLeaveDate}
+        WHERE mb_no = #{mbNo}
+    </update>
+
+    <update id="updateMbAdultByMbNo">
+        UPDATE it_member
+        SET mb_adult = #{mbAdult}
+        WHERE mb_no = #{mbNo}
+    </update>
+</mapper>

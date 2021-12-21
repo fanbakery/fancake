@@ -1,0 +1,48 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1">
+				<span th:if="${#strings.isEmpty(faqMaster.fmSubject)}">자주묻는질문</span>
+				<span th:if="${not #strings.isEmpty(faqMaster.fmSubject)}" th:text="${faqMaster.fmSubject}"></span>
+			</div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+		</div>
+	</header>
+	<main id="container">
+		<div class="faq" th:if="${not #lists.isEmpty(faqList)}">
+			<ul th:each="faq: ${faqList}">
+				<li class="item" >
+					<div class="faq_q">
+						<strong>Q.</strong>
+						<span th:utext="${faq.faSubject}">팬케이크 주문은 어떻게 하나요?</span>
+						<i></i>						
+					</div>
+					<div class="faq_a">
+						<p th:utext="${faq.faContent}">팬케이크 서비스가 곧 오픈합니다.<br> 많이 이용해주세요.</p>
+					</div>
+				</li>
+			</ul>
+			<script type="text/javascript">
+			//<![CDATA[
+			$(document).ready(function(){
+				$(".faq_q").click(function() {			
+					if($(this).parent('li').hasClass("sel")){
+						$(this).parent('li').removeClass("sel")
+					} else {
+						$('li').removeClass("sel");
+						$(this).parent().addClass('sel');
+					}
+				});
+			})
+			//]]>
+			</script>
+		</div>
+	</main>
+</body>
+</html>
