@@ -1,0 +1,71 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>소개글 변경</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<a href="#" class="bt"><img src="../img/i_share.png" alt="공유하기"></a>
+				<button type="button" class="bt zzimOpen"><img src="../img/i_zzim_off.png" alt="찜하기"></button>
+			</div>
+			<div class="search">
+				<div class="close"><i></i></div>
+				<div class="input">
+					<form>
+						<input type="text" placeholder="인플루언서명을 입력해주세요">
+						<button type="submit"></button>
+						<div class="list">
+							<ul>
+								<li>
+									<a href="#">
+										<div class="ico"><img src="../img/m_prof1.png" alt=""></div>
+										<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>				
+			</div>
+			<script>
+				$(".searchOpen").click(function(){
+					$("#header .search").addClass("sel");
+				});
+				$("#header .search .close").click(function(){
+					$("#header .search").removeClass("sel");
+				});
+				$("#header .search .input input").focus(function(){
+					$(this).siblings(".list").addClass("sel");
+				});
+				$("#header .search .input input").blur(function(){
+					$(this).siblings(".list").removeClass("sel");
+				});
+			</script>
+		</div>
+	</header>
+	<main id="container">
+		<div class="influencer change">
+			<div class="form">
+				<form action="influencerChange.html">
+				<div class="explain">
+					<div class="txt">
+						<textarea id="i_exp" placeholder="예) 안녕하세요 트위치 스트리머이자 인스타그램 모델로 활동하고 있는 연나비입니다. 이렇게 팬케이크 팬들과 소통할 수 있게 되어 영광이에요! 앞으로 많은 물품 전할 수 있도록 하겠습니다! ㅎㅎ">
+안녕하세요 트위치 스트리머이자 인스타그램 모델로 활동하고 있는 연나비입니다. 이렇게 팬케이크 팬들과 소통할 수 있게 되어 영광이에요! 앞으로 많은 물품 전할 수 있도록 하겠습니다! ㅎㅎ
+						</textarea>
+					</div>
+				</div>
+				<div class="bot_bt">
+					<a href="#" class="btn bt_04">이전</a>
+					<button type="submit" class="btn bt_submit">완료</button>
+				</div>
+				</form>
+			</div>
+		</div>
+	</main>
+</body>
+</html>

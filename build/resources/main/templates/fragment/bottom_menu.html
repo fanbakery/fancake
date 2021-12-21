@@ -1,0 +1,40 @@
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org">
+
+    <div th:fragment="bottomMenuFragment">
+        <nav th:if="${session.userType != null and !session.userType.toString().equals('INFLUEN_ACT')}" id="bottomMenu" class="bottom-menu">
+            <a id="bottom_menu_home" href="/" class="home"><i></i><span>홈</span></a>
+            <a id="bottom_menu_influencer" href="/influencer/tab" class="influ"><i></i><span>인플루언서</span></a>
+            <a id="bottom_menu_zzim" href="/zzim/" class="zzim"><i></i><span>찜</span></a>
+            <a id="bottom_menu_mypage" href="/mypage/" class="mypage"><i></i><span>마이페이지</span></a>
+        </nav>
+
+        <nav th:if="${session.userType != null and session.userType.toString().equals('INFLUEN_ACT')}" id="bottomMenu" class="bottom-menu">
+            <a id="bottom_menu_home" href="/" class="home"><i></i><span>홈</span></a>
+            <a id="bottom_menu_influencer" href="/influencer/tab" class="influ"><i></i><span>인플루언서</span></a>
+            <a id="bottom_menu_inven" href="/influencer/inven" class="item"><i></i><span>아이템관리</span></a>
+            <a id="bottom_menu_zzim" href="/zzim/" class="zzim"><i></i><span>찜</span></a>
+            <a id="bottom_menu_mypage" href="/mypage/" class="mypage"><i></i><span>마이페이지</span></a>
+        </nav>
+        <script type="text/javascript">
+            let urlPath = '[[${#httpServletRequest.requestURI}]]';
+
+            if (urlPath === '/') {
+                $("#bottom_menu_home").addClass('sel');
+            }
+            else if (urlPath.indexOf('/influencer/tab')>=0 || urlPath.indexOf('influencer/mypage')>=0) {
+                $("#bottom_menu_influencer").addClass('sel');
+            }
+            else if (urlPath.indexOf('/influencer/inven')>=0) {
+                $("#bottom_menu_inven").addClass('sel');
+            }
+            else if (urlPath.indexOf('/mypage')>=0
+                        || urlPath.indexOf('alarm/setting')>=0) {
+                $("#bottom_menu_mypage").addClass('sel');
+            }
+            else if (urlPath.indexOf('/zzim')>=0) {
+                $("#bottom_menu_zzim").addClass('sel');
+            }
+
+        </script>
+    </div>
+</html>

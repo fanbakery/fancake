@@ -1,0 +1,29 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>팬Pay 설정</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<button type="button" class="bt searchOpen"><img src="../img/i_search.png" alt="검색"></button>
+				<a href="alarm.html" class="bt"><img src="../img/i_alarm.png" alt="알림"></a>
+			</div>
+		</div>
+	</header>
+	<main id="container">
+		<div class="fanpay">
+			<div class="sett">
+				<ul>
+					<li><a href="/fanpay/pay_method"><span>결제수단 등록/삭제</span><i></i></a></li>
+					<li><a href="#"><span>결제 비밀번호 설정</span><i></i></a></li>
+				</ul>
+			</div>
+		</div>
+	</main>
+</body>
+</html>

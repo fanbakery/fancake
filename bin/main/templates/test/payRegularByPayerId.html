@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+<title>결제창 데모</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- payple js 호출. 테스트/운영 선택 -->
+<script src="https://democpay.payple.kr/js/cpay.payple.1.0.1.js"></script> <!-- 테스트 -->
+<script src="https://cpay.payple.kr/js/cpay.payple.1.0.1.js"></script> <!-- 운영 -->
+
+<script>  
+
+$(document).ready( function () {    	
+	
+	
+	/* 
+	 * 재결제 요청
+	 * TEST : https://democpay.payple.kr
+	 * REAL : https://cpay.payple.kr
+	 */
+/* 	POST 파트너 인증 후 리턴받은 PCD_PAY_URL HTTP/1.1
+	Host: 파트너 인증 후 리턴받은 PCD_PAY_HOST
+	Content-Type: application/json
+	Cache-Control: no-cache       
+	{
+	    "PCD_CST_ID" : "파트너 인증 후 리턴받은 cst_id",
+	    "PCD_CUST_KEY" : "파트너 인증 후 리턴받은 custKey",
+	    "PCD_AUTH_KEY" : "파트너 인증 후 리턴받은 AuthKey",
+	    "PCD_PAY_TYPE": "card",	
+	    "PCD_PAYER_ID": "d0to...",		
+	    "PCD_PAY_GOODS": "상품1",	
+	    "PCD_PAY_TOTAL": 100,
+	    "PCD_SIMPLE_FLAG": "Y"
+	} */
+	
+	
+/* 	이때 파트너 인증 후 Response 받은 cst_id, custKey, AuthKey 값을
+	각각 PCD_CST_ID, PCD_CUST_KEY, PCD_AUTH_KEY 에 넣어보내야 합니다. */
+	
+	//4-3. 결제 요청
+	//https://developer.payple.kr/integration/recurring-payment
+	
+	   	var obj = new Object();
+           	
+        /*<![CDATA[*/
+        obj.PCD_CST_ID = '[[${response.cst_id}]]';
+        obj.PCD_CUST_KEY = '[[${response.custKey}]]';
+        obj.PCD_AUTH_KEY = '[[${response.AuthKey}]]';
+        obj.PCD_PAY_TYPE = 'card';
+        //경기결제 id (최초 등록 후 발급 받은 키.)
+        //"QzBEeDhBdzQyc2dtbXY1YXNpelRFZz09"
+        obj.PCD_PAYER_ID = 'QzBEeDhBdzQyc2dtbXY1YXNpelRFZz09';
+        obj.PCD_PAY_GOODS = "티셔츠";
+        obj.PCD_SIMPLE_FLAG = "Y"
+        obj.PCD_PAY_TOTAL = 1000;
+        obj.PCD_PAY_URL  = '[[${response.PCD_PAY_URL}]]';
+        /*]]*/
+	
+        $("#PCD_CST_ID").val(obj.PCD_CST_ID);
+        $("#PCD_CUST_KEY").val(obj.PCD_CUST_KEY);
+        $("#PCD_AUTH_KEY").val(obj.PCD_AUTH_KEY);
+        $("#PCD_PAY_TYPE").val(obj.PCD_PAY_TYPE);
+        $("#PCD_PAYER_ID").val(obj.PCD_PAYER_ID);
+        $("#PCD_PAY_GOODS").val(obj.PCD_PAY_GOODS);
+        $("#PCD_SIMPLE_FLAG").val(obj.PCD_SIMPLE_FLAG);
+        $("#PCD_PAY_TOTAL").val(obj.PCD_PAY_TOTAL);
+        
+	
+    $('#payAction').on('click', function (event) {
+       
+		$.ajax({
+			type: "POST",
+			url: "https://democpay.payple.kr",
+			//processData: false,
+			contentType: 'application/json',
+			data: obj,
+			success : function(result){
+				console.dir(result);
+			},
+			err: function(err){
+				console.log("err:", err)
+			}
+			
+		})
+       	
+    });  
+});
+</script>
+<input type="text" id="PCD_CST_ID"/>
+<input type="text" id="PCD_CUST_KEY"/>
+<input type="text" id="PCD_AUTH_KEY"/>
+<input type="text" id="PCD_PAY_TYPE"/>
+<input type="text" id="PCD_PAYER_ID"/>
+<input type="text" id="PCD_PAY_GOODS"/>
+<input type="text" id="PCD_SIMPLE_FLAG"/>
+<input type="text" id="PCD_PAY_TOTAL"/>
+PCD_PAY_URL::
+<input type="text" id="PCD_PAY_URL"/>
+
+<button id="payAction">정기결제</button>
+</body>
+</html>

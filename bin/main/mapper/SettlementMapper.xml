@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanbakery.fancake.repository.mapper.SettlementMapper">
+
+    <!--
+        it_settlement table
+    -->
+
+    <select id="existsInfluencerSettlement"
+            resultType="boolean">
+        SELECT EXISTS( SELECT item_seq
+                       FROM it_settlement
+                       WHERE mb_no = #{mbNo} AND settle_status = #{status}
+                            AND is_settle_request = 0
+                   )
+    </select>
+    
+    <select id="selectWaitSettlPriceSumByMbNo"
+        resultType="Long">
+        SELECT SUM(settle_price)
+        FROM it_settlement
+        WHERE mb_no = #{mbNo} AND settle_status = #{status}
+          AND is_settle_request = 0
+    </select>
+
+
+    <select id="selectWaitSettlItemListByMbNo"
+            resultType="com.fanbakery.fancake.repository.model.ItSettlementEntity">
+        SELECT ism.mb_no
+             , ii.item_seq, ii.item_name
+             , ism.settle_price, ism.settle_day
+             , iib.bidding_succ_date
+        FROM it_settlement ism
+                 LEFT JOIN it_item ii ON ii.item_seq = ism.item_seq
+                 LEFT JOIN it_item_bidding iib ON iib.bidding_seq = ii.item_last_bidding_seq
+        WHERE mb_no = #{mbNo} AND settle_status = #{status}
+                AND ism.is_settle_request = 0
+                AND ii.item_seq &gt; 0
+    </select>
+
+
+    <select id="selectDoneSettlItemListByMbNo"
+        resultType="com.fanbakery.fancake.repository.model.ItSettlementEntity">
+        SELECT ism.mb_no
+             , ii.item_seq, ii.item_name
+             , ism.settle_price, ism.settle_day
+             , iib.bidding_succ_date
+        FROM it_settlement ism
+                 LEFT JOIN it_item ii ON ii.item_seq = ism.item_seq
+                 LEFT JOIN it_item_bidding iib ON iib.bidding_seq = ii.item_last_bidding_seq
+        WHERE mb_no = #{mbNo} AND settle_status = #{status}
+                AND ii.item_seq &gt; 0
+    </select>
+
+
+
+    <update id="updateReqSettlItems"
+            parameterType="java.util.List">
+        <foreach collection="reqItems" item="item" index="index" open="" close="" separator=";">
+            UPDATE it_settlement
+                SET is_settle_request = #{item.isSettleRequest}
+                    , settle_req_date = #{item.settleReqDate}
+            WHERE mb_no = #{item.mbNo} AND item_seq = #{item.itemSeq}
+        </foreach>
+    </update>
+    
+    
+    <select id="getAvailDonationBalance"
+            resultType="Long">
+        SELECT sum(settle_price)
+        FROM it_settlement ism
+        WHERE mb_no = #{mbNo} AND settle_status = #{settlementStatus}
+            AND is_settle_request = 0
+    </select>
+</mapper>

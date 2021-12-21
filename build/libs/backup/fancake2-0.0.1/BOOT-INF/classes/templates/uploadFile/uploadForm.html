@@ -1,0 +1,67 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+
+
+<form method="POST" enctype="multipart/form-data" id="fileUploadForm">
+	<input type="text" name="extraField"/><br/><br/>
+	파일 : <input type="file" id="uploadFile"/><br/><br/>
+
+	<input type="button" onclick="upload();" value="업로드 버튼">
+	</input>
+	<br>
+	<hr> ----------------- <br>
+	결과 <br>
+
+	<p id="result">
+
+
+	</p>
+</form>
+</body>
+
+<script>
+	function upload() {
+		const uploadFile = $("#uploadFile")[0];
+		// 파일을 여러개 선택할 수 있으므로 files 라는 객체에 담긴다.
+		console.log("uploadFile: ", uploadFile.files)
+
+		if(uploadFile.files.length === 0){
+			alert("파일은 선택해주세요");
+			return;
+		}
+
+		const formData = new FormData();
+		formData.append("uploadFile", uploadFile.files[0]);
+
+		// 임시 파일 업로드
+		$.ajax({
+			type:"POST",
+			url: "/uploadFile/image/temp",
+			processData: false,
+			contentType: false,
+			data: formData,
+			success: function(data){
+				$("#result").html("업로드 결과 :"+ data.msg +
+						"<br>" +
+						"업로드 URL : " + data.uploadFileUrl +
+						"<br>" +
+						"업로드 파일명 : " + data.uploadFileName +
+						"<br>" +
+						"업로드 파일 원파일명 : " + data.originalFileName +
+						"<br>" +
+						"<img src='"+ data.uploadFileUrl +"'>"
+				)
+			},
+			err: function(err){
+				console.log("err:", err)
+			}
+		})
+	}
+
+</script>
+</html>

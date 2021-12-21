@@ -1,0 +1,8 @@
+<html lagn="ko" xmlns:th="http://www.thymeleaf.org">
+
+    <div th:fragment="preHisBackFragment">
+        <div class="pre"><a th:href="${hisBackNum== null} ? 'javascript:history.back()' :'javascript:history.go('+ ${hisBackNum} +')'">
+            <span class="skip">뒤로가기</span></a>
+        </div>
+    </div>
+</html>

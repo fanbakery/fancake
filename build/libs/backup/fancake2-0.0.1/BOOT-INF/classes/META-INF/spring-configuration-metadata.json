@@ -1,0 +1,74 @@
+{
+  "groups": [
+    {
+      "name": "app",
+      "type": "com.fanbakery.fancake.config.ApplicationConfig",
+      "sourceType": "com.fanbakery.fancake.config.ApplicationConfig"
+    },
+    {
+      "name": "app.upload-config",
+      "type": "com.fanbakery.fancake.config.ApplicationConfig$UploadModule",
+      "sourceType": "com.fanbakery.fancake.config.ApplicationConfig",
+      "sourceMethod": "getUploadConfig()"
+    },
+    {
+      "name": "spring.datasource",
+      "type": "javax.sql.DataSource",
+      "sourceType": "com.fanbakery.fancake.config.db.MybatisDatabaseConfig",
+      "sourceMethod": "dataSource()"
+    }
+  ],
+  "properties": [
+    {
+      "name": "app.nice-access-token",
+      "type": "java.lang.String",
+      "sourceType": "com.fanbakery.fancake.config.ApplicationConfig"
+    },
+    {
+      "name": "app.nice-access-token-url",
+      "type": "java.lang.String",
+      "sourceType": "com.fanbakery.fancake.config.ApplicationConfig"
+    },
+    {
+      "name": "app.nice-access-token-url-after",
+      "type": "java.lang.String",
+      "sourceType": "com.fanbakery.fancake.config.ApplicationConfig"
+    },
+    {
+      "name": "app.nice-client-id",
+      "type": "java.lang.String",
+      "sourceType": "com.fanbakery.fancake.config.ApplicationConfig"
+    },
+    {
+      "name": "app.nice-product-id",
+      "type": "java.lang.String",
+      "sourceType": "com.fanbakery.fancake.config.ApplicationConfig"
+    },
+    {
+      "name": "app.nice-retrun-url",
+      "type": "java.lang.String",
+      "sourceType": "com.fanbakery.fancake.config.ApplicationConfig"
+    },
+    {
+      "name": "app.nice-url",
+      "type": "java.lang.String",
+      "sourceType": "com.fanbakery.fancake.config.ApplicationConfig"
+    },
+    {
+      "name": "app.pg-referer-domain",
+      "type": "java.lang.String",
+      "sourceType": "com.fanbakery.fancake.config.ApplicationConfig"
+    },
+    {
+      "name": "app.upload-config.physical-path",
+      "type": "java.lang.String",
+      "sourceType": "com.fanbakery.fancake.config.ApplicationConfig$UploadModule"
+    },
+    {
+      "name": "app.upload-config.url-path",
+      "type": "java.lang.String",
+      "sourceType": "com.fanbakery.fancake.config.ApplicationConfig$UploadModule"
+    }
+  ],
+  "hints": []
+}

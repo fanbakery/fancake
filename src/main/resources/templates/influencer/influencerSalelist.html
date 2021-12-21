@@ -1,0 +1,153 @@
+<!doctype html>
+<html>
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>판매 내역</span></div>
+			<div class="pre"><a href="/influencer/inven"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<a href="#" class="bt"><img src="../img/i_share.png" alt="공유하기"></a>
+				<button type="button" class="bt zzimOpen"><img src="../img/i_zzim_off.png" alt="찜하기"></button>
+			</div>
+		</div>
+	</header>
+	<main id="container">
+		<div class="orderlist">
+			<div class="total">
+				<ul class="tabs tabmenu">
+					<li><a href="/influencer/salelist?type=TOTAL"><strong>전체</strong>
+						<span th:text="${#numbers.formatDecimal(totalSaleCnt, 0, 'COMMA', 0, 'POINT')}">>12</span></a>
+					</li>
+					<li><a href="/influencer/salelist?type=SALE">
+						<strong>진행 중</strong>
+						<span th:text="${#numbers.formatDecimal(saleCount, 0, 'COMMA', 0, 'POINT')}">>6</span></a>
+					</li>
+					<li><a href="/influencer/salelist?type=END">
+						<strong>완료</strong>
+						<span th:text="${#numbers.formatDecimal(saleOutCount, 0, 'COMMA', 0, 'POINT')}">>6</span></a>
+					</li>
+				</ul>
+			</div>
+			<div class="list">
+				<div class="tabcons" id="tab_TOTAL">
+					<ul class="head">
+						<li>
+							<div class="desc">제품 명</div>
+							<div class="desc">시작 가격</div>
+							<div class="desc">현재 상태</div>
+						</li>
+					</ul>
+					<ul class="cons">
+						<li th:if="${type.toString().equals('TOTAL')}" th:each="item: ${hisList}">
+							<div class="desc">
+								<img th:src="${item.itemImg1}" alt="">
+								<span th:text="${item.itemName}"></span>
+							</div>
+							<div class="desc">
+								<span th:text="|${#numbers.formatDecimal(item.itemSellStartPrice, 0, 'COMMA', 0, 'POINT')} 원|"></span>
+							</div>
+							<div class="desc">
+								<span 	class="ongo"
+										th:if="${item.itemStatus.toString().equals('SALE')}"
+									  	th:utext="|현재 가격 ${#numbers.formatDecimal(item.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} <br/> ${item.saleEndDateLimit}">
+								</span>
+								<span th:if="${!item.itemStatus.toString().equals('SALE')}"
+									  th:utext="|판매가 ${#numbers.formatDecimal(item.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} <br> 완료|">
+								</span>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="tabcons" id="tab_SALE">
+					<ul class="head">
+						<li>
+							<div class="desc">제품 명</div>
+							<div class="desc">시작 가격</div>
+							<div class="desc">현재 상태</div>
+						</li>
+					</ul>
+					<ul class="cons">
+						<li th:if="${type.toString().equals('SALE')}" th:each="item: ${hisList}">
+							<div class="desc">
+								<img th:src="${item.itemImg1}" alt="">
+								<span th:text="${item.itemName}"></span>
+							</div>
+							<div class="desc">
+								<span th:text="|${#numbers.formatDecimal(item.itemSellStartPrice, 0, 'COMMA', 0, 'POINT')} 원|"></span>
+							</div>
+							<div class="desc">
+								<span 	class="ongo"
+										 th:if="${item.itemStatus.toString().equals('SALE')}"
+										 th:utext="|현재 가격 ${#numbers.formatDecimal(item.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} <br/> ${item.saleEndDateLimit}">
+								</span>
+								<span th:if="${!item.itemStatus.toString().equals('SALE')}"
+									  th:utext="|판매가 ${#numbers.formatDecimal(item.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} <br> 완료|">
+								</span>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="tabcons" id="tab_END">
+					<ul class="head">
+						<li>
+							<div class="desc">제품 명</div>
+							<div class="desc">시작 가격</div>
+							<div class="desc">현재 상태</div>
+						</li>
+					</ul>
+					<ul class="cons">
+						<li th:if="${type.toString().equals('END')}" th:each="item: ${hisList}">
+							<div class="desc">
+								<img th:src="${item.itemImg1}" alt="">
+								<span th:text="${item.itemName}"></span>
+							</div>
+							<div class="desc">
+								<span th:text="|${#numbers.formatDecimal(item.itemSellStartPrice, 0, 'COMMA', 0, 'POINT')} 원|"></span>
+							</div>
+							<div class="desc">
+								<span 	class="ongo"
+										 th:if="${item.itemStatus.toString().equals('SALE')}"
+										 th:utext="|현재 가격 ${#numbers.formatDecimal(item.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} <br/> ${item.saleEndDateLimit}">
+								</span>
+								<span th:if="${!item.itemStatus.toString().equals('SALE')}"
+									  th:utext="|판매가 ${#numbers.formatDecimal(item.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} <br> 완료|">
+								</span>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<script type="text/javascript">
+		var typeVar = '[[${type}]]';
+
+		$( document ).ready(function() {
+			$(".tabs li:nth(0)").removeClass('sel')
+			$(".tabs li:nth(1)").removeClass('sel')
+			$(".tabs li:nth(2)").removeClass('sel')
+
+			if (typeVar === 'SALE') {
+				$(".tabs li:nth(1)").addClass('sel')
+				$("#tab_TOTAL").hide();
+				$("#tab_SALE").show();
+				$("#tab_END").hide();
+			} else if (typeVar === 'END') {
+				$(".tabs li:nth(2)").addClass('sel');
+				$("#tab_TOTAL").hide();
+				$("#tab_SALE").hide();
+				$("#tab_END").show();
+			} else {
+				$(".tabs li:nth(0)").addClass('sel');
+				$("#tab_TOTAL").show();
+				$("#tab_SALE").hide();
+				$("#tab_END").hide();
+			}
+		});
+	</script>
+</body>
+</html>

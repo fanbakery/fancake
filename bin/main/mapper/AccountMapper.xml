@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanbakery.fancake.repository.mapper.AccountMapper">
+
+    <!--
+        it_mb_address_book table
+     -->
+
+    <select id="selectAddressBookListByMbNo"
+            resultType="com.fanbakery.fancake.repository.model.ItMbAddressBookEntity">
+        SELECT * FROM it_mb_address_book imab
+        WHERE abook_mb_no = #{mbNo}
+        ORDER BY abook_base_yn DESC, abook_reg_time DESC
+    </select>
+
+
+    <select id="selectAddressBookByMbNoSeq"
+            resultType="com.fanbakery.fancake.repository.model.ItMbAddressBookEntity">
+        SELECT * FROM it_mb_address_book imab
+        WHERE abook_mb_no = #{mbNo} AND abook_seq = #{abookSeq}
+    </select>
+
+
+
+    <select id="selectBidAddressBookByMbNo"
+            resultType="com.fanbakery.fancake.repository.model.ItMbAddressBookEntity">
+        SELECT * FROM it_mb_address_book imab
+        WHERE abook_mb_no = #{mbNo}
+        ORDER BY abook_base_yn DESC, abook_reg_time DESC
+        LIMIT 1
+    </select>
+
+
+    <insert id="insertAddressBook"
+            parameterType="com.fanbakery.fancake.repository.model.ItMbAddressBookEntity"
+            useGeneratedKeys="true"
+            keyProperty="abookSeq">
+        INSERT INTO it_mb_address_book
+                (abook_mb_no, abook_base_yn
+                , abook_title
+                , abook_reciever
+                , abook_phone
+                , abook_address1, abook_address2, abook_address3
+                , abook_zip_code
+                , abook_info, abook_reg_time)
+        VALUES( #{abookMbNo}, #{abookBaseYn}
+                , #{abookTitle}
+                , #{abookReciever}
+                , #{abookPhone}
+                , #{abookAddress1}, #{abookAddress2}, #{abookAddress3}
+                , #{abookZipCode}
+                , #{abookInfo}, #{abookRegTime} );
+    </insert>
+
+
+
+    <update id="updateAddressBook">
+        UPDATE it_mb_address_book
+        SET abook_title = #{abookTitle}
+          , abook_reciever = #{abookReciever}
+          , abook_phone = #{abookPhone}
+          , abook_address1 = #{abookAddress1}
+          , abook_address2 = #{abookAddress2}
+          , abook_address3 = #{abookAddress3}
+          , abook_zip_code = #{abookZipCode}
+          , abook_info = #{abookInfo}
+        WHERE abook_seq = #{abookSeq} AND abook_mb_no = #{abookMbNo};
+
+    </update>
+
+
+    <delete id="deleteAddressBook">
+        DELETE FROM it_mb_address_book
+        WHERE abook_seq = #{abookSeq} AND abook_mb_no = #{mbNo};
+    </delete>
+    
+    
+    <update id="updateUnsetBaseAddressBook">
+        UPDATE it_mb_address_book
+            SET abook_base_yn = 0
+        WHERE abook_mb_no = #{mbNo} AND abook_base_yn = 1;
+    </update>
+
+
+    <update id="updateSetBaseAddressBook">
+        UPDATE it_mb_address_book
+        SET abook_base_yn = 1
+        WHERE abook_seq = #{abookSeq} AND abook_mb_no = #{mbNo};
+    </update>
+</mapper>

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanbakery.fancake.repository.mapper.InfluencerMapper">
+
+    <!--
+        it_mb_infulener_info table
+    -->
+
+    <select id="selectInfluenListInfo"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="com.fanbakery.fancake.repository.model.InfluencerListInfoEntity">
+        SELECT im.mb_no , im.mb_nick , im.mb_profile
+                , im.mb_signature_complete_date as actDate
+                , imii.act_youtube , imii.act_afreeca , imii.act_twitch
+                , imii.act_broadcast , imii.act_instagram , imii.act_writer
+                , imii.cover_img1
+                , IF(pizi.zzimCnt = null, 0, pizi.zzimCnt )
+                , IF(izi.influen_mb_no > 0, 1, 0) as isMyZzim
+                , IF(im.mb_signature_complete_date &gt;= #{mbSignatureCompleteDate}, 1, 0) as isNew
+        FROM it_member im
+                 LEFT JOIN (    SELECT influen_mb_no, COUNT(zzim_influen_seq) as zzimCnt
+                                FROM it_zzim_influencer
+                                GROUP BY influen_mb_no
+                            ) pizi on pizi.influen_mb_no = im.mb_no
+             LEFT JOIN it_mb_infulener_info imii ON im.mb_no = imii.mb_no
+             LEFT JOIN it_zzim_influencer izi ON izi.influen_mb_no = im.mb_no AND izi.zzim_mb_no = #{mbNo}
+        WHERE im.mb_signature = #{mbSignature} AND im.mb_is_unregistered = 0
+        <if test ="orderType != null">
+            <choose>
+                <when test="orderType.equals(@com.fanbakery.fancake.code.service.ListOrderTypeCd@POPULAR)">
+                    ORDER BY pizi.zzimCnt DESC
+                </when>
+                <otherwise>
+                    ORDER BY im.mb_signature_complete_date DESC
+                </otherwise>
+            </choose>
+        </if>
+        LIMIT #{pageIndex}, #{cntPerPage};
+    </select>
+
+
+
+
+    <select id="existInfluenNickByMbNick"
+            resultType="boolean">
+        SELECT EXISTS(
+                       SELECT im.mb_no
+                       FROM it_member im
+                                LEFT JOIN it_mb_infulener_info imii ON im.mb_no = imii.mb_no
+                       WHERE (im.mb_nick = #{nick} OR imii.temp_nick = #{nick})
+                                AND im.mb_no != #{mbNo}
+                                AND im.mb_is_unregistered = 0
+                   )
+    </select>
+
+
+
+    <select id="selectInfluenInfo"
+            resultType="com.fanbakery.fancake.repository.model.ItMbInfulenerInfoEntity">
+        SELECT * FROM it_mb_infulener_info
+        WHERE mb_no = #{mbNo}
+    </select>
+
+
+    <insert id="insertMbInfluencerInfo" parameterType="com.fanbakery.fancake.repository.model.ItMbInfulenerInfoEntity">
+        INSERT INTO it_mb_infulener_info
+                ( mb_no, introduction
+                , act_youtube, act_afreeca, act_twitch
+                , act_broadcast, act_instagram, act_writer
+                , temp_nick
+                , temp_profile
+                , cover_img1, cover_img2, cover_img3
+                , req_date
+                )
+        VALUES ( #{mbNo}, #{introduction}
+                , #{actYoutube}, #{actAfreeca}, #{actTwitch}
+                , #{actBroadcast}, #{actInstagram}, #{actWriter}
+                , #{tempNick}
+                , #{tempProfile}
+                , #{coverImg1}, #{coverImg2}, #{coverImg3}
+                , #{reqDate}
+               )
+        ON DUPLICATE KEY UPDATE introduction = #{introduction}
+                                , act_youtube = #{actYoutube}       , act_afreeca = #{actAfreeca}
+                                , act_twitch = #{actTwitch}         , act_broadcast = #{actBroadcast}
+                                , act_instagram = #{actInstagram}   , act_writer = #{actWriter}
+                                , temp_nick = #{tempNick}, temp_profile = #{tempProfile}
+                                , cover_img1 = #{coverImg1}, cover_img2 = #{coverImg2}
+                                , cover_img3 = #{coverImg3}
+                                , req_date = #{reqDate}
+    </insert>
+
+
+    <update id="updateIntroduce">
+        UPDATE it_mb_infulener_info
+        SET introduction = #{introduction}
+        WHERE mb_no = #{mbNo}
+    </update>
+
+    <update id="updateCoverImage">
+        UPDATE it_mb_infulener_info
+        SET
+            mb_no = #{mbNo}
+            <if test='realCoverImg1 != null'>
+                , cover_img1 = #{realCoverImg1}
+            </if>
+            <if test='realCoverImg2 != null'>
+                , cover_img2 = #{realCoverImg2}
+            </if>
+            <if test='realCoverImg3 != null'>
+                , cover_img3 = #{realCoverImg3}
+            </if>
+        WHERE mb_no = #{mbNo}
+    </update>
+</mapper>

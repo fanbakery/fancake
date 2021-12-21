@@ -1,0 +1,80 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>이용약관/개인정보처리방침</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<button type="button" class="bt searchOpen"><img src="../img/i_search.png" alt="검색"></button>
+				<a href="alarm.html" class="bt"><img src="../img/i_alarm.png" alt="알림"></a>
+			</div>
+			<div class="search">
+				<div class="close"><i></i></div>
+				<div class="input">
+					<form>
+						<input type="text" placeholder="인플루언서명을 입력해주세요">
+						<button type="submit"></button>
+						<div class="list">
+							<ul>
+								<li>
+									<a href="#">
+										<div class="ico"><img src="../img/m_prof1.png" alt=""></div>
+										<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>				
+			</div>
+			<script>
+				$(".searchOpen").click(function(){
+					$("#header .search").addClass("sel");
+				});
+				$("#header .search .close").click(function(){
+					$("#header .search").removeClass("sel");
+				});
+				$("#header .search .input input").focus(function(){
+					$(this).siblings(".list").addClass("sel");
+				});
+				$("#header .search .input input").blur(function(){
+					$(this).siblings(".list").removeClass("sel");
+				});
+			</script>
+		</div>
+	</header>
+	<main id="container">
+
+		<div class="myinfo">
+			<div class="my">
+				<ul>
+					<li><a href="https://fanbakery.notion.site/5389cf8fedfe403b8f264d4588c250ab">이용약관</a></li>
+					<li><a href="https://fanbakery.notion.site/ba13de606af3444196237b0cb3d44be8">개인정보처리방침</a></li>
+				</ul>
+			</div>
+		</div>
+
+		<div class="terms" style="display: none">
+			<div class="tabs tabmenu">
+				<ul>
+					<li><a href="#">이용약관</a></li>
+					<li><a href="#">개인정보처리방침</a></li>
+				</ul>
+			</div>
+			<div class="cons">
+				<div class="tabcons">
+					<p>제 1 장 총칙<br>제 1 조 ( 목적 )<br><br>이 이용약관 ( 이하 “ 약관 ” 또는 “ 이용계약 ”) 은 팬베이커리 ( 이하 “ 회사 ” 라 합니다 ) 가 운영 관리하는 앱 팬케이크 및 fanbakery.co.kr ( 이하 “ 사이트 ” 라 합니다 ) 에서 제공하는 인터넷 관련 서비스 ( 이하 “ 서비스 ”) 를 이용함에 있어 회사와 이용자의 권리 • 의무 및 책임 사항을 규정함을 목적으로 합니다 .<br><br>제 2 조 ( 용어의 정의 )<br><br>1. 본 약관에서 정하는 용어의 정의는 다음과 같습니다 .<br><br>① “ 사이트 ” 란 회사가 컴퓨터 등 정보통신설비를 이용하여 서비스를 이용자에게 제공할 수 있도록 설정한 가상공간을 말하며 , 아울러 사이트를 운영하는 사업자의 의미로도 사용합니다 .<br>② “ 이용자 ” 란 사이트에 접속하여 이 약관에 따라 사이트가 제공하는 서비스를 받는 회원 및 비회원을 말합니다 .<br>③ “ 회원 ” 이라 함은 사이트에 개인정보 및 회사정보를 제공하여 회원등록을 한 자로서 , 사이트의 정보를 지속적으로 제공받으며 , 사이트가 제공하는 서비스를 계속적으로 이용할 수 있는 자를 말합니다 .</p>
+				</div>
+				<div class="tabcons">
+					<p>개인정보처리방침 내용입니다.</p>
+				</div>
+			</div>
+		</div>
+	</main>
+</body>
+</html>

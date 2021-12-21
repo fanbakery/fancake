@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanbakery.fancake.repository.mapper.InfluenItemMapper">
+
+    <!--
+        influencer mypage info
+    -->
+
+    <!--
+           it_item_bidding table
+     -->
+
+    <select id="selectTopBuyerByMbNoBidStatus"
+            resultType="com.fanbakery.fancake.repository.model.TopBuyerInfoEntity">
+        SELECT im.mb_no , im.mb_nick
+             , sum(iib.bidding_price) as totalPrice
+             , im.mb_profile
+        FROM it_item_bidding iib
+                 LEFT JOIN it_item ii ON ii.item_last_bidding_seq = iib.bidding_seq
+                 LEFT JOIN it_member im ON im.mb_no = iib.bidding_mb_no
+        WHERE ii.item_reg_mb_no = #{inflenMbNo} AND iib.bidding_status = #{bidStatus}
+        GROUP BY iib.bidding_mb_no
+        ORDER BY totalPrice DESC
+        LIMIT 3
+    </select>
+
+
+    <!--
+        it_item table
+    -->
+
+    <select id="sumInfulenItemSaleAmount"
+            resultType="Long">
+        SELECT IF(SUM(item_sell_curr_price) > 0, SUM(item_sell_curr_price), 0)
+        FROM it_item
+        WHERE item_reg_mb_no = #{mbNo} AND item_status != #{itemStatus}
+              AND item_last_bidding_seq &gt; 0
+    </select>
+
+
+
+    <select id="selectSaleItemCntByInfluenMbNo"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="Integer">
+        SELECT COUNT(item_seq)
+        FROM it_item
+        WHERE item_reg_mb_no = #{mbNo} AND item_status = #{itemStatus}
+          AND ( item_sell_start_date &lt;= #{startDate} AND item_sell_end_date &gt;= #{startDate})
+    </select>
+
+
+    <select id="selectSaleOutItemCntByInfluenMbNo"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="Integer">
+        SELECT COUNT(item_seq)
+        FROM it_item
+        WHERE item_reg_mb_no = #{mbNo}
+            AND ( item_status != #{itemStatus} OR item_sell_end_date &lt; #{startDate})
+    </select>
+
+
+    <select id="selectSaleProdListByMbNo"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="com.fanbakery.fancake.repository.model.ItemListInfoEntity">
+        SELECT ii.item_seq, ii.item_name, ii.item_img1
+             , ii.item_sell_curr_price
+             , ii.item_adult, ii.item_status
+             , im.mb_no , im.mb_nick , im.mb_profile
+             , IF(izi.zzim_item_seq > 0, 1, 0) as isMyZzim
+        FROM it_item ii
+             LEFT JOIN it_member im ON ii.item_reg_mb_no = im.mb_no
+             LEFT JOIN it_zzim_item izi ON ii.item_seq = izi.item_seq AND izi.zzim_mb_no = #{mbNo}
+        WHERE ii.item_reg_mb_no = #{influenMbNo} AND ii.item_status = #{itemStatus}
+                AND ( ii.item_sell_start_date &lt;= #{startDate}
+                        AND ii.item_sell_end_date &gt;= #{startDate})
+        ORDER BY ii.item_reg_date DESC
+        LIMIT #{pageIndex}, #{cntPerPage};
+    </select>
+
+
+
+    <select id="selectEndSaleProdListByMbNo"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="com.fanbakery.fancake.repository.model.ItemListInfoEntity">
+        SELECT ii.item_seq, ii.item_name, ii.item_img1
+             , ii.item_sell_curr_price
+             , ii.item_adult, ii.item_status
+             , im.mb_no , im.mb_nick , im.mb_profile
+             , IF(izi.zzim_item_seq > 0, 1, 0) as isMyZzim
+        FROM it_item ii
+                 LEFT JOIN it_member im ON ii.item_reg_mb_no = im.mb_no
+                 LEFT JOIN it_zzim_item izi ON ii.item_seq = izi.item_seq AND izi.zzim_mb_no = #{mbNo}
+        WHERE ii.item_reg_mb_no = #{influenMbNo}
+                AND ( ii.item_status != #{itemStatus} OR ii.item_sell_end_date &lt; #{startDate})
+        ORDER BY ii.item_reg_date DESC
+        LIMIT #{pageIndex}, #{cntPerPage};
+    </select>
+
+
+    <select id="selectInfluenSaleHisTotalByMbNo"
+            resultType="com.fanbakery.fancake.repository.model.OrderListInfoEntity">
+        SELECT item_seq, item_name
+             , item_img1
+             , item_status
+             , item_sell_curr_price, item_sell_start_price
+             , item_sell_add_price
+             , item_sell_start_date, item_sell_end_date
+             , item_adult
+             , item_last_bidding_seq
+        FROM it_item
+        WHERE item_reg_mb_no = #{mbNo}
+        ORDER BY item_sell_start_date DESC, item_sell_end_date DESC
+    </select>
+
+
+
+    <select id="selectInfluenSaleHisSaleByMbNo"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="com.fanbakery.fancake.repository.model.OrderListInfoEntity">
+        SELECT item_seq, item_name
+             , item_img1
+             , item_status
+             , item_sell_curr_price, item_sell_start_price
+             , item_sell_add_price
+             , item_sell_start_date, item_sell_end_date
+             , item_adult
+             , item_last_bidding_seq
+        FROM it_item
+        WHERE item_reg_mb_no = #{mbNo} AND item_status = #{itemStatus}
+          AND ( item_sell_start_date &lt;= #{startDate} AND item_sell_end_date &gt;= #{startDate})
+        ORDER BY item_sell_start_date, item_sell_end_date DESC
+    </select>
+
+
+
+    <select id="selectInfluenSaleHisEndSaleByMbNo"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="com.fanbakery.fancake.repository.model.OrderListInfoEntity">
+        SELECT item_seq, item_name
+             , item_img1
+             , item_status
+             , item_sell_curr_price, item_sell_start_price
+             , item_sell_add_price
+             , item_sell_start_date, item_sell_end_date
+             , item_adult
+             , item_last_bidding_seq
+        FROM it_item
+        WHERE item_reg_mb_no = #{mbNo}
+            AND ( item_status != #{itemStatus} OR item_sell_end_date &lt; #{startDate})
+        ORDER BY item_sell_start_date, item_sell_end_date DESC
+    </select>
+
+
+
+    <select id="existInfluenSaleItemByMbNo"
+            resultType="boolean">
+        SELECT EXISTS(
+                       SELECT ii.item_seq FROM it_item ii
+                            LEFT JOIN  it_settlement ism on ism.item_seq = ii.item_seq
+                       WHERE (ii.item_reg_mb_no = 41 and ii.item_status != #{itemStatus} )
+                         OR ism.settle_status != #{settleStatus}
+)
+
+                       SELECT ii.item_seq FROM it_item ii
+                                                   LEFT JOIN it_item_bidding iib ON iib.item_seq = ii.item_seq
+                       WHERE iib.bidding_mb_no = #{mbNo} AND ii.item_status != #{itemStatus}
+                    )
+    </select>
+</mapper>

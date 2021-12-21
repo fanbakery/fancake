@@ -1,0 +1,33 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head skip">
+			<div class="h1"><span>인플루언서 전환</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<a href="#" class="bt"><img src="../img/i_share.png" alt="공유하기"></a>
+				<button type="button" class="bt zzimOpen"><img src="../img/i_zzim_off.png" alt="찜하기"></button>
+			</div>
+		</div>
+	</header>
+	<main id="container">
+		<div class="influencer edit">
+			<div class="formOk">
+				<div class="tit">인플루언서 신청 완료👏</div>
+				<div class="txt">
+					<span>팬케이크 인플루언서로 등록해주셔서 진심으로 감사드립니다. 운영자가 최대한 빠르게 확인하여<br> 인플루언서로 전환할 수 있도록 하겠습니다. </span>
+					<span>감사합니다.</span>
+				</div>
+				<div class="bot_bt">
+					<a th:href="@{/}" class="btn bt_submit">완료</a>
+				</div>
+			</div>
+		</div>
+	</main>
+</body>
+</html>

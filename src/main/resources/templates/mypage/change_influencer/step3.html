@@ -1,0 +1,92 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>인플루언서 전환</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+		</div>
+	</header>
+	<main id="container">
+		<div class="influencer edit">
+			<div class="progress"><i style="width:100"></i></div>
+			<div class="form">
+				<form method="post" th:action="@{/mypage/change_influencer/step3}" th:object="${chgInfuencerReq}"  onsubmit="next();return false;">
+					<input type="hidden" id="actYoutube"  	name="actYoutube" 	th:value="${chgInfuencerReq.actYoutube}">
+					<input type="hidden" id="actAfreeca"  	name="actAfreeca" 	th:value="${chgInfuencerReq.actAfreeca}">
+					<input type="hidden" id="actTwitch"  	name="actTwitch" 	th:value="${chgInfuencerReq.actTwitch}">
+					<input type="hidden" id="actBroadcast"  name="actBroadcast" th:value="${chgInfuencerReq.actBroadcast}">
+					<input type="hidden" id="actInstagram"  name="actInstagram" th:value="${chgInfuencerReq.actInstagram}">
+					<input type="hidden" id="actWriter"  	name="actWriter" 	th:value="${chgInfuencerReq.actWriter}">
+					<input type="hidden" id="temp_profile" 	name="temp_profile" th:value="${chgInfuencerReq.temp_profile}">
+					<input type="hidden" id="mbNick" 		name="mbNick" 		th:value="${chgInfuencerReq.mbNick}">
+					<div th:each="item: ${chgInfuencerReq.temp_coverImg}">
+						<input type="hidden" name="temp_coverImg" id="temp_coverImg" th:value="${item}">
+					</div>
+
+					<div class="explain">
+						<div class="tit">소개글 작성</div>
+						<div class="txt">
+							<textarea name="introduction" id="introduction"
+									  onkeyup="chg_validate();"
+									  placeholder="예) 안녕하세요 트위치 스트리머이자 인스타그램 모델로 활동하고 있는 연나비입니다. 이렇게 팬케이크 팬들과 소통할 수 있게 되어 영광이에요! 앞으로 많은 물품 전할 수 있도록 하겠습니다! ㅎㅎ"></textarea>
+						</div>
+					</div>
+
+					<div class="agree">
+						<input type="checkbox" id="p_agree" th:onclick="chg_validate()">
+						<label for="p_agree"><i></i>
+							<a href="https://fanbakery.notion.site/1f4b1269a1ff41e0a383c72025679854">
+								<span>이용약관(인플루언서용)</span>
+							</a>
+							<span>에 동의합니다</span></label>
+					</div>
+					<div class="bot_bt">
+						<a href="javascript:history.back();" class="btn bt_04">이전</a>
+						<button id="btn_next" type="submit" class="btn bt_submit" disabled>완료</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</main>
+
+
+	<script type="text/javascript">
+		function next(){
+			if (!$("#introduction").val()) {
+				alert('소개글을 작성해 주세요');
+				return false;
+			}
+
+			if($("#p_agree").is(":checked") == false) {
+				alert('이용약관 동의해 주세요');
+				return false;
+			}
+
+			$("form")[0].submit();
+		}
+
+		function chg_validate(){
+			if (!$("#introduction").val()) {
+				if (!$("#btn_next").attr("disabled")) {
+					$("#btn_next").attr("disabled", true);
+				}
+			}
+			else if($("#p_agree").is(":checked") == false) {
+				if (!$("#btn_next").attr("disabled")) {
+					$("#btn_next").attr("disabled", true);
+				}
+			}
+			else {
+				if ($("#btn_next").attr("disabled")) {
+					$("#btn_next").attr("disabled", false);
+				}
+			}
+		}
+	</script>
+</body>
+</html>

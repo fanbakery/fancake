@@ -1,0 +1,434 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><a href="/">fancake</a></div>
+			<div class="pre skip"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn">
+				<button type="button" class="bt searchOpen"><img src="/img/i_search.png" alt="검색"></button>
+				<a href="/alarm/" class="bt"><img src="/img/i_alarm.png" alt="알림"></a>
+			</div>
+			<div class="search">
+				<div class="close"><i></i></div>
+				<div class="input">
+					<form onsubmit="search_txt();return false;">
+						<input type="text" placeholder="인플루언서명을 입력해주세요" id="searchBox" >
+						<button type="submit"></button>
+						<div class="list">
+							<ul id="search_result_list">
+								<!--<li>
+									<a href="/influencer/mypage?no=49">
+										<div class="ico"><img src="/img/m_prof1.png" alt=""></div>
+										<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+									</a>
+								</li>-->
+							</ul>
+						</div>
+					</form>
+				</div>				
+			</div>
+			<script>
+				$(".searchOpen").click(function(){
+					$("#header .search").addClass("sel");
+				});
+				$("#header .search .close").click(function(){
+					$("#header .search").removeClass("sel");
+				});
+				$("#header .search .input input").focus(function(){
+					$(this).siblings(".list").addClass("sel");
+				});
+				$("#header .search .input input").blur(function(){
+					//$(this).siblings(".list").removeClass("sel");
+					$("#header .search").removeClass("sel");
+				});
+			</script>
+		</div>
+	</header>
+	<main id="container">
+		<div class="main">
+			<div class="idx_visual">
+				<div class="swiper">
+					<div class="swiper-wrapper">
+						<div class="item swiper-slide">
+							<div class="box">
+								<div class="img"><img src="/img/img_visual1.png" alt=""></div>
+								<div class="tit">팬케이크는 어떤 곳인가요?</div>
+								<div class="txt">자세히 알려드림</div>
+							</div>
+						</div>
+						<div class="item swiper-slide">
+							<div class="box">
+								<div class="img"><img src="/img/img_visual1.png" alt=""></div>
+								<div class="tit">팬케이크는 어떤 곳인가요?</div>
+								<div class="txt">자세히 알려드림</div>
+							</div>
+						</div>
+						<div class="item swiper-slide">
+							<div class="box">
+								<div class="img"><img src="/img/img_visual1.png" alt=""></div>
+								<div class="tit">팬케이크는 어떤 곳인가요?</div>
+								<div class="txt">자세히 알려드림</div>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-dots"><div class="dots"></div></div>
+				</div>
+			<script type="text/javascript">
+			//<![CDATA[
+			$(function () {
+				var mainSwiper = new Swiper('.swiper', {
+					slidesPerView: 1,
+					allowTouchMove:true,
+					speed:1200,
+					loop: true,
+					autoplay:{
+						delay:5000,
+					},
+					pagination: {
+						el: '.swiper-dots .dots',
+						clickable: true,
+						renderBullet: function (index, className) {
+							return '<span class="' + className + '">' + '0' + (index + 1) + '</span>';
+						},
+					},
+					navigation: false
+				});
+			});
+			//]]>
+			</script>
+			</div>
+			<div class="idx_product">
+				<form id=product method="get">
+					<div class="titbox">
+						<div class="tit">인기상품</div>
+					</div>
+					<div class="cntbox">
+						<div class="scroll">
+							<ul th:if="${not #lists.isEmpty(popularProd.lists)}">
+								<li th:each="item: ${popularProd.lists}" >
+									<a th:href="@{/product/product(itemNo=${item.itemSeq})}" class="inner">
+										<div class="img">
+											<img th:src="${item.itemImg1}" alt="">
+											<div class="adult" th:if="${item.itemAdult and session.adult==0}">
+												<span>성인용으로<br> 공개된 상품입니다.</span>
+											</div>
+											<div class="soldout" th:if="${!item.itemStatus.toString().equals('SALE') and not (item.itemAdult and session.adult==0)}">
+												<span>판매 완료</span>
+											</div>
+											<button type="button"
+													th:class="${item.isMyZzim ? 'btn_zzim sel' : 'btn_zzim'}"
+													class="btn_zzim sel"
+													th:onclick="|zzim('${item.itemSeq}');|"
+													th:attr="id=|bidding4_${item.itemSeq}|"
+											>
+												<i></i><span class="skip">찜한상품</span>
+											</button>
+										</div>
+										<div class="con">
+											<div class="tit" th:if="*{#strings.length(item.itemName)>10}"
+												  th:text="|${#strings.substring(item.itemName,0, 10)}···|"></div>
+											<div class="tit" th:if="*{#strings.length(item.itemName)<=10}"
+												  th:text="${item.itemName}"></div>
+
+											<div class="txt"><strong th:text="|${#numbers.formatDecimal(item.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} 원|"></strong>재
+													<span th:if="${item.itemStatus.toString().equals('SALE')}" >현재 가격</span>
+													<span th:if="${!item.itemStatus.toString().equals('SALE')}">판매 가격</span>
+											</div>
+
+											<div class="ico"><img th:src="${item.mbProfile}" alt="">
+												<span th:if="*{#strings.length(item.mbNick)>8}"
+													  th:text="|${#strings.substring(item.mbNick,0, 8)}···|"></span>
+												<span th:if="*{#strings.length(item.mbNick)<=8}"
+													  th:text="${item.mbNick}"></span>
+											</div>
+										</div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="idx_recent">
+				<form th:action="@{/home/resent}" method="get">
+				<div class="titbox">
+					<div class="tit">최근 등록된 상품</div>
+				</div>
+				<div class="cntbox">
+					<div class="scroll">
+						<ul th:if="${not #lists.isEmpty(recentProd.lists)}">
+							<li th:each="item: ${recentProd.lists}" >
+								<a th:if="${!item.itemAdult} or ${item.itemAdult and session.adult!=0}"   th:href="@{/product/product(itemNo=${item.itemSeq})}" class="inner">
+									<div class="img">
+										<img th:src="${item.itemImg1}" alt="">
+										<div class="soldout" th:if="${!item.itemStatus.toString().equals('SALE') and not (item.itemAdult and session.adult==0)}">
+											<span>판매 완료</span>
+										</div>
+										<button type="button"
+												th:class="${item.isMyZzim ? 'btn_zzim sel' : 'btn_zzim'}"
+												class="btn_zzim sel"
+												th:onclick="|zzim('${item.itemSeq}');|"
+												th:attr="id=|bidding3_${item.itemSeq}|"
+										>
+											<i></i><span class="skip">찜한상품</span>
+										</button>
+									</div>
+									<div class="con">
+										<div class="tit" th:if="*{#strings.length(item.itemName)>10}"
+											 th:text="|${#strings.substring(item.itemName,0, 10)}···|"></div>
+										<div class="tit" th:if="*{#strings.length(item.itemName)<=10}"
+											 th:text="${item.itemName}"></div>
+
+										<div class="txt"><strong th:text="|${#numbers.formatDecimal(item.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} 원|"></strong>
+											<span th:if="${item.itemStatus.toString().equals('SALE')}" >현재 가격</span>
+											<span th:if="${!item.itemStatus.toString().equals('SALE')}">판매 가격</span>
+										</div>
+										<div class="ico"><img th:src="${item.mbProfile}" alt="">
+											<span th:if="*{#strings.length(item.mbNick)>8}"
+												  th:text="|${#strings.substring(item.mbNick,0, 8)}···|"></span>
+											<span th:if="*{#strings.length(item.mbNick)<=8}"
+												  th:text="${item.mbNick}"></span>
+										</div>
+									</div>
+								</a>
+
+								<a th:if="${item.itemAdult and session.adult==0}" href="javascript:adultAuth();" class="inner">
+									<div class="img">
+										<img th:src="${item.itemImg1}" alt="">
+										<div class="adult" th:if="${item.itemAdult and session.adult==0}">
+											<span>성인용으로<br> 공개된 상품입니다.</span>
+										</div>
+										<button type="button"
+												th:class="${item.isMyZzim ? 'btn_zzim sel' : 'btn_zzim'}"
+												class="btn_zzim sel"
+												th:onclick="|zzim('${item.itemSeq}');|"
+												th:attr="id=|bidding3_${item.itemSeq}|"
+										>
+											<i></i><span class="skip">찜한상품</span>
+										</button>
+									</div>
+									<div class="con">
+										<div class="tit" th:if="*{#strings.length(item.itemName)>10}"
+											 th:text="|${#strings.substring(item.itemName,0, 10)}···|"></div>
+										<div class="tit" th:if="*{#strings.length(item.itemName)<=10}"
+											 th:text="${item.itemName}"></div>
+
+										<div class="txt"><strong th:text="|${#numbers.formatDecimal(item.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} 원|"></strong>
+											<span th:if="${item.itemStatus.toString().equals('SALE')}" >현재 가격</span>
+											<span th:if="${!item.itemStatus.toString().equals('SALE')}">판매 가격</span>
+										</div>
+										<div class="ico"><img th:src="${item.mbProfile}" alt="">
+											<span th:if="*{#strings.length(item.mbNick)>8}"
+												  th:text="|${#strings.substring(item.mbNick,0, 8)}···|"></span>
+											<span th:if="*{#strings.length(item.mbNick)<=8}"
+												  th:text="${item.mbNick}"></span>
+										</div>
+									</div>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</div>
+				</form>
+			</div>
+			<div class="idx_myview">
+				<div class="titbox">
+					<div class="tit">내가 본 상품</div>
+				</div>
+				<div class="cntbox">
+					<div class="scroll" th:text="${session.adult}">
+						<ul th:if="${not #lists.isEmpty(seenProd.lists)}">
+							<li th:each="item: ${seenProd.lists}" >
+								<a th:if="${(!item.itemAdult  or (item.itemAdult and session.adult!=0)}" th:href="@{/product/product(itemNo=${item.itemSeq})}" class="inner">
+								<a th:if="${item.itemAdult and session.adult==0}" th:href="javascript:adultAuth();" class="inner">
+									<div class="img">
+										<img th:src="${item.itemImg1}" alt="">
+										<div class="adult" th:if="${item.itemAdult and session.adult==0}">
+											<span>성인용으로<br> 공개된 상품입니다.</span>
+										</div>
+										<div class="soldout" th:if="${!item.itemStatus.toString().equals('SALE') and not (item.itemAdult and session.adult==0)}">
+											<span>판매 완료</span>
+										</div>
+										<button type="button"
+												th:class="${item.isMyZzim ? 'btn_zzim sel' : 'btn_zzim'}"
+												class="btn_zzim sel"
+												th:onclick="|zzim('${item.itemSeq}');|"
+												th:attr="id=|bidding2_${item.itemSeq}|"
+										>
+											<i></i><span class="skip">찜한상품</span>
+										</button>
+									</div>
+									<div class="con">
+										<div class="tit" th:if="*{#strings.length(item.itemName)>10}"
+											 th:text="|${#strings.substring(item.itemName,0, 10)}···|"></div>
+										<div class="tit" th:if="*{#strings.length(item.itemName)<=10}"
+											 th:text="${item.itemName}"></div>
+
+										<div class="txt"><strong th:text="|${#numbers.formatDecimal(item.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} 원|"></strong>
+											<span th:if="${item.itemStatus.toString().equals('SALE')}" >현재 가격</span>
+											<span th:if="${!item.itemStatus.toString().equals('SALE')}">판매 가격</span>
+										</div>
+										<div class="ico"><img th:src="${item.mbProfile}" alt="">
+											<span th:if="*{#strings.length(item.mbNick)>8}"
+												  th:text="|${#strings.substring(item.mbNick,0, 8)}···|"></span>
+											<span th:if="*{#strings.length(item.mbNick)<=8}"
+												  th:text="${item.mbNick}"></span>
+										</div>
+									</div>
+								</a>
+							</li>
+						</ul>
+                </div>
+            </div>
+        </div>
+        <div class="idx_ongoing">
+            <div class="titbox">
+                <div class="tit">진행 중인 상품</div>
+            </div>
+            <div class="cntbox">
+				<div class="scroll">
+					<ul th:if="${not #lists.isEmpty(biddingProd.lists)}">
+						<li th:each="item: ${biddingProd.lists}" >
+							<a th:href="@{/product/product(itemNo=${item.itemSeq})}" class="inner">
+								<div class="img">
+									<img th:src="${item.itemImg1}" alt="">
+									<div class="adult" th:if="${item.itemAdult and session.adult==0}">
+										<span>성인용으로<br> 공개된 상품입니다.</span>
+									</div>
+									<div class="soldout" th:if="${!item.itemStatus.toString().equals('SALE') and not (item.itemAdult and session.adult==0)}">
+										<span>판매 완료</span>
+									</div>
+									<button type="button"
+											th:class="${item.isMyZzim ? 'btn_zzim sel' : 'btn_zzim'}"
+											class="btn_zzim sel"
+											th:onclick="|zzim('${item.itemSeq}');|"
+											th:attr="id=|bidding_${item.itemSeq}|"
+											>
+										<i></i><span class="skip">찜한상품</span>
+									</button>
+								</div>
+								<div class="con">
+									<div class="tit" th:if="*{#strings.length(item.itemName)>10}"
+										 th:text="|${#strings.substring(item.itemName,0, 10)}···|"></div>
+									<div class="tit" th:if="*{#strings.length(item.itemName)<=10}"
+										 th:text="${item.itemName}"></div>
+
+									<div class="txt"><strong th:text="|${#numbers.formatDecimal(item.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} 원|"></strong>
+										<span th:if="${item.itemStatus.toString().equals('SALE')}" >현재 가격</span>
+										<span th:if="${!item.itemStatus.toString().equals('SALE')}">판매 가격</span>
+									</div>
+									<div class="ico"><img th:src="${item.mbProfile}" alt="">
+										<span th:if="*{#strings.length(item.mbNick)>8}"
+											  th:text="|${#strings.substring(item.mbNick,0, 8)}···|"></span>
+										<span th:if="*{#strings.length(item.mbNick)<=8}"
+											  th:text="${item.mbNick}"></span>
+									</div>
+								</div>
+							</a>
+						</li>
+					</ul>
+				</div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<!-- footer 영역 -->
+<th:block th:replace="fragment/footer :: footerFragment"> </th:block>
+
+<!-- bottom 메뉴 영역 -->
+<th:block th:replace="fragment/bottom_menu :: bottomMenuFragment"> </th:block>
+
+
+<div th:if="${influen_status != null and influen_status.toString().equals('INFLUEN_READY')}" id="popup_1" class="popCmmn" style="display:block">
+	<div class="approve">
+		<div class="cons">
+			<div class="tit">인플루언서님 환영합니다! 🤗</div>
+			<div class="txt">인플루언서님 팬케이크에 가입해주셔서<br> 감사합니다. 팬 분들과 많은 소통 부탁드립니다.</div>
+		</div>
+		<div class="btns">
+			<a th:href="@{/influencer/inven(isReady=1)}" class="btn btn_01">인플루언서 기능 보러가기</a>
+		</div>
+	</div>
+	<div class="popbg" data-num="1"></div>
+</div>
+
+<div th:if="${influen_status != null and influen_status.toString().equals('INFLUEN_DENY')}" id="popup_1" class="popCmmn" style="display:block">
+	<div class="approve">
+		<div class="cons">
+			<div class="tit">흑흑 죄송합니다 😞</div>
+			<div class="txt">안녕하세요 인플루언서님! 아쉽게도<br> 인플루언서님 정보가 확인이 안되고 있습니다.<br> 확인 후 다시 등록 부탁드립니다.</div>
+		</div>
+		<div class="btns">
+			<a th:href="@{/}" class="btn btn_02">등록 안하기</a>
+			<a href="/influencer/edit" class="btn btn_01">재등록 시도</a>
+		</div>
+	</div>
+	<div class="popbg" data-num="1"></div>
+</div>
+
+<script th:inline="javascript" th:if="${influen_status != null and (influen_status.toString().equals('INFLUEN_DENY') or influen_status.toString().equals('INFLUEN_READY'))}">
+	function setPop() {
+		var popOpenBtn = $('.popOpenBtnCmmn');
+
+		//팝업 열기
+		popOpenBtn.on('click',function(){
+			var clickNum = $(this).attr('data-num');
+			$('#popup_'+clickNum).fadeIn(200);
+			$('body').css("overflow","hidden");
+		})
+
+		//팝업 닫기
+		$('.popbg, .popCloseBtnCmmn').on('click',function(){
+			var clickNum = $(this).attr('data-num');
+
+			$('#popup_'+clickNum).fadeOut(200);
+			$('body').css("overflow","initial");
+		})
+	}
+	setPop();
+</script>
+
+
+	<!-- 성인인증 모듈 -->
+	<iframe id="iframeAdult"></iframe>
+
+<script>
+	function search_txt(){
+		let searchTxt = $('#searchBox').val();
+		$("#search_result_list").empty();
+
+		if(!searchTxt) return;
+
+		$.ajax({
+			type : 'get',
+			url: '/api/search/influencer',
+			data: { nick: $("#searchBox").val() },
+			dataType : 'json',
+			success : function(data) {
+				if(!data.data.length) return;
+				for(let i=0; i<data.data.length; i++) {
+					let item = data.data[i];
+
+					$("#search_result_list").append(`
+						<li onclick="javascript:location.href="/influencer/mypage?no=${item.mbNo}">
+							<a href="/influencer/mypage?no=${item.mbNo}">
+								<div class="ico"><img src="${item.mbProfile}" alt=""></div>
+								<div class="txt"><span class="on">${item.mbNick}</span></div>
+							</a>
+						</li>
+					`);
+				}
+			}
+		});
+	}
+
+</script>
+
+</body>
+</html>

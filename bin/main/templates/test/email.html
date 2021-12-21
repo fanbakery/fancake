@@ -1,0 +1,67 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<body id="wrap">
+	<header id="header"> </header>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<main id="container">
+		<div class="login">
+			<div class="head">
+				<div class="tit">request</div>
+			</div>
+			<div class="form">
+			
+				
+				
+				<form id="sendForm">
+				
+								address : <input type="text"  name="address"  value="rhengh01@gmail.com" /><br> 
+								title : <input type="text"  name="title"  value="타이틀" style="width:800px" /><br> 
+								message : <input type="text"  name="message" value="메시지"  style="width:800px" /><br>
+								<button id="send" type="submit">submit</button>
+				
+				</form>
+
+		</div>
+		</div>
+	</main>
+</body>
+</html>
+
+<script>
+    $(document).ready(function () {
+    	
+    	// 결제요청 재컨펌(CERT)
+        $('#send').on('click', function(e) {
+
+            e.preventDefault();
+
+
+                var formData = new FormData($('#sendForm')[0]);
+
+                $.ajax({
+                    type: 'POST',
+                    cache: false,
+                    processData: false,
+                    contentType: false,
+                    async: false,
+                    url: '/test/emailSend',
+                    dataType: 'json',
+                    data: formData,
+                    success: function(data) {
+                        console.log(data);
+                    },
+                    error: function(jqxhr, status, error) {
+                        console.log(jqxhr);
+                        alert(jqxhr.statusText + ",  " + status + ",   " + error);
+                        alert(jqxhr.status);
+                        alert(jqxhr.responseText);
+                    }
+                });
+
+
+        });
+        
+    	
+    });
+</script>

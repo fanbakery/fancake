@@ -1,0 +1,140 @@
+h8 j<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>인플루언서 전환</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<a href="#" class="bt"><img src="../img/i_share.png" alt="공유하기"></a>
+				<button type="button" class="bt zzimOpen"><img src="../img/i_zzim_off.png" alt="찜하기"></button>
+			</div>
+		</div>
+	</header>
+	<main id="container">
+		<div class="influencer edit">
+			<div class="progress"><i style="width:66.66%"></i></div>
+			<div class="form">
+				<form method="post" th:action="@{/mypage/change_influencer/step2}" th:object="${chgInfuencerReq}"  onsubmit="next();return false;">
+					<input type="hidden" id="actYoutube"  	name="actYoutube" 	th:value="${chgInfuencerReq.actYoutube}">
+					<input type="hidden" id="actAfreeca"  	name="actAfreeca" 	th:value="${chgInfuencerReq.actAfreeca}">
+					<input type="hidden" id="actTwitch"  	name="actTwitch" 	th:value="${chgInfuencerReq.actTwitch}">
+					<input type="hidden" id="actBroadcas                       t"  name="actBroadcast" th:value="${chgInfuencerReq.actBroadcast}">
+					<input type="hidden" id="actInstagram"  name="actInstagram" th:value="${chgInfuencerReq.actInstagram}">
+					<input type="hidden" id="actWriter"  	name="actWriter" 	th:value="${chgInfuencerReq.actWriter}">
+					<input type="hidden" id="temp_profile" 	name="temp_profile" th:value="${chgInfuencerReq.temp_profile}">
+					<input type="hidden" id="mbNick" 		name="mbNick" 		th:value="${chgInfuencerReq.mbNick}">
+
+					<div class="cover">
+						<div class="tit">커버 사진 업로드 (최소 1장 이상)</div>
+						<div class="txt">
+							<ul>
+								<li>
+									<input type="file" name="i_file" id="i_file1" onchange="upload(1);">
+									<label for="i_file1">
+										<div id="profileFile_preview1" class="img">
+											<div class="ico">
+												<img src="/img/i_camera.png" alt="">
+											</div>
+										</div>
+									</label>
+								</li>
+								<li>
+									<input type="file" name="i_file" id="i_file2" onchange="upload(2);">
+									<label for="i_file2">
+										<div id="profileFile_preview2" class="img">
+											<div class="ico">
+												<img src="/img/i_camera.png" alt="">
+											</div>
+										</div>
+									</label>
+								</li>
+								<li>
+									<input type="file" name="i_file" id="i_file3" onchange="upload(3);">
+									<label for="i_file3">
+										<div id="profileFile_preview3" class="img">
+											<div class="ico">
+												<img src="/img/i_camera.png" alt="">
+											</div>
+										</div>
+									</label>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="bot_bt">
+						<a href="javascript:history.back();" class="btn bt_04">이전</a>
+						<button id="btn_next" type="submit" class="btn bt_submit" disabled>다음</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</main>
+</body>
+
+<script type="text/javascript">
+	function next(){
+
+		let imageCount = $("#temp_coverImg").length;
+		if (imageCount==0) {
+			alert("커버사진을 최소 1개 이상 업로드해 주세요");
+			return;
+		}
+
+		$("form")[0].submit();
+	}
+
+	function upload(id) {
+		const userProf = $("#i_file"+id)[0];
+
+		const formData = new FormData();
+		formData.append("uploadFile", userProf.files[0]);
+
+		// 임시 파일 업로드
+		let i=0;
+		$.ajax({
+			type:"POST",
+			url: "/uploadFile/image/temp",
+			processData: false,
+			contentType: false,
+			data: formData,
+			success: function(data){
+				if (data.result) {
+					$("#profileFile_preview").attr("src", data.uploadFileUrl)
+							.parent().removeClass("ico").addClass("pic");
+
+					$("#profileFile_preview" + id).empty().append(`
+						<div class="pic">
+							<img src="${data.uploadFileUrl}" alt="">
+							<input type='hidden' name="temp_coverImg" id="temp_coverImg" value="${data.uploadFileName}">
+						</div>
+					`);
+
+					chg_validate();
+				}
+			},
+			err: function(err){
+				console.log("err:", err)
+			}
+		})
+	}
+
+	function chg_validate(){
+		let imageCount = $("#temp_coverImg").length;
+		if (imageCount==0) {
+			if (!$("#btn_next").attr("disabled")) {
+				$("#btn_next").attr("disabled", true);
+			}
+		}
+		else {
+			if ($("#btn_next").attr("disabled")) {
+				$("#btn_next").attr("disabled", false);
+			}
+		}
+	}
+</script>
+</html>

@@ -1,0 +1,234 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<main id="container">
+		<div class="mypage">
+			<form method="post" th:action="@{/mypage/change_influencer/step2}" th:object="${chgInfuencerReq}"  onsubmit="next();return false;">
+			</form>
+			<div class="info" id="fan_profile_div" th:if="${!session.userType.toString().equals('INFLUEN_ACT')}" >
+				<div class="img">
+					<div class="ico"><img id="fan_profile_img"  th:src="${myInfo.mbProfile}" alt=""></div>
+					<div class="file"><input type="file" id="userProf" onchange="upload();"><label for="userProf"><i></i><span class="skip">유저 프로필 사진 등록</span></label></div>
+				</div>
+				<div class="nick">
+					<div class="box">
+						<input type="text" name="mbNick" id="mbNick" th:value="${myInfo.mbNick}" style="background-color:transparent;text-align: center;width: 100%;"></input>
+							<a href="javascript:chgNick();" class="bt_change"><i></i><span class="skip">닉네임 변경하기</span></a>
+					</div>
+				</div>
+			</div>
+
+			<div class="info" id="influencer_profile_div" th:if="${session.userType.toString().equals('INFLUEN_ACT')}"
+				th:style="|background:url('${myInfo.influencerCoverImg}') no-repeat 50% 50% / cover|"
+			>
+				<div class="img">
+					<div class="ico"><img id="influencer_profile_img"  th:src="${myInfo.mbProfile}" alt=""></div>
+					<div class="file"><input type="file" id="userProf" onchange="upload();" disabled><label for="userProf" onchange="upload();"><i></i><span class="skip">유저 프로필 사진 등록</span></label></div>
+				</div>
+				<div class="nick">
+					<div class="box popOpenBtnCmmn" data-num="1" style="border-bottom:1px solid #fff">
+						<span th:text="${myInfo.mbNick}" style="color:#fff"></span>
+						<span id="influence_bt_change" class="bt_change" >
+							<i></i><span class="skip">닉네임 변경하기</span>
+						</span>
+					</div>
+				</div>
+			</div>
+
+			<div class="buy">
+				<div class="titbox">
+					<div class="tit">구매 내역</div>
+				</div>
+				<a href="/order/list">
+					<div class="cntbox">
+						<div class="flex">
+							<dl class="total"><dt>전체</dt><dd th:text="${#numbers.formatDecimal(myInfo.totalCnt, 0, 'COMMA', 0, 'POINT')}"></dd></dl>
+							<dl><dt>구매 중</dt><dd th:text="${#numbers.formatDecimal(myInfo.saleBidCnt, 0, 'COMMA', 0, 'POINT')}"></dd></dl>
+							<dl><dt>완료</dt><dd th:text="${#numbers.formatDecimal(myInfo.endSaleBidCnt, 0, 'COMMA', 0, 'POINT')}"></dd></dl>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="my">
+				<ul>
+					<li><a href="/fanpay/manage">팬 Pay 관리</a></li>
+
+					<!-- 인플로언서 관련 START -->
+					<li th:if="${myInfo.mbSignature.toString().equals('FAN')}">
+						<a href="/mypage/change_influencer/step1">인플루언서 전환하기</a>
+					</li>
+					<li th:if="${myInfo.mbSignature.toString().equals('INFLUEN_REQ')}">
+						<a href="#" class="off">인플루언서 승인 대기중</a>
+					</li>
+					<li th:if="${myInfo.mbSignature.toString().equals('INFLUEN_READY')}">
+						<a href="#" class="off">인플루언서 승인후 활동 준비</a>
+					</li>
+					<li th:if="${myInfo.mbSignature.toString().equals('INFLUEN_DENY')}">
+						<a href="/mypage/change_influencer/step1" class="off">인플루언서 승인거부</a>
+					</li>
+					<!-- 인플로언서 관련 END -->
+
+					<!-- 배송지 정보 START -->
+					<li>
+						<a href="/account/address-book/">배송지 등록
+							<span th:text="${myInfo.shippingAddr}"></span>
+						</a>
+					</li>
+					<!-- 배송지 정보 END -->
+
+					<!-- 상품 보내실 주소 정보 START -->
+					<li th:if="${session.userType.toString().equals('INFLUEN_ACT')}">
+						<a href="#">상품 보내실 주소
+							<span >서울시 성동구 연무장길 11-2</span>
+						</a>
+					</li>
+					<!-- 상품 보내실 주소 정보 END -->
+
+
+					<li><a href="/alarm/setting">알림</a></li>
+
+					<li th:if="${session.userType.toString().equals('INFLUEN_ACT')}">
+						<a href="/donation/">기부신청하기</a>
+					</li>
+
+					<li><a href="/mypage/terms">이용약관/개인정보처리방침</a></li>
+					<li><a href="https://fanbakery.notion.site/FAQ-285618a026f94b35914131336abfc284">FAQ</a></li>
+					<li><a href="/mypage/myinfo">개인정보관리</a></li>
+					<li><a href="/logout">로그아웃</a></li>
+				</ul>
+			</div>
+		</div>
+	</main>
+
+	<!-- bottom 메뉴 영역 -->
+	<th:block th:replace="fragment/bottom_menu :: bottomMenuFragment"> </th:block>
+
+	<div id="popup_1" class="popCmmn">
+		<div class="mypage">
+			<i class="scroll"></i>
+			<div class="cons">
+				<ul>
+					<li><a href="javascript:click_upload();">프로필 사진 변경하기</a></li>
+					<li><a href="./mypage_cover">커버 사진 변경하기</a></li>
+					<li><a href="./mypage_introduce">소개글 변경하기</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="popbg" data-num="1"></div>
+	</div>
+
+	<script type="text/javascript">
+		function upload() {
+			const userProf = $("#userProf")[0];
+
+			if(userProf.files.length === 0){
+				alert("파일은 선택해주세요");
+				return;
+			}
+
+			const formData = new FormData();
+			formData.append("uploadFile", userProf.files[0]);
+
+			// 임시 파일 업로드
+			let i=0;
+			$.ajax({
+				type:"POST",
+				url: "/uploadFile/image/temp",
+				processData: false,
+				contentType: false,
+				data: formData,
+				success: function(data){
+					if (data.result) {
+						let tempFileName = data.uploadFileName;
+
+						$.post("/api/mypage/change/profile",
+							{"tempFileName": tempFileName},
+							function(data){
+								if (data.result === "success") {
+									// 실제 프로파일 업로드 수행.
+									$("#fan_profile_img").attr('src', data.profileUrl);
+									$("#influencer_profile_img").attr('src', data.profileUrl);
+								}else{
+									alert(data.resultMsg);
+									return false;
+								}
+						});
+					}
+					else {
+						console.log("err:", data.result)
+					}
+				},
+				err: function(err){
+					console.log("err:", err)
+				}
+			})
+		}
+
+		$(function(){
+			setPop();
+		});
+		// 팝업 세팅
+		function setPop() {
+			var popOpenBtn = $('.popOpenBtnCmmn');
+
+			//팝업 열기
+			popOpenBtn.on('click',function(){
+				var clickNum = $(this).attr('data-num');
+				$('#popup_'+clickNum).fadeIn(200);
+				$('body').css("overflow","hidden");
+			})
+
+			//팝업 닫기
+			$('.popbg, .popCloseBtnCmmn').on('click',function(){
+				var clickNum = $(this).attr('data-num');
+
+				$('#popup_'+clickNum).fadeOut(200);
+				$('body').css("overflow","initial");
+
+				$("#userProf").attr("disabled", true);
+			})
+		}
+
+		function click_upload(){
+			$("#userProf").removeAttr("disabled");
+			$("#userProf").click();
+		}
+
+		function chgNick(){
+			let mbNick = $("#mbNick").val();
+			if(!mbNick) {
+				alert('닉네임을 입력하세요');
+				return;
+			}
+
+			regexp = /^[ㄱ-ㅎ|가-힣|a-z|A-Z|0-9|_|]{2,10}$/
+			if( !regexp.test(mbNick)) {
+				alert('닉네임은 2~10 글사이로 입력하셔야 합니다.');
+				return;
+			}
+
+			const formData = new FormData();
+			formData.append("nick", mbNick);
+
+			$.ajax({
+				type: "POST",
+				url: "/api/mypage/change/nick",
+				processData: false,
+				contentType: false,
+				data: formData
+			})
+			.done(function(data) {
+				alert('변경하였습니다.');
+			})
+			.fail(function(xhr, status, errorThrown) {
+				let json = JSON.parse(xhr.responseText);
+				alert(json.errMsg);
+			})
+		}
+	</script>
+</body>
+</html>

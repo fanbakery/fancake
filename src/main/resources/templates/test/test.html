@@ -1,0 +1,25 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<body id="wrap">
+	<header id="header"> </header>
+	<main id="container">
+		<div class="login">
+			<div class="head">
+				<div class="tit">request</div>
+			</div>
+			<div class="form">
+			
+			<form method="post" name="form" id="form" th:action="${formData.action}" >
+				
+				<input type="text" id="m" name="m"  value="service" /><br> 
+				<input type="text" id="token_version_id" name="token_version_id" th:value="${formData.token_version_id}" style="width:800px" /><br> 
+				<input type="text" id="enc_data" name="enc_data" th:value="${formData.enc_data}" style="width:800px" /><br>
+				<input type="text" id="integrity_value" name="integrity_value" th:value="${formData.integrity_value}" style="width:800px" /><br>
+				<button type="submit">submit</button>
+			</form>
+		</div>
+		</div>
+	</main>
+</body>
+</html>

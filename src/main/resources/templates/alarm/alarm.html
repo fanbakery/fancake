@@ -1,0 +1,95 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>알림</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<button type="button" class="bt searchOpen"><img src="../img/i_search.png" alt="검색"></button>
+				<a href="alarm.html" class="bt"><img src="../img/i_alarm.png" alt="알림"></a>
+			</div>
+			<div class="search">
+				<div class="close"><i></i></div>
+				<div class="input">
+					<form>
+						<input type="text" placeholder="인플루언서명을 입력해주세요">
+						<button type="submit"></button>
+						<div class="list">
+							<ul>
+								<li>
+									<a href="#">
+										<div class="ico"><img src="../img/m_prof1.png" alt=""></div>
+										<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>
+			</div>
+			<script>
+				$(".searchOpen").click(function(){
+					$("#header .search").addClass("sel");
+				});
+				$("#header .search .close").click(function(){
+					$("#header .search").removeClass("sel");
+				});
+				$("#header .search .input input").focus(function(){
+					$(this).siblings(".list").addClass("sel");
+				});
+				$("#header .search .input input").blur(function(){
+					$(this).siblings(".list").removeClass("sel");
+				});
+			</script>
+		</div>
+	</header>
+	<main id="container">
+		<div class="alarm">
+			<ul th:if="${not #lists.isEmpty(alarmList)}" class="list">
+				<li th:each="alarm: ${alarmList}">
+					<a href="#">
+						<div class="img" th:if="${#strings.isEmpty(alarm.influncerProfile)}" ><img src="../img/fancake.png" alt=""></div>
+						<div class="img" th:if="${not #strings.isEmpty(alarm.influncerProfile)}" ><img th:src="${alarm.influncerProfile}" alt=""></div>
+						<div class="con">
+							<div class="txt" th:utext="${alarm.mbAlarmMsg}"></div>
+							<div class="time" th:text="|${alarm.receivedHour} 시간 전|"></div>
+						</div>
+					</a>
+				</li>
+				<li style="display: none">
+					<a href="#">
+						<div class="img"><img src="../img/m_prof1.png" alt=""></div>
+						<div class="con">
+							<div class="txt">축하합니다! 연나비님의 첫 방송 코스프레 옷을 낙찰받으셨어요! 🤗</div>
+							<div class="time">1시간 전</div>
+						</div>
+					</a>
+				</li>
+				<li style="display: none">
+					<a href="#">
+						<div class="img"><img src="../img/m_prod2.png" alt=""></div>
+						<div class="con">
+							<div class="txt">연나비님이 새 아이템을 등록하셨어요</div>
+							<div class="time">1시간 전</div>
+						</div>
+					</a>
+				</li>
+				<li style="display: none">
+					<a href="#">
+						<div class="img"><img src="../img/m_prof2.png" alt=""></div>
+						<div class="con">
+							<div class="txt">찜해두신 콩콩콩님의 디바 코스프레옷 종료일이 하루 남았습니다</div>
+							<div class="time">1시간 전</div>
+						</div>
+					</a>
+				</li>
+			</ul>
+		</div>
+	</main>
+</body>
+</html>

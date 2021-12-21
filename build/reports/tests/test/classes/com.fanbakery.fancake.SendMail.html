@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - SendMail</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<h1>SendMail</h1>
+<div class="breadcrumbs">
+<a href="../index.html">all</a> &gt; 
+<a href="../packages/com.fanbakery.fancake.html">com.fanbakery.fancake</a> &gt; SendMail</div>
+<div id="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox" id="tests">
+<div class="counter">1</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="failures">
+<div class="counter">1</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="ignored">
+<div class="counter">0</div>
+<p>ignored</p>
+</div>
+</td>
+<td>
+<div class="infoBox" id="duration">
+<div class="counter">3.884s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox failures" id="successRate">
+<div class="percent">0%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<div id="tabs">
+<ul class="tabLinks">
+<li>
+<a href="#tab0">Failed tests</a>
+</li>
+<li>
+<a href="#tab1">Tests</a>
+</li>
+<li>
+<a href="#tab2">Standard output</a>
+</li>
+<li>
+<a href="#tab3">Standard error</a>
+</li>
+</ul>
+<div id="tab0" class="tab">
+<h2>Failed tests</h2>
+<div class="test">
+<a name="contextLoads()"></a>
+<h3 class="failures">contextLoads()</h3>
+<span class="code">
+<pre>org.springframework.mail.MailSendException: Failed messages: com.sun.mail.smtp.SMTPSendFailedException: 555 5.5.2 Syntax error. rm10sm128449pjb.29 - gsmtp
+; message exceptions (1) are:
+Failed message 1: com.sun.mail.smtp.SMTPSendFailedException: 555 5.5.2 Syntax error. rm10sm128449pjb.29 - gsmtp
+
+	at org.springframework.mail.javamail.JavaMailSenderImpl.doSend(JavaMailSenderImpl.java:491)
+	at org.springframework.mail.javamail.JavaMailSenderImpl.send(JavaMailSenderImpl.java:323)
+	at org.springframework.mail.javamail.JavaMailSenderImpl.send(JavaMailSenderImpl.java:312)
+	at com.fanbakery.fancake.api.email.MailService.sendMail(MailService.java:20)
+	at com.fanbakery.fancake.SendMail.contextLoads(SendMail.java:31)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.junit.platform.commons.util.ReflectionUtils.invokeMethod(ReflectionUtils.java:688)
+	at org.junit.jupiter.engine.execution.MethodInvocation.proceed(MethodInvocation.java:60)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$ValidatingInvocation.proceed(InvocationInterceptorChain.java:131)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.intercept(TimeoutExtension.java:149)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestableMethod(TimeoutExtension.java:140)
+	at org.junit.jupiter.engine.extension.TimeoutExtension.interceptTestMethod(TimeoutExtension.java:84)
+	at org.junit.jupiter.engine.execution.ExecutableInvoker$ReflectiveInterceptorCall.lambda$ofVoidMethod$0(ExecutableInvoker.java:115)
+	at org.junit.jupiter.engine.execution.ExecutableInvoker.lambda$invoke$0(ExecutableInvoker.java:105)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain$InterceptedInvocation.proceed(InvocationInterceptorChain.java:106)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.proceed(InvocationInterceptorChain.java:64)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.chainAndInvoke(InvocationInterceptorChain.java:45)
+	at org.junit.jupiter.engine.execution.InvocationInterceptorChain.invoke(InvocationInterceptorChain.java:37)
+	at org.junit.jupiter.engine.execution.ExecutableInvoker.invoke(ExecutableInvoker.java:104)
+	at org.junit.jupiter.engine.execution.ExecutableInvoker.invoke(ExecutableInvoker.java:98)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.lambda$invokeTestMethod$6(TestMethodTestDescriptor.java:210)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.invokeTestMethod(TestMethodTestDescriptor.java:206)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:131)
+	at org.junit.jupiter.engine.descriptor.TestMethodTestDescriptor.execute(TestMethodTestDescriptor.java:65)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$5(NodeTestTask.java:139)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$7(NodeTestTask.java:129)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:127)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:126)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:84)
+	at java.util.ArrayList.forEach(ArrayList.java:1257)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:38)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$5(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$7(NodeTestTask.java:129)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:127)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:126)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:84)
+	at java.util.ArrayList.forEach(ArrayList.java:1257)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.invokeAll(SameThreadHierarchicalTestExecutorService.java:38)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$5(NodeTestTask.java:143)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$7(NodeTestTask.java:129)
+	at org.junit.platform.engine.support.hierarchical.Node.around(Node.java:137)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.lambda$executeRecursively$8(NodeTestTask.java:127)
+	at org.junit.platform.engine.support.hierarchical.ThrowableCollector.execute(ThrowableCollector.java:73)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.executeRecursively(NodeTestTask.java:126)
+	at org.junit.platform.engine.support.hierarchical.NodeTestTask.execute(NodeTestTask.java:84)
+	at org.junit.platform.engine.support.hierarchical.SameThreadHierarchicalTestExecutorService.submit(SameThreadHierarchicalTestExecutorService.java:32)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestExecutor.execute(HierarchicalTestExecutor.java:57)
+	at org.junit.platform.engine.support.hierarchical.HierarchicalTestEngine.execute(HierarchicalTestEngine.java:51)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:108)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:88)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.lambda$execute$0(EngineExecutionOrchestrator.java:54)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.withInterceptedStreams(EngineExecutionOrchestrator.java:67)
+	at org.junit.platform.launcher.core.EngineExecutionOrchestrator.execute(EngineExecutionOrchestrator.java:52)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:96)
+	at org.junit.platform.launcher.core.DefaultLauncher.execute(DefaultLauncher.java:75)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.processAllTestClasses(JUnitPlatformTestClassProcessor.java:99)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor$CollectAllTestClassesExecutor.access$000(JUnitPlatformTestClassProcessor.java:79)
+	at org.gradle.api.internal.tasks.testing.junitplatform.JUnitPlatformTestClassProcessor.stop(JUnitPlatformTestClassProcessor.java:75)
+	at org.gradle.api.internal.tasks.testing.SuiteTestClassProcessor.stop(SuiteTestClassProcessor.java:61)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:36)
+	at org.gradle.internal.dispatch.ReflectionDispatch.dispatch(ReflectionDispatch.java:24)
+	at org.gradle.internal.dispatch.ContextClassLoaderDispatch.dispatch(ContextClassLoaderDispatch.java:33)
+	at org.gradle.internal.dispatch.ProxyDispatchAdapter$DispatchingInvocationHandler.invoke(ProxyDispatchAdapter.java:94)
+	at com.sun.proxy.$Proxy2.stop(Unknown Source)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker$3.run(TestWorker.java:193)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.executeAndMaintainThreadName(TestWorker.java:129)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:100)
+	at org.gradle.api.internal.tasks.testing.worker.TestWorker.execute(TestWorker.java:60)
+	at org.gradle.process.internal.worker.child.ActionExecutionWorker.execute(ActionExecutionWorker.java:56)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:133)
+	at org.gradle.process.internal.worker.child.SystemApplicationClassLoaderWorker.call(SystemApplicationClassLoaderWorker.java:71)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.run(GradleWorkerMain.java:69)
+	at worker.org.gradle.process.internal.worker.GradleWorkerMain.main(GradleWorkerMain.java:74)
+</pre>
+</span>
+</div>
+</div>
+<div id="tab1" class="tab">
+<h2>Tests</h2>
+<table>
+<thead>
+<tr>
+<th>Test</th>
+<th>Duration</th>
+<th>Result</th>
+</tr>
+</thead>
+<tr>
+<td class="failures">contextLoads()</td>
+<td class="failures">3.884s</td>
+<td class="failures">failed</td>
+</tr>
+</table>
+</div>
+<div id="tab2" class="tab">
+<h2>Standard output</h2>
+<span class="code">
+<pre>00:56:09,198 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback-test.xml]
+00:56:09,199 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Could NOT find resource [logback.groovy]
+00:56:09,199 |-INFO in ch.qos.logback.classic.LoggerContext[default] - Found resource [logback.xml] at [file:/C:/GitRepository/KimTaeSun/fan/fancake/build/resources/main/logback.xml]
+00:56:09,251 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - debug attribute not set
+00:56:09,258 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - Will scan for changes in [file:/C:/GitRepository/KimTaeSun/fan/fancake/build/resources/main/logback.xml] 
+00:56:09,258 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - Setting ReconfigureOnChangeTask scanning period to 10 seconds
+00:56:09,262 |-INFO in ch.qos.logback.core.joran.util.ConfigurationWatchListUtil@68c9133c - Adding [jar:file:/C:/Users/박완수/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/2.5.6/d8c6b97fd3182fb6d7d06ebf710cd9ccabc83b89/spring-boot-2.5.6.jar!/org/springframework/boot/logging/logback/base.xml] to configuration watch list.
+00:56:09,262 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@7a35b0f5 - URL [jar:file:/C:/Users/박완수/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/2.5.6/d8c6b97fd3182fb6d7d06ebf710cd9ccabc83b89/spring-boot-2.5.6.jar!/org/springframework/boot/logging/logback/base.xml] is not of type file
+00:56:09,264 |-INFO in ch.qos.logback.core.joran.util.ConfigurationWatchListUtil@68c9133c - Adding [jar:file:/C:/Users/박완수/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/2.5.6/d8c6b97fd3182fb6d7d06ebf710cd9ccabc83b89/spring-boot-2.5.6.jar!/org/springframework/boot/logging/logback/defaults.xml] to configuration watch list.
+00:56:09,264 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@7a35b0f5 - URL [jar:file:/C:/Users/박완수/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/2.5.6/d8c6b97fd3182fb6d7d06ebf710cd9ccabc83b89/spring-boot-2.5.6.jar!/org/springframework/boot/logging/logback/defaults.xml] is not of type file
+00:56:09,266 |-INFO in ch.qos.logback.core.joran.action.ConversionRuleAction - registering conversion word clr with class [org.springframework.boot.logging.logback.ColorConverter]
+00:56:09,266 |-INFO in ch.qos.logback.core.joran.action.ConversionRuleAction - registering conversion word wex with class [org.springframework.boot.logging.logback.WhitespaceThrowableProxyConverter]
+00:56:09,266 |-INFO in ch.qos.logback.core.joran.action.ConversionRuleAction - registering conversion word wEx with class [org.springframework.boot.logging.logback.ExtendedWhitespaceThrowableProxyConverter]
+00:56:09,269 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [org.apache.catalina.startup.DigesterFactory] to ERROR
+00:56:09,269 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [org.apache.catalina.util.LifecycleBase] to ERROR
+00:56:09,269 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [org.apache.coyote.http11.Http11NioProtocol] to WARN
+00:56:09,269 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [org.apache.sshd.common.util.SecurityUtils] to WARN
+00:56:09,269 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [org.apache.tomcat.util.net.NioSelectorPool] to WARN
+00:56:09,269 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [org.eclipse.jetty.util.component.AbstractLifeCycle] to ERROR
+00:56:09,269 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [org.hibernate.validator.internal.util.Version] to WARN
+00:56:09,269 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [org.springframework.boot.actuate.endpoint.jmx] to WARN
+00:56:09,270 |-INFO in ch.qos.logback.core.joran.util.ConfigurationWatchListUtil@68c9133c - Adding [jar:file:/C:/Users/박완수/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/2.5.6/d8c6b97fd3182fb6d7d06ebf710cd9ccabc83b89/spring-boot-2.5.6.jar!/org/springframework/boot/logging/logback/console-appender.xml] to configuration watch list.
+00:56:09,270 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@7a35b0f5 - URL [jar:file:/C:/Users/박완수/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/2.5.6/d8c6b97fd3182fb6d7d06ebf710cd9ccabc83b89/spring-boot-2.5.6.jar!/org/springframework/boot/logging/logback/console-appender.xml] is not of type file
+00:56:09,271 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.ConsoleAppender]
+00:56:09,274 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [CONSOLE]
+00:56:09,278 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+00:56:09,306 |-INFO in ch.qos.logback.core.joran.util.ConfigurationWatchListUtil@68c9133c - Adding [jar:file:/C:/Users/박완수/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/2.5.6/d8c6b97fd3182fb6d7d06ebf710cd9ccabc83b89/spring-boot-2.5.6.jar!/org/springframework/boot/logging/logback/file-appender.xml] to configuration watch list.
+00:56:09,306 |-INFO in ch.qos.logback.core.joran.spi.ConfigurationWatchList@7a35b0f5 - URL [jar:file:/C:/Users/박완수/.gradle/caches/modules-2/files-2.1/org.springframework.boot/spring-boot/2.5.6/d8c6b97fd3182fb6d7d06ebf710cd9ccabc83b89/spring-boot-2.5.6.jar!/org/springframework/boot/logging/logback/file-appender.xml] is not of type file
+00:56:09,307 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+00:56:09,310 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [FILE]
+00:56:09,311 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+00:56:09,314 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1579957528 - setting totalSizeCap to 0 Bytes
+00:56:09,316 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1579957528 - Archive files will be limited to [10 MB] each.
+00:56:09,319 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1579957528 - Will use gz compression
+00:56:09,321 |-INFO in c.q.l.core.rolling.SizeAndTimeBasedRollingPolicy@1579957528 - Will use the pattern C:/Users/박완수/AppData/Local/Temp//spring.log.%d{yyyy-MM-dd}.%i for the active file
+00:56:09,322 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@2cb4893b - The date pattern is 'yyyy-MM-dd' from file name pattern 'C:/Users/박완수/AppData/Local/Temp//spring.log.%d{yyyy-MM-dd}.%i.gz'.
+00:56:09,322 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@2cb4893b - Roll-over at midnight.
+00:56:09,325 |-INFO in ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP@2cb4893b - Setting initial period to Sun Dec 12 23:59:47 KST 2021
+00:56:09,333 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - Active log file name: C:\Users\박완수\AppData\Local\Temp\/spring.log
+00:56:09,333 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - File property is set to [C:\Users\박완수\AppData\Local\Temp\/spring.log]
+00:56:09,335 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to INFO
+00:56:09,335 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [CONSOLE] to Logger[ROOT]
+00:56:09,335 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[ROOT]
+00:56:09,335 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - About to instantiate appender of type [ch.qos.logback.core.rolling.RollingFileAppender]
+00:56:09,335 |-INFO in ch.qos.logback.core.joran.action.AppenderAction - Naming appender as [FILE]
+00:56:09,336 |-INFO in c.q.l.core.rolling.TimeBasedRollingPolicy@214187874 - No compression will be used
+00:56:09,336 |-INFO in c.q.l.core.rolling.TimeBasedRollingPolicy@214187874 - Will use the pattern ../logs/fancake_%d{yyyyMMdd}.log for the active file
+00:56:09,338 |-INFO in c.q.l.core.rolling.DefaultTimeBasedFileNamingAndTriggeringPolicy - The date pattern is 'yyyyMMdd' from file name pattern '../logs/fancake_%d{yyyyMMdd}.log'.
+00:56:09,338 |-INFO in c.q.l.core.rolling.DefaultTimeBasedFileNamingAndTriggeringPolicy - Roll-over at midnight.
+00:56:09,338 |-INFO in c.q.l.core.rolling.DefaultTimeBasedFileNamingAndTriggeringPolicy - Setting initial period to Wed Dec 15 00:56:09 KST 2021
+00:56:09,338 |-INFO in ch.qos.logback.core.joran.action.NestedComplexPropertyIA - Assuming default type [ch.qos.logback.classic.encoder.PatternLayoutEncoder] for [encoder] property
+00:56:09,339 |-WARN in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - Setting &quot;File&quot; property to null on account of prudent mode
+00:56:09,339 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - Active log file name: ../logs/fancake_20211215.log
+00:56:09,339 |-INFO in ch.qos.logback.core.rolling.RollingFileAppender[FILE] - File property is set to [null]
+00:56:09,340 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [org.springframework] to INFO
+00:56:09,340 |-INFO in ch.qos.logback.classic.joran.action.RootLoggerAction - Setting level of ROOT logger to INFO
+00:56:09,340 |-INFO in ch.qos.logback.core.joran.action.AppenderRefAction - Attaching appender named [FILE] to Logger[ROOT]
+00:56:09,340 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [jdbc.connection] to ERROR
+00:56:09,340 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [jdbc.sqlonly] to ERROR
+00:56:09,340 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [jdbc.audit] to ERROR
+00:56:09,340 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [jdbc.sqltiming] to INFO
+00:56:09,340 |-INFO in ch.qos.logback.classic.joran.action.LoggerAction - Setting level of logger [jdbc.resultset] to ERROR
+00:56:09,340 |-INFO in ch.qos.logback.classic.joran.action.ConfigurationAction - End of configuration.
+00:56:09,341 |-INFO in ch.qos.logback.classic.joran.JoranConfigurator@5b218417 - Registering current configuration as safe fallback point
+
+2021-12-15 00:56:09.415  INFO   --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Neither @ContextConfiguration nor @ContextHierarchy found for test class [com.fanbakery.fancake.SendMail], using SpringBootContextLoader
+2021-12-15 00:56:09.428  INFO   --- [    Test worker] o.s.t.c.support.AbstractContextLoader    : Could not detect default resource locations for test class [com.fanbakery.fancake.SendMail]: no resource found for suffixes {-context.xml, Context.groovy}.
+2021-12-15 00:56:09.430  INFO   --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.fanbakery.fancake.SendMail]: SendMail does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2021-12-15 00:56:09.561  INFO   --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.fanbakery.fancake.Fancake2Application for test class com.fanbakery.fancake.SendMail
+2021-12-15 00:56:09.670  INFO   --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Loaded default TestExecutionListener class names from location [META-INF/spring.factories]: [org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener, org.springframework.test.context.web.ServletTestExecutionListener, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener, org.springframework.test.context.event.ApplicationEventsTestExecutionListener, org.springframework.test.context.support.DependencyInjectionTestExecutionListener, org.springframework.test.context.support.DirtiesContextTestExecutionListener, org.springframework.test.context.transaction.TransactionalTestExecutionListener, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener, org.springframework.test.context.event.EventPublishingTestExecutionListener]
+2021-12-15 00:56:09.693  INFO   --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Using TestExecutionListeners: [org.springframework.test.context.web.ServletTestExecutionListener@40844aab, org.springframework.test.context.support.DirtiesContextBeforeModesTestExecutionListener@1f6c9cd8, org.springframework.test.context.event.ApplicationEventsTestExecutionListener@5b619d14, org.springframework.boot.test.mock.mockito.MockitoTestExecutionListener@66746f57, org.springframework.boot.test.autoconfigure.SpringBootDependencyInjectionTestExecutionListener@447a020, org.springframework.test.context.support.DirtiesContextTestExecutionListener@7f36662c, org.springframework.test.context.transaction.TransactionalTestExecutionListener@28e8dde3, org.springframework.test.context.jdbc.SqlScriptsTestExecutionListener@6d23017e, org.springframework.test.context.event.EventPublishingTestExecutionListener@54dcfa5a, org.springframework.boot.test.autoconfigure.restdocs.RestDocsTestExecutionListener@1817f1eb, org.springframework.boot.test.autoconfigure.web.client.MockRestServiceServerResetTestExecutionListener@767e20cf, org.springframework.boot.test.autoconfigure.web.servlet.MockMvcPrintOnlyOnFailureTestExecutionListener@3a3e78f, org.springframework.boot.test.autoconfigure.web.servlet.WebDriverTestExecutionListener@301ec38b, org.springframework.boot.test.autoconfigure.webservices.client.MockWebServiceServerTestExecutionListener@17a1e4ca, org.springframework.boot.test.mock.mockito.ResetMocksTestExecutionListener@10ded6a9]
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+ :: Spring Boot ::                (v2.5.6)
+
+2021-12-15 00:56:10.101  INFO 17224 --- [    Test worker] com.fanbakery.fancake.SendMail           : Starting SendMail using Java 1.8.0_202 on DANNY-NOTEBOOK with PID 17224 (started by 박완수 in C:\GitRepository\KimTaeSun\fan\fancake)
+2021-12-15 00:56:10.103  INFO 17224 --- [    Test worker] com.fanbakery.fancake.SendMail           : No active profile set, falling back to default profiles: default
+2021-12-15 00:56:13.172  INFO 17224 --- [    Test worker] com.fanbakery.fancake.SendMail           : Started SendMail in 3.429 seconds (JVM running for 4.943)
+</pre>
+</span>
+</div>
+<div id="tab3" class="tab">
+<h2>Standard error</h2>
+<span class="code">
+<pre>Loading class `com.mysql.jdbc.Driver'. This is deprecated. The new driver class is `com.mysql.cj.jdbc.Driver'. The driver is automatically registered via the SPI and manual loading of the driver class is generally unnecessary.
+</pre>
+</span>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="http://www.gradle.org">Gradle 7.2</a> at 2021. 12. 15 오전 12:56:17</p>
+</div>
+</div>
+</body>
+</html>

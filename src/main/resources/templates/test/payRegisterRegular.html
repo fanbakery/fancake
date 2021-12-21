@@ -1,0 +1,283 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+<title>결제창 데모</title>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<!-- payple js 호출. 테스트/운영 선택 -->
+<script src="https://democpay.payple.kr/js/cpay.payple.1.0.1.js"></script> <!-- 테스트 -->
+<script src="https://cpay.payple.kr/js/cpay.payple.1.0.1.js"></script> <!-- 운영 -->
+
+<script>  
+//정상 처리 후 콜백 함수
+function callbackFunction(param){
+	
+	//
+	//PCD_PAY_RST = success, PCD_PAY_CODE = "0000"이 포함될 경우 요청성공으로 판단합니다.
+	if(param.PCD_PAY_RST == 'success' && param.PCD_PAY_CODE == "0000"){
+		alert('성공!');
+		console.dir(param);	
+	}else{
+		alert('실패!');
+		console.dir(param);
+	}
+	
+	//*정상처리 후,  정기결재를 위해 PCD_PAYER_ID 빌링키를 반드시 db 저장하고 있어야 합니다.
+	//PCD_PAYER_ID
+	
+	
+	return false;
+	
+
+/* 	카드
+	계좌
+	PCD_PAY_RST
+	링크
+	success
+	요청 결과 success, error, close
+	카드
+	계좌
+	PCD_PAY_CODE
+	링크
+	0000
+	응답코드
+	카드
+	계좌
+	PCD_PAY_MSG
+	링크
+	카드승인완료
+	요청 결과 메시지
+	카드
+	계좌
+	PCD_PAY_TYPE
+	링크
+	card
+	결제수단(카드: card, 계좌:transfer)
+	카드
+	PCD_CARD_VER
+	링크
+	1
+	카드
+	계좌
+	PCD_PAY_WORK
+	링크
+	PAY
+	결제요청방식
+	카드
+	계좌
+	PCD_AUTH_KEY
+	링크
+	K0VnWlZ5TWZSaGNla1Vpay96YnNQQTFnYXcyVWxlSzJGTHdtNHpNTndIUmJIZ2IrUFI1VExnZzhvOGNqS2M
+	결제 후 리턴 받은 토큰키
+	카드
+	계좌
+	PCD_PAY_REQKEY
+	링크
+	CERT - 결제생성 후 승인을 위한 키
+	카드
+	계좌
+	PCD_PAY_HOST
+	링크
+	https://democpay.payple.kr
+	카드
+	계좌
+	PCD_PAY_URL
+	링크
+	카드
+	계좌
+	PCD_PAY_COFURL
+	링크
+	카드
+	계좌
+	PCD_PAYER_ID
+	링크
+	OVA3UUdZSFNiSGxDU2ZydC9JY0dhUT09
+	빌링키
+	카드
+	계좌
+	PCD_PAYER_NO
+	링크
+	2335
+	파트너사에서 사용하는 회원번호
+	카드
+	계좌
+	PCD_PAYER_NAME
+	링크
+	홍길동
+	고객 이름
+	카드
+	계좌
+	PCD_PAYER_HP
+	링크
+	1012345678
+	고객 휴대전화번호
+	카드
+	계좌
+	PCD_PAYER_EMAIL
+	링크
+	test@payple.kr
+	고객 이메일
+	카드
+	계좌
+	PCD_PAY_OID
+	링크
+	test06881335001623242176279
+	주문번호
+	카드
+	계좌
+	PCD_PAY_GOODS
+	링크
+	휴대폰
+	상품명
+	카드
+	계좌
+	PCD_PAY_AMOUNT
+	1000
+	카드
+	계좌
+	PCD_PAY_DISCOUNT
+	카드
+	계좌
+	PCD_PAY_AMOUNT_REAL
+	1000
+	카드
+	계좌
+	PCD_PAY_TOTAL
+	링크
+	1000
+	결제금액
+	카드
+	계좌
+	PCD_PAY_TAXTOTAL
+	링크
+	0
+	복합과세(과세+면세) 주문건에 필요한 금액이며 가맹점에서 전송한 값을 부가세로 설정 과세 또는 비과세의 경우 사용하지 않습니다.
+	카드
+	계좌
+	PCD_PAY_ISTAX
+	링크
+	Y
+	과세설정 (Default: Y 이며, 과세:Y, 복합과세:Y, 비과세: N)
+	카드
+	PCD_PAY_CARDNAME
+	링크
+	삼성카드
+	카드사명
+	카드
+	PCD_PAY_CARDNUM
+	링크
+	2121-****-****-2031
+	카드번호
+	카드
+	PCD_PAY_CARDQUOTA
+	0
+	카드
+	PCD_PAY_CARDTRADENUM
+	298416639827
+	거래 키
+	카드
+	PCD_PAY_CARDAUTHNO
+	링크
+	85324231
+	승인번호
+	카드
+	PCD_PAY_CARDRECEIPT
+	링크
+	https://www.test.com/receipt/creditcard/view.aspx?dataType….
+	매출전표 출력 링크
+	카드
+	계좌
+	PCD_PAY_TIME
+	링크
+	20210724232043
+	결제시간
+	카드
+	계좌
+	PCD_SIMPLE_FLAG
+	링크
+	N
+	카드
+	계좌
+	PCD_RST_URL
+	링크
+	/order_result.html
+	결제(요청)결과 RETURN URL
+	계좌
+	PCD_PAY_BANKACCTYPE
+	링크
+	personal
+	현금영수증 발행대상 
+	(개인:personal, 사업자:company)
+	계좌
+	PCD_PAY_BANK
+	링크
+	020
+	은행코드
+	계좌
+	PCD_PAY_BANKNAME
+	링크
+	우리은행
+	은행명
+	계좌
+	PCD_PAY_BANKNUM
+	링크
+	123-********-456
+	계좌번호(일부 마스킹 처리)
+	계좌
+	PCD_TAXSAVE_MGTNUM
+	링크
+	G3482429BV2...
+	현금영수증 국세청 발행번호 (PCD_TAXSAVE_FLAG 사용시 응답) */
+	
+}
+$(document).ready( function () {    	
+    $('#payAction').on('click', function (event) {
+        var obj = new Object();
+        obj.PCD_PAY_TYPE = "card";       	
+        obj.PCD_PAY_WORK = "PAY";
+
+        /* 01 : 빌링키결제 */
+        obj.PCD_CARD_VER = "01"
+        
+        obj.PCD_PAYER_NO = 1234;
+        obj.PCD_PAYER_NAME = "홍길동";
+        obj.PCD_PAYER_HP = "01012345678";
+        obj.PCD_PAYER_EMAIL = "dev@payple.kr";
+        obj.PCD_PAY_GOODS = "상품1";
+        obj.PCD_PAY_TOTAL = 100;
+        obj.PCD_PAY_ISTAX = "Y";
+        obj.PCD_PAY_TAXTOTAL = 10;
+
+        /* 파트너 인증시 받은 AuthKey 값 입력  */
+        
+		/*<![CDATA[*/
+			 obj.PCD_AUTH_KEY = '[[${response.AuthKey}]]'; 
+			 
+        /*]]*/
+        /* 파트너 인증시 받은 return_url 값 입력  */
+        
+        obj.PCD_PAY_URL = /*<![CDATA[*/ '[[${response.return_url}]]'; /*]]*/
+        //obj.PCD_PAY_URL = /*<![CDATA[*/ "https://democpay.payple.kr/index.php?ACT_=PAYM&CPAYVER=...."; /*]]*/
+
+        /* 결과를 콜백 함수로 받고자 하는 경우 함수 설정 추가 */
+        //obj.callbackFunction = getResult;  // getResult : 콜백 함수명
+        obj.callbackFunction = callbackFunction;                
+        /* 
+        @RequestMapping 의 URL
+        */
+        
+        //결과를 url로 받고 싶은경우 callbackfunction을 사용하지 말것.
+        obj.PCD_RST_URL = "";
+        
+        PaypleCpayAuthCheck(obj);
+        
+        event.preventDefault(); 	
+    });  
+});
+</script>
+<button id="payAction">정기결제</button>
+</body>
+</html>

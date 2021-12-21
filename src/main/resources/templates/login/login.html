@@ -1,0 +1,93 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+<header id="header">
+	<div class="head skip">
+		<div class="h1"><a href="home.html">fancake</a></div>
+		<div class="pre skip"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+		<div class="btn">
+			<button type="button" class="bt searchOpen"><img src="../img/i_search.png" alt="검색"></button>
+			<a href="alarm.html" class="bt"><img src="../img/i_alarm.png" alt="알림"></a>
+		</div>
+		<div class="search">
+			<div class="close"><i></i></div>
+			<div class="input">
+				<form>
+					<input type="text" placeholder="인플루언서명을 입력해주세요">
+					<button type="submit"></button>
+					<div class="list">
+						<ul>
+							<li>
+								<a href="#">
+									<div class="ico"><img src="../img/m_prof1.png" alt=""></div>
+									<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+								</a>
+							</li>
+						</ul>
+					</div>
+				</form>
+			</div>
+		</div>
+		<script>
+			$(".searchOpen").click(function(){
+				$("#header .search").addClass("sel");
+			});
+			$("#header .search .close").click(function(){
+				$("#header .search").removeClass("sel");
+			});
+			$("#header .search .input input").focus(function(){
+				$(this).siblings(".list").addClass("sel");
+			});
+			$("#header .search .input input").blur(function(){
+				$(this).siblings(".list").removeClass("sel");
+			});
+		</script>
+	</div>
+</header>
+<main id="container">
+	<div class="login">
+		<div class="head">
+			<div class="tit">나만 가질 수 있는</div>
+			<div class="img"><!--fancake-->
+				<img src="/img/login_logo@2x.png" style="width:50%;height:100%	">
+			</div>
+		</div>
+		<div class="form">
+			<form method="post" th:action="@{/login}" th:object="${loginInfoReq}" role="form" >
+				<div class="id">
+					<label class="skip">이메일 입력</label>
+					<input type="text" id="email" name="email" th:field="*{email}" th:value="${loginInfoReq.email}" placeholder="이메일 입력">
+					<button class="erase"><img src="../img/i_input_close.png" alt="지우기"><span class="skip">내용 지우기</span></button>
+				</div>
+				<div class="pw">
+					<label class="skip">비밀번호 입력</label>
+					<input type="password" id="password" name="password" th:field="*{password}"  th:value="${loginInfoReq.password}" placeholder="비밀번호 입력">
+					<button class="erase"><img src="../img/i_input_close.png" alt="지우기"><span class="skip">내용 지우기</span></button>
+				</div>
+				<div class="er">
+					<p class="error_msg" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></p>
+					<p class="error_msg" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></p>
+					<p class="error_msg" th:if="${result}" th:text="${result}"></p>
+				</div>
+				<div class="bt">
+					<button type="submit" class="btn bt_log"><i></i><span>로그인</span></button>
+					<a href="#" class="btn bt_faceb"><i></i><span>페이스북으로 로그인</span></a>
+					<a href="https://kauth.kakao.com/oauth/authorize?client_id=cbd9e68b0d7695133e71098a963a6230&redirect_uri=https://thefancake.com/auth/kakao/callback&response_type=code" class="btn bt_kakao"><i></i><span>카카오톡으로 로그인</span></a>
+				</div>
+				<div class="mem">
+					<ul>
+						<li><a href="/find-id">아이디 찾기</a></li>
+						<li><a href="/find-pw">비밀번호 재설정</a></li>
+						<li><a href="/join/">이메일 가입</a></li>
+					</ul>
+				</div>
+			</form>
+		</div>
+	</div>
+</main>
+</body>
+</html>

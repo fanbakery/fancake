@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanbakery.fancake.repository.mapper.HomMapper">
+
+
+    <!--
+        it_item_mb_seen table
+     -->
+
+    <select id="selectCntSeenItemList"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="Long">
+        SELECT COUNT(ii.item_seq)
+        FROM it_item_mb_seen iims
+                 LEFT JOIN it_item ii ON iims.item_seq = ii.item_seq
+        WHERE iims.mb_no = #{mbNo} AND ii.item_seq &gt;  0
+        ORDER BY iims.item_seen_date DESC
+    </select>
+
+
+    <select id="selectSeenItemList"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="com.fanbakery.fancake.repository.model.ItemListInfoEntity">
+        SELECT ii.item_seq, ii.item_name, ii.item_img1
+                , ii.item_sell_curr_price
+                , ii.item_sell_add_price
+                , ii.item_last_bidding_seq
+                , ii.item_adult, ii.item_status
+                , im.mb_no , im.mb_nick , im.mb_profile
+                , IF(izi.zzim_item_seq > 0, 1, 0) as isMyZzim
+        FROM it_item_mb_seen iims
+            LEFT JOIN it_item ii ON iims.item_seq = ii.item_seq
+            LEFT JOIN it_member im ON ii.item_reg_mb_no = im.mb_no
+            LEFT JOIN it_zzim_item izi ON iims.item_seq = izi.item_seq AND izi.zzim_mb_no = #{mbNo}
+        WHERE iims.mb_no = #{mbNo} AND ii.item_seq &gt;  0
+        ORDER BY iims.item_seen_date DESC
+        LIMIT #{pageIndex}, #{cntPerPage};
+    </select>
+
+
+    <!--
+        it_item table
+     -->
+
+
+    <select id="selectPopularItemList"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="com.fanbakery.fancake.repository.model.ItemListInfoEntity">
+        SELECT ii.item_seq, ii.item_name, ii.item_img1
+             , ii.item_sell_curr_price
+              , ii.item_sell_add_price
+              , ii.item_last_bidding_seq
+             , ii.item_adult, ii.item_status
+             , im.mb_no , im.mb_nick , im.mb_profile
+             , IF(izi.zzim_item_seq > 0, 1, 0) as isMyZzim
+             , IFNULL(piib.ibidCnt, 0) as bidCnt
+        FROM it_item ii
+                 LEFT JOIN (    SELECT item_seq, COUNT(bidding_seq) as ibidCnt
+                                FROM it_item_bidding iib
+                                GROUP BY iib.item_seq
+        ) piib on piib.item_seq = ii.item_seq
+                 LEFT JOIN it_member im ON ii.item_reg_mb_no = im.mb_no
+                 LEFT JOIN it_zzim_item izi ON ii.item_seq = izi.item_seq AND izi.zzim_mb_no = #{mbNo}
+        ORDER BY bidCnt DESC, ii.item_reg_date DESC
+        LIMIT #{cntPerPage};
+    </select>
+
+
+
+
+    <select id="selectCntRecentItemList"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="Long">
+        SELECT COUNT(ii.item_seq)
+        FROM it_item ii
+        WHERE ii.item_reg_date &gt; #{startDate}
+    </select>
+
+    <select id="selectRecentItemList"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="com.fanbakery.fancake.repository.model.ItemListInfoEntity">
+        SELECT ii.item_seq, ii.item_name, ii.item_img1
+             , ii.item_sell_curr_price
+              , ii.item_sell_add_price
+              , ii.item_last_bidding_seq
+             , ii.item_adult, ii.item_status
+             , im.mb_no , im.mb_nick , im.mb_profile
+             , IF(izi.zzim_item_seq > 0, 1, 0) as isMyZzim
+        FROM it_item ii
+                 LEFT JOIN it_member im ON ii.item_reg_mb_no = im.mb_no
+                 LEFT JOIN it_zzim_item izi ON ii.item_seq = izi.item_seq AND izi.zzim_mb_no = #{mbNo}
+        WHERE ii.item_reg_date &gt; #{startDate}
+        ORDER BY ii.item_reg_date DESC
+        LIMIT #{pageIndex}, #{cntPerPage};
+    </select>
+
+
+
+    <select id="selectCntBidItemList"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="Long">
+        SELECT COUNT(ii.item_seq)
+        FROM it_item ii
+        WHERE ii.item_status = #{itemStatus}
+              AND ( ii.item_sell_start_date &lt;= #{startDate} AND ii.item_sell_end_date &gt;= #{startDate})
+    </select>
+
+
+    <select id="selectBidItemList"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="com.fanbakery.fancake.repository.model.ItemListInfoEntity">
+        SELECT ii.item_seq, ii.item_name, ii.item_img1
+             , ii.item_sell_curr_price
+              , ii.item_sell_add_price
+              , ii.item_last_bidding_seq
+             , ii.item_adult, ii.item_status
+             , im.mb_no , im.mb_nick , im.mb_profile
+             , IF(izi.zzim_item_seq > 0, 1, 0) as isMyZzim
+        FROM it_item ii
+                 LEFT JOIN (    SELECT item_seq, COUNT(bidding_seq) as bidCnt
+                                FROM it_item_bidding iib
+                                GROUP BY iib.item_seq
+                            ) piib on piib.item_seq = ii.item_seq
+                 LEFT JOIN it_member im ON ii.item_reg_mb_no = im.mb_no
+                 LEFT JOIN it_zzim_item izi ON ii.item_seq = izi.item_seq AND izi.zzim_mb_no = #{mbNo}
+        WHERE ii.item_status = #{itemStatus}
+              AND ( ii.item_sell_start_date &lt;= #{startDate}
+                            AND ii.item_sell_end_date &gt;= #{startDate})
+        ORDER BY piib.bidCnt, ii.item_reg_date DESC
+        LIMIT #{pageIndex}, #{cntPerPage};
+
+    </select>
+
+
+</mapper>

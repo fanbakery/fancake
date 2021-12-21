@@ -1,0 +1,207 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>수정하기</span></div>
+			<div class="pre"><a href="@{/product/product(itemNo=${productInfo.product.itemSeq})}"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<a href="#" class="bt"><img src="../img/i_share.png" alt="공유하기"></a>
+				<button type="button" class="bt zzimOpen"><img src="../img/i_zzim_off.png" alt="찜하기"></button>
+			</div>
+		</div>
+	</header>
+	<main id="container">
+		<div class="product write">
+			<div class="form">
+				<form method="post" th:action="@{/product/add}" th:object="${productAddReq}" role="form" onsubmit="regist();return false;">
+					<input type="hidden" id="pCostVal"
+						   th:attr="old_value=|${productInfo.itemName}|"
+						   th:value="${productInfo.itemName}">
+					<input type="hidden" id="pBidcostVal"  name="pBidcostVal"
+						   th:attr="old_value=|${productInfo.itemName}|"
+						   th:value="${productInfo.itemName}"
+					>
+					<dl>
+						<dt class="skip">사진 등록</dt>
+						<dd>
+							<ul>
+								<li><input type="file" id="file1"><label for="file1"><img src="../img/i_camera.png" alt=""><span><strong>1</strong>/10</span></label></li>
+								<li><input type="file" id="file2"><label for="file2"><span class="sel"><img src="../img/m_prod1.png"><div class="close"><i></i></div></span></label></li>
+							</ul>
+						</dd>
+					</dl>
+					<dl>
+						<dt class="skip">제목</dt>
+						<dd><input type="text" id="p_subject" class="tal" placeholder="제목"
+								   th:attr="old_value=|${productInfo.itemName}|"
+								   th:value="${productInfo.itemName}"
+								   onkeyup="chg_validate()">
+						</dd>
+					</dl>
+					<dl>
+						<dt onclick="move_focus_cost();">판매 희망가</dt>
+						<dd><input type="text" id="p_cost" class="tar" value="90,000원"></dd>
+					</dl>
+					<dl>
+						<dt>입찰 시작 가격</dt>
+						<dd><input type="text" id="p_bidcost" class="tar" value="93,500원"></dd>
+					</dl>
+					<dl>
+						<dt class="skip">내용 작성</dt>
+						<dd><textarea id="p_content" placeholder="판매 상품이 인플루언서 분에게 얼마나 특별한 상품인지에 대한&#13;&#10; 자세한 내용을 작성해주세요&#13;&#10;&#13;&#10;판매 시 유의사항&#13;&#10;&#13;&#10;- 생물, 의약품, 음식류 등은 판매가 불가합니다. &#13;&#10;- 검수단계에서 등록한 상품과 실물이 다를 경우에는&#13;&#10;   판매가 취소될 수 있습니다.&#13;&#10;- 동일한 상품을 중복하여 등록하시면 &#13;&#10;   상품 판매가 취소될 수 있습니다.&#13;&#10;- 제품은 등록 후 삭제와 수정이 불가능합니다.">검은색 L사이즈 스투시 후디입니다! 일본 신주쿠에 놀러갔을 때 산 도쿄한정 후디에요. 졸업전 학교다닐 때 도서관룩으로 편히 자주 입던 옷인데 졸업 후 방송중이나 외출할 때 입을 일이 없어 정리하게 되었습니다 ㅠ 한 때 스트릿패션에 빠져있을 때 너무 이뻐보여서 구매했었음. 지금 봐도 취향저격인 옷</textarea></dd>
+					</dl>
+					<div class="adult">
+						<input type="checkbox" id="p_adult">
+						<label for="p_adult"><i></i><span>성인용입니다</span></label>
+					</div>
+					<div class="bt">
+						<button type="submit" class="btn bt_submit">등록</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</main>
+
+
+	<script type="text/javascript">
+		function  regist(){
+			let uploadFileCount = $("#ul_product_upload li").length-1;
+			if (uploadFileCount<3){
+				alert('사진은 최소 3개이상 등록해야 합니다.');
+				return;
+			}
+
+			if(!$("#p_subject").val()){
+				alert('제목을 입력하세요');
+				$("#p_subject").focus();
+				return false;
+			}
+
+			let p_cost = parseInt($("#p_cost").val().replace(/,/g, ""));
+			let p_bidcost = parseInt($("#p_bidcost").val().replace(/,/g, ""));
+
+			if(!p_cost){
+				alert('판매 희망가를 입력하세요');
+				$("#p_cost").focus();
+				return false;
+			}
+			if(!p_bidcost){
+				alert('입찰 시작 가격을 입력하세요');
+				$("#p_bidcost").focus();
+				return false;
+			}
+			/*if(p_cost<=p_bidcost){
+                alert('입찰 시작가격은 판매희망가보다 작아야 합니다.');
+                $("#p_bidcost").focus();
+                return false;
+            }*/
+
+			if(!$("#p_content").val()){
+				alert('상품설명을 입력하세요');
+				$("#p_content").focus();
+				return false;
+			}
+
+			$("#pCostVal").val($("#p_cost").val().replace(/,/g, ""));
+			$("#pBidcostVal").val($("#p_bidcost").val().replace(/,/g, ""));
+
+			$("form")[1].submit();
+		}
+
+		let fileUploadIndex = 1;
+		function upload() {
+			const userProf = $("#productFile")[0];
+			// 파일을 여러개 선택할 수 있으므로 files 라는 객체에 담긴다.
+			console.log("uploadFile: ", userProf.files)
+
+			if(userProf.files.length === 0){
+				alert("파일은 선택해주세요");
+				return;
+			}
+			let totUpload = userProf.files.length;
+			let uploadFileCount = $("#ul_product_upload li").length-1;
+
+			if ((totUpload+uploadFileCount)>10){
+				alert('사진은 총 10개까지 등록 가능합니다.');
+				return;
+			}
+
+			const formData = new FormData();
+			for(let i=0; i<userProf.files.length;i++) {
+				formData.append("uploadFile", userProf.files[i]);
+			}
+
+			// 임시 파일 업로드
+			let i=0;
+			$.ajax({
+				type:"POST",
+				url: "/uploadFile/image/temps",
+				processData: false,
+				contentType: false,
+				data: formData,
+				success: function(data){
+					if (data.result) {
+						for(var j=0; j<data.uploadfiles.length; j++) {
+							let tempInfo = data.uploadfiles[j];
+							fileUploadIndex++;
+
+							$("#ul_product_upload").append(`
+							<li id="upload_file${fileUploadIndex}">
+								<input type="file" id="file2">
+									<label htmlFor="file2">
+										<span class="sel">
+											<input type="hidden" name="tempFile" value="${tempInfo.uploadFileName}" />
+											<img src="${tempInfo.uploadFileUrl}">
+											<div class="close" onclick="deleteUploadFile(${fileUploadIndex})">
+												<i></i>
+											</div>
+										</span>
+									</label>
+							</li>
+						`);
+						}
+
+						$("#uploadTxt").html($("#ul_product_upload li").length-1 + "/10");
+						i++;
+					}
+				},
+				err: function(err){
+					console.log("err:", err)
+				}
+			})
+		}
+
+		function deleteUploadFile(i){
+			$("#upload_file"+ i).remove();
+			$("#uploadTxt").html($("#ul_product_upload li").length-1 + "/10");
+		}
+
+		function move_focus_cost(){
+			$("#p_cost").focus();
+		}
+
+		function chg_p_cost(){
+			let p_cost  =$("#p_cost").val().replace(/,/g, "") ;
+			if (!p_cost) {
+				$("#p_bidcost").val('');
+			}
+			else {
+				let int_p_cost = parseInt(p_cost);
+				// if(int_p_cost>10000) {
+				// 	let start_p_bidcost = int_p_cost + (int_p_cost*0.1)
+				// 	$("#p_bidcost").val(setComma(Math.floor(start_p_bidcost)));
+				// }
+				// else {
+				$("#p_bidcost").val(setComma(Math.floor(int_p_cost + 3500)));
+				// }
+			}
+		}
+	</script>
+
+</body>
+</html>

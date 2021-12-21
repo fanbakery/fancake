@@ -1,0 +1,76 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+       xmlns:th="http://www.thymeleaf.org">
+<head>
+    <th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+    <header id="header">
+        <div class="head">
+            <div class="h1"><span>정산관리</span></div>
+            <div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+            <div class="btn skip">
+                <button type="button" class="bt searchOpen"><img src="../img/i_search.png" alt="검색"></button>
+                <a href="alarm.html" class="bt"><img src="../img/i_alarm.png" alt="알림"></a>
+            </div>
+        </div>
+    </header>
+    <main id="container">
+        <div class="settlement">
+            <div class="money">
+                <div class="total">
+                    <div class="tit">잔액</div>
+                    <div class="txt" th:text="|${#numbers.formatDecimal(waitSettleAmount, 0, 'COMMA', 0, 'POINT')} 원|"></div>
+                    <div class="act"><a href="/settlement/item_list">정산내역</a></div>
+                </div>
+            </div>
+            <div class="account">
+                <div class="titbox">
+                    <div class="tit">등록 계좌 1개</div>
+                </div>
+                <div class="cntbox">
+                    <ul>
+                        <li>
+                            <input type="radio" name="account" for="account1" checked>
+                            <label for="account1">
+                                <div class="select"><i></i><span>기본 정산 계좌</span></div>
+                                <div class="bank">
+                                    <div class="img"><img src="../img/bank_woori.png" alt=""></div>
+                                    <div class="con">
+                                        <div class="tit">우리은행</div>
+                                        <div class="txt">*******748818</div>
+                                    </div>
+                                    <div class="act"><a href="#">삭제</a></div>
+                                </div>
+                            </label>
+                        </li>
+                        <li>
+                            <input type="radio" name="account" for="account2">
+                            <label for="account2">
+                                <div class="select"><i></i><span>기본 정산 계좌</span></div>
+                                <div class="bank">
+                                    <div class="img"><img src="../img/bank_shinhan.png" alt=""></div>
+                                    <div class="con">
+                                        <div class="tit">신한은행</div>
+                                        <div class="txt">*******271922</div>
+                                    </div>
+                                    <div class="act"><a href="#">삭제</a></div>
+                                </div>
+                            </label>
+                        </li>
+                        <li>
+                            <a href="#" class="add_account">
+                                <img src="../img/i_plus.png" alt="">
+                                <span>계좌 등록</span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="bot_bt">
+                <a href="/settlement/summary_list" class="btn bt_submit">정산하기</a>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

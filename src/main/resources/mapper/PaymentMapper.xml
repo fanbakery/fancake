@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanbakery.fancake.repository.mapper.PaymentMapper">
+
+    <!--
+        it_payment table
+    -->
+
+
+    <select id="selectPaymentInfoByNo"
+            resultType="com.fanbakery.fancake.repository.model.ItPaymentEntity">
+        SELECT *
+        FROM it_payment
+        WHERE no = #{no}
+    </select>
+
+</mapper>

@@ -1,0 +1,87 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>가입하기</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<button type="button" class="bt searchOpen"><img src="../img/i_search.png" alt="검색"></button>
+				<a href="alarm.html" class="bt"><img src="../img/i_alarm.png" alt="알림"></a>
+			</div>
+			<div class="search">
+				<div class="close"><i></i></div>
+				<div class="input">
+					<form>
+						<input type="text" placeholder="인플루언서명을 입력해주세요">
+						<button type="submit"></button>
+						<div class="list">
+							<ul>
+								<li>
+									<a href="#">
+										<div class="ico"><img src="../img/m_prof1.png" alt=""></div>
+										<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>				
+			</div>
+			<script>
+				$(".searchOpen").click(function(){
+					$("#header .search").addClass("sel");
+				});
+				$("#header .search .close").click(function(){
+					$("#header .search").removeClass("sel");
+				});
+				$("#header .search .input input").focus(function(){
+					$(this).siblings(".list").addClass("sel");
+				});
+				$("#header .search .input input").blur(function(){
+					$(this).siblings(".list").removeClass("sel");
+				});
+			</script>
+		</div>
+	</header>
+	<main id="container">
+		<div class="join">
+			<div class="form">
+				<form>
+					<div class="desc">
+						<div class="flex">
+							<input type="text" id="userPhone" name="userPhone" placeholder="휴대폰 번호 입력(숫자만 입력)">
+							<a href="#" class="cert">인증 번호 발신</a>
+						</div>
+					</div>
+					<div class="desc">
+						<div class="flex">
+							<input type="text" id="userCert" name="userCert" placeholder="인증 번호 입력(숫자만 입력)">
+							<a href="#" class="certok off">확인</a>
+						</div>
+						<p class="error_msg">인증번호가 일치하지 않습니다.</p>
+					</div>
+					<div class="desc">
+						<div class="flex">
+							<input type="text" id="userNick" name="userNick" placeholder="별명 입력">
+							<input type="file" id="userProf"><label for="userProf"><i></i><span class="skip">유저 프로필 사진 등록</span></label>
+						</div>
+						<p class="error_msg">닉네임은 2~10 글사이로 입력하셔야 합니다.</p>
+					</div>
+					<div class="agree">
+						<input type="checkbox" id="agree">
+						<label for="agree"><i></i><span><strong>이용약관</strong> 및 <strong>개인정보 취급방침</strong>에 동의합니다.</span></label>
+					</div>
+					<div class="bot_bt">
+						<button type="submit" class="btn bt_submit"><span>가입하기</span></button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</main>
+</body>
+</html>

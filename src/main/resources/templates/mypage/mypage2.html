@@ -1,0 +1,100 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head skip">
+			<div class="h1"><span>마이 페이지</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<button type="button" class="bt searchOpen"><img src="/img/i_search.png" alt="검색"></button>
+				<a href="alarm.html" class="bt"><img src="/img/i_alarm.png" alt="알림"></a>
+			</div>
+			<div class="search">
+				<div class="close"><i></i></div>
+				<div class="input">
+					<form>
+						<input type="text" placeholder="인플루언서명을 입력해주세요">
+						<button type="submit"></button>
+						<div class="list">
+							<ul>
+								<li>
+									<a href="#">
+										<div class="ico"><img src="/img/m_prof1.png" alt=""></div>
+										<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>				
+			</div>
+			<script>
+				$(".searchOpen").click(function(){
+					$("#header .search").addClass("sel");
+				});
+				$("#header .search .close").click(function(){
+					$("#header .search").removeClass("sel");
+				});
+				$("#header .search .input input").focus(function(){
+					$(this).siblings(".list").addClass("sel");
+				});
+				$("#header .search .input input").blur(function(){
+					$(this).siblings(".list").removeClass("sel");
+				});
+			</script>
+		</div>
+	</header>
+	<main id="container">
+		<div class="mypage">
+			<div class="info">
+				<div class="img">
+					<div class="ico"><img src="/img/m_prof2" alt=""></div>
+					<div class="file"><input type="file" id="userProf"><label for="userProf"><i></i><span class="skip">유저 프로필 사진 등록</span></label></div>
+				</div>
+				<div class="nick">
+					<div class="box">
+						<span>연나비님</span>
+						<a href="mypage3.html" class="bt_change"><i></i><span class="skip">닉네임 변경하기</span></a>
+					</div>
+				</div>
+			</div>
+			<div class="buy">
+				<div class="titbox">
+					<div class="tit">구매 내역</div>
+				</div>
+				<div class="cntbox">
+					<div class="flex">
+						<dl class="total"><dt>전체</dt><dd>4</dd></dl>
+						<dl><dt>판매 중</dt><dd>3</dd></dl>
+						<dl><dt>완료</dt><dd>1</dd></dl>
+					</div>
+				</div>				
+			</div>
+			<div class="my">
+				<ul>
+					<li><a href="#">팬 Pay 관리</a></li>
+					<li><a href="#">배송지 등록 <span>서울시 강남구 도곡동 타워팰리스 105동 ***</span></a></li>
+					<li><a href="#">상품 보내실 주소 <span>서울시 성동구 연무장길11-12</span></a></li>
+					<li><a href="#">알림</a></li>
+					<li><a href="#">기부신청하기</a></li>
+					<li><a href="#">이용약관/개인정보처리방침</a></li>
+					<li><a href="#">FAQ</a></li>
+					<li><a href="myinfo.html">개인정보관리</a></li>
+				</ul>
+			</div>
+			
+		</div>
+	</main>
+
+	<!-- footer 영역 -->
+<!--	<th:block th:replace="fragment/footer :: footerFragment"> </th:block>-->
+
+	<!-- bottom 메뉴 영역 -->
+	<th:block th:replace="fragment/bottom_menu :: bottomMenuFragment"> </th:block>
+
+</body>
+</html>

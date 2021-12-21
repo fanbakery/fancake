@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanbakery.fancake.repository.mapper.ZzimMapper">
+
+    <!--
+        it_zzim_item table
+    -->
+
+    <select id="selectItemZzimListByMbNo"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="com.fanbakery.fancake.repository.model.ItemListInfoEntity">
+        SELECT ii.item_seq, ii.item_name, ii.item_img1
+             , ii.item_sell_curr_price
+             , ii.item_adult, ii.item_status
+             , im.mb_no , im.mb_nick , im.mb_profile
+             , 1 as isMyZzim
+        FROM it_zzim_item izi
+                 LEFT JOIN it_item ii on ii.item_seq = izi.item_seq
+                 LEFT JOIN it_member im ON ii.item_reg_mb_no = im.mb_no
+        WHERE izi.zzim_mb_no = #{mbNo} AND ii.item_seq &gt;  0
+        ORDER BY izi.zzim_date DESC
+            LIMIT #{pageIndex}, #{cntPerPage};
+    </select>
+
+
+
+    <select id="exsitsMyItemZzimByMbNo"
+            resultType="boolean">
+        SELECT EXISTS( SELECT zzim_item_seq
+                       FROM it_zzim_item
+                       WHERE item_seq = #{itemSeq} and zzim_mb_no = #{mbNo}
+                   )
+    </select>
+
+
+    <select id="selectItemZzimCountByMyMbNo"
+            resultType="Long">
+        SELECT COUNT(item_seq) FROM it_zzim_item
+        WHERE zzim_mb_no = #{myMbNo}
+    </select>
+
+
+    <select id="selectItemZzimCountByItemSeq"
+            resultType="long">
+        SELECT COUNT(zzim_item_seq)
+        FROM it_zzim_item
+        WHERE item_seq = #{itemSeq}
+    </select>
+
+
+
+    <insert id="insertItemZzim" parameterType="com.fanbakery.fancake.module.zzim.model.ProductZzimReq"
+            useGeneratedKeys="true">
+        INSERT INTO it_zzim_item
+                 ( item_seq, zzim_mb_no, zzim_date )
+        VALUES ( #{itemSeq}, #{mbNo}, #{zzimDate} )
+        ON DUPLICATE KEY UPDATE zzim_date = #{zzimDate}
+    </insert>
+
+    <delete id="deleteItemZzim" parameterType="com.fanbakery.fancake.module.zzim.model.ProductZzimReq">
+        DELETE FROM it_zzim_item
+            WHERE item_seq = #{itemSeq} AND zzim_mb_no = #{mbNo}
+    </delete>
+
+
+    <!--
+       it_zzim_influencer table
+   -->
+
+
+    <select id="selectInfluenZzimListByMbNo"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="com.fanbakery.fancake.repository.model.InfluencerListInfoEntity">
+        SELECT im.mb_no , im.mb_nick , im.mb_profile
+             , im.mb_signature_complete_date as actDate
+             , imii.act_youtube , imii.act_afreeca , imii.act_twitch
+             , imii.act_broadcast , imii.act_instagram , imii.act_writer
+             , imii.cover_img1
+             , IF(pizi.zzimCnt = null, 0, pizi.zzimCnt )
+             , 1 as isMyZzim
+             , IF(im.mb_signature_complete_date &gt;= #{mbSignatureCompleteDate}, 1, 0) as isNew
+        FROM it_zzim_influencer izi
+                 LEFT JOIN (    SELECT influen_mb_no, COUNT(zzim_influen_seq) as zzimCnt
+                                FROM it_zzim_influencer
+                                GROUP BY influen_mb_no
+                            ) pizi on pizi.influen_mb_no = izi.influen_mb_no
+                 LEFT JOIN it_member im on im.mb_no = izi.influen_mb_no
+                 LEFT JOIN it_mb_infulener_info imii ON imii.mb_no = izi.influen_mb_no
+        WHERE izi.zzim_mb_no = #{mbNo}
+              AND im.mb_signature = #{mbSignature} AND im.mb_is_unregistered = 0
+        ORDER BY izi.zzim_date DESC
+            LIMIT #{pageIndex}, #{cntPerPage};
+    </select>
+
+
+    <select id="selectInfluenZzimCountByMyMbNo"
+            resultType="Long">
+        SELECT COUNT(zzim_influen_seq) FROM it_zzim_influencer
+        WHERE zzim_mb_no = #{myMbNo}
+    </select>
+
+    <select id="selectInfluenZzimCountByMbNo"
+            resultType="long">
+        SELECT COUNT(zzim_influen_seq)
+        FROM it_zzim_influencer
+        WHERE influen_mb_no = #{mbNo}
+    </select>
+
+
+    <insert id="insertInfluenZzim" parameterType="com.fanbakery.fancake.module.zzim.model.InfluencerZzimReq"
+            useGeneratedKeys="true">
+        INSERT INTO it_zzim_influencer
+            ( influen_mb_no, zzim_mb_no, zzim_date )
+        VALUES ( #{influenMbNo}, #{zzimMbNo}, #{zzimDate} )
+        ON DUPLICATE KEY UPDATE zzim_date = #{zzimDate}
+    </insert>
+
+    <delete id="deleteInfluenZzim" parameterType="com.fanbakery.fancake.module.zzim.model.InfluencerZzimReq">
+        DELETE FROM it_zzim_influencer
+            WHERE influen_mb_no = #{influenMbNo} AND zzim_mb_no = #{zzimMbNo}
+    </delete>
+</mapper>

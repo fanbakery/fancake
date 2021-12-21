@@ -1,0 +1,213 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>인플루언서 전환</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<a href="#" class="bt"><img src="../img/i_share.png" alt="공유하기"></a>
+				<button type="button" class="bt zzimOpen"><img src="../img/i_zzim_off.png" alt="찜하기"></button>
+			</div>
+			<div class="search">
+				<div class="close"><i></i></div>
+				<div class="input">
+					<form>
+						<input type="text" placeholder="인플루언서명을 입력해주세요">
+						<button type="submit"></button>
+						<div class="list">
+							<ul>
+								<li>
+									<a href="#">
+										<div class="ico"><img src="../img/m_prof1.png" alt=""></div>
+										<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>				
+			</div>
+			<script>
+				$(".searchOpen").click(function(){
+					$("#header .search").addClass("sel");
+				});
+				$("#header .search .close").click(function(){
+					$("#header .search").removeClass("sel");
+				});
+				$("#header .search .input input").focus(function(){
+					$(this).siblings(".list").addClass("sel");
+				});
+				$("#header .search .input input").blur(function(){
+					$(this).siblings(".list").removeClass("sel");
+				});
+			</script>
+		</div>
+	</header>
+	<main id="container">
+		<div class="influencer edit">
+			<div class="progress"><i style="width:33.33%"></i></div>
+			<div class="form">				
+				<form method="post" th:action="@{/mypage/change_influencer/step1}" th:object="${chgInfuencerReq}"  onsubmit="next();return false;">
+					<input type="hidden" id="actYoutube"  	name="actYoutube" value="0">
+					<input type="hidden" id="actAfreeca"  	name="actAfreeca" value="0">
+					<input type="hidden" id="actTwitch"  	name="actTwitch" value="0">
+					<input type="hidden" id="actBroadcast"  name="actBroadcast" value="0">
+					<input type="hidden" id="actInstagram"  name="actInstagram" value="0">
+					<input type="hidden" id="actWriter"  	name="actWriter" value="0">
+					<input type="hidden" id="temp_profile" 	name="temp_profile" value="" />
+					<dl>
+						<dt class="skip">사진 등록</dt>
+						<dd>
+							<input type="file" id="profileFile" onchange="upload();">
+							<label for="profileFile">
+								<div class="img">
+									<div class="ico" >
+										<img id="profileFile_preview" src="../../img/i_camera.png" alt="">
+									</div>
+								</div>
+								<span>프로필 사진</span>
+							</label>
+						</dd>
+					</dl>
+					<dl>
+						<dt class="skip">활동명</dt>
+						<dd><input type="text" id="mbNick" name="mbNick" onkeyup="chg_validate();"
+								   th:field="*{mbNick}" th:value="${chgInfuencerReq.mbNick}" placeholder="활동명"></dd>
+					</dl>
+					<dl>
+						<dt>활동 분야(중복 선택 가능)</dt>
+						<dd>
+							<ul>
+								<li><input type="checkbox" name="i_type" id="i_type1"><label for="i_type1">유튜브</label></li>
+								<li><input type="checkbox" name="i_type" id="i_type2"><label for="i_type2">아프리카</label></li>
+								<li><input type="checkbox" name="i_type" id="i_type3"><label for="i_type3">트위치</label></li>
+								<li><input type="checkbox" name="i_type" id="i_type4"><label for="i_type4">방송</label></li>
+								<li><input type="checkbox" name="i_type" id="i_type5"><label for="i_type5">인스타그램</label></li>
+								<li><input type="checkbox" name="i_type" id="i_type6"><label for="i_type6">작가</label></li>
+							</ul>
+						</dd>
+					</dl>
+					<div class="bot_bt bot_small">
+						<button id="btn_next" type="submit" class="btn bt_submit" disabled>다음</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</main>
+</body>
+
+<script type="text/javascript">
+
+	$( document ).ready(function() {
+		$("input[name=i_type]").change(function() {
+			chg_validate();
+		});
+	});
+
+	function next(){
+		if(!$("#temp_profile").val()){
+			alert('프로파일 사진을 등록해야 합니다.');
+			return false;
+		}
+
+		if(!$("#mbNick").val()){
+			alert('활동명을 입력하세요');
+			$("#mbNick").focus();
+			return false;
+		}
+
+		let act_youtube = $("#i_type1").is(":checked");
+		let act_afreeca = $("#i_type2").is(":checked");
+		let act_twitch = $("#i_type3").is(":checked");
+		let act_broadcast = $("#i_type4").is(":checked");
+		let act_instagram = $("#i_type5").is(":checked");
+		let act_writer = $("#i_type6").is(":checked");
+
+		if(act_youtube || act_afreeca || act_twitch || act_broadcast || act_instagram || act_writer) {
+			$("#actYoutube").val(act_youtube);
+			$("#actAfreeca").val(act_afreeca);
+			$("#actTwitch").val(act_twitch);
+			$("#actBroadcast").val(act_broadcast);
+			$("#actInstagram").val(act_instagram);
+			$("#actWriter").val(act_writer);
+		}
+		else {
+			alert('활동 채널을 선택하세요');
+			return false;
+		}
+
+		$("form")[1].submit();
+	}
+
+	function upload() {
+		const userProf = $("#profileFile")[0];
+		// 파일을 여러개 선택할 수 있으므로 files 라는 객체에 담긴다.
+		console.log("uploadFile: ", userProf.files)
+
+		if(userProf.files.length === 0){
+			alert("파일은 선택해주세요");
+			return;
+		}
+
+		const formData = new FormData();
+		formData.append("uploadFile", userProf.files[0]);
+
+		// 임시 파일 업로드
+		let i=0;
+		$.ajax({
+			type:"POST",
+			url: "/uploadFile/image/temp",
+			processData: false,
+			contentType: false,
+			data: formData,
+			success: function(data){
+				if (data.result) {
+					$("#profileFile_preview").attr("src", data.uploadFileUrl)
+							.parent().removeClass("ico").addClass("pic");
+					$("#temp_profile").val(data.uploadFileName);
+					chg_validate();
+				}
+			},
+			err: function(err){
+				console.log("err:", err)
+			}
+		})
+	}
+
+	function chg_validate(){
+		let bRst = true;
+		if(!$("#temp_profile").val()) bRst = false;
+		if(!$("#mbNick").val()) bRst = false;
+
+		let act_youtube = $("#i_type1").is(":checked");
+		let act_afreeca = $("#i_type2").is(":checked");
+		let act_twitch = $("#i_type3").is(":checked");
+		let act_broadcast = $("#i_type4").is(":checked");
+		let act_instagram = $("#i_type5").is(":checked");
+		let act_writer = $("#i_type6").is(":checked");
+
+		if(act_youtube || act_afreeca || act_twitch || act_broadcast || act_instagram || act_writer) {
+		}
+		else {
+			bRst = false;
+
+		}
+
+		if (bRst) {
+			if ($("#btn_next").attr("disabled")) {
+				$("#btn_next").attr("disabled", false);
+			}
+		}
+		else {
+			if (!$("#btn_next").attr("disabled")) {
+				$("#btn_next").attr("disabled", true);
+			}
+		}
+	}
+</script>
+</html>

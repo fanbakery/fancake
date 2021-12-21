@@ -1,0 +1,89 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>알림</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<button type="button" class="bt searchOpen"><img src="../img/i_search.png" alt="검색"></button>
+				<a href="alarm.html" class="bt"><img src="../img/i_alarm.png" alt="알림"></a>
+			</div>
+		</div>
+	</header>
+	<main id="container">
+		<div class="setting">
+			<ul>
+				<li>
+					<div class="tit">메세지 알림</div>
+					<div class="ico">
+						<input type="checkbox" id="alarm1" onchange="chgAlarm();">
+						<label for="alarm1"><i></i></label>
+					</div>
+				</li>
+				<li>
+					<div class="tit">소리</div>
+					<div class="ico">
+						<input type="checkbox" id="alarm2" onchange="chgAlarm();">
+						<label for="alarm2"><i></i></label>
+					</div>
+				</li>
+				<li>
+					<div class="tit">진동</div>
+					<div class="ico">
+						<input type="checkbox" id="alarm3" onchange="chgAlarm();">
+						<label for="alarm3"><i></i></label>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</main>
+
+	<!-- bottom 메뉴 영역 -->
+	<th:block th:replace="fragment/bottom_menu :: bottomMenuFragment"> </th:block>
+
+
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+			var alarm1 = '[[${alarmSetting.mbAlarmMessageYn}]]';
+			var alarm2 = '[[${alarmSetting.mbAlarmSoundYn}]]';
+			var alarm3 = '[[${alarmSetting.mbAlarmVibrationYn}]]';
+
+			if(alarm1 == '1') $("input:checkbox[id=alarm1]").prop("checked", true)
+			if(alarm2 == '1') $("input:checkbox[id=alarm2]").prop("checked", true)
+			if(alarm3 == '1') $("input:checkbox[id=alarm3]").prop("checked", true)
+		});
+
+		function chgAlarm(){
+			const formData = new FormData();
+			if($("input:checkbox[id=alarm1]").is(":checked"))	formData.append("mbAlarmMessageYn", 1);
+			else 												formData.append("mbAlarmMessageYn", 0);
+
+			if($("input:checkbox[id=alarm2]").is(":checked"))	formData.append("mbAlarmSoundYn", 1);
+			else 												formData.append("mbAlarmSoundYn", 0);
+
+			if($("input:checkbox[id=alarm3]").is(":checked"))	formData.append("mbAlarmVibrationYn", 1);
+			else 												formData.append("mbAlarmVibrationYn", 0);
+
+			$.ajax({
+				type: "POST",
+				url: "/api/alarm/setting",
+				processData: false,
+				contentType: false,
+				data: formData
+			})
+			.done(function(data) {
+			})
+			.fail(function(xhr, status, errorThrown) {
+				alert('처리 중 오류가 발생하였습니다.\n잠시 후에 시도하여 주세요');
+				location.href='/mypage/';
+			})
+		}
+	</script>
+</body>
+</html>

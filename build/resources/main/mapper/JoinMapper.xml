@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanbakery.fancake.repository.mapper.JoinMapper">
+
+
+    <!--
+     it_phome_cert table
+    -->
+    <insert id="insertPhoneCertNum" parameterType="String">
+        INSERT INTO it_phone_cert
+        ( phone, cert, send_time, expire_time
+        )
+        VALUES ( #{phone}, #{certNo}
+               , now() , DATE_ADD(NOW(), INTERVAL 3 MINUTE)
+               )
+    </insert>
+
+
+    <!--
+     it_member_nick_block table
+    -->
+    <select id="selectBlockNick" parameterType="String"
+            resultType="string">
+        SELECT
+            mb_nick
+        FROM it_member_nick_block
+        WHERE mb_nick = #{nick}
+    </select>
+
+
+    <!--
+     it_member table
+    -->
+    <select id="selectMbInfombyMbEmail" parameterType="String"
+            resultType="com.fanbakery.fancake.repository.model.ItMemberEntity">
+        SELECT
+            mb_no, mb_email
+        FROM it_member
+        WHERE mb_email = #{email} AND mb_is_unregistered = 0
+    </select>
+
+
+    <select id="selectMbInfombyMbHp" parameterType="String"
+            resultType="com.fanbakery.fancake.repository.model.ItMemberEntity">
+        SELECT
+            mb_no, mb_email, mb_hp
+        FROM it_member
+        WHERE mb_hp = #{hp} AND mb_is_unregistered = 0
+    </select>
+
+
+    <select id="selectMbNoByMbEmail" parameterType="String"
+            resultType="long">
+        SELECT
+            mb_no
+        FROM it_member
+        WHERE mb_email = #{email} AND mb_is_unregistered = 0
+    </select>
+
+    <select id="selectMbNoByMbNick" parameterType="String"
+            resultType="long">
+        SELECT im.mb_no
+        FROM it_member im
+            LEFT JOIN it_mb_infulener_info imii ON im.mb_no = imii.mb_no
+        WHERE (im.mb_nick = #{nick} OR imii.temp_nick = #{nick})
+                AND im.mb_is_unregistered = 0
+    </select>
+
+
+
+    <insert id="insertJoinEmail" parameterType="com.fanbakery.fancake.repository.model.ItMemberEntity"
+            useGeneratedKeys="true"
+            keyProperty="mbNo">
+        INSERT INTO it_member
+                    ( mb_email, mb_password, mb_name, mb_nick, mb_hp, mb_certify, mb_profile
+                       , mb_nick_date
+                       , mb_today_login, mb_datetime
+                       , mb_signature
+                       , mb_route
+                        )
+            VALUES ( #{mbEmail}, #{mbPassword}, #{mbName}, #{mbNick}, #{mbHp}, #{mbCertify}, #{mbProfile}
+                       , now()
+                       , now() , now()
+                        , #{mbSignature}
+                        , #{mbRoute}
+                    )
+    </insert>
+
+
+
+    <insert id="insertJoinSns" parameterType="com.fanbakery.fancake.repository.model.ItMemberEntity"
+            useGeneratedKeys="true"
+            keyProperty="mbNo">
+        INSERT INTO it_member
+        ( mb_email, mb_nick
+        , mb_nick_date
+        , mb_today_login, mb_datetime
+        , mb_signature
+        , mb_route
+        , mb_profile
+        )
+        VALUES ( #{mbEmail}, #{mbNick}
+               , now()
+               , now() , now()
+               , #{mbSignature}
+               , #{mbRoute}
+               , #{mbProfile}
+               )
+    </insert>
+
+
+
+    <update id="updateUserTempPW"
+            parameterType="com.fanbakery.fancake.repository.model.ItMemberEntity">
+        UPDATE it_member
+            SET mb_password = #{mbPassword}
+        WHERE mb_email = #{mbEmail}
+    </update>
+</mapper>

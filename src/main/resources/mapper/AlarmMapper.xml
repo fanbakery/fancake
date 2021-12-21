@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanbakery.fancake.repository.mapper.AlarmMapper">
+
+    <!--
+        it_member_alarm table
+     -->
+    <select id="selectAlarmListByMbno"
+            resultType="com.fanbakery.fancake.repository.model.ItMemberAlarmEntity">
+        SELECT ima.* , im.mb_profile as influncerProfile
+        FROM it_member_alarm ima
+            LEFT JOIN it_member im ON im.mb_no = ima.mb_infulencer_no
+        WHERE ima.mb_no = #{mbNo}
+             AND (ima.mb_alarm_open_yn = 0 OR (ima.mb_alarm_open_yn = 1 AND ima.mb_datetime &gt; #{startDate}))
+        ORDER BY ima.mb_datetime DESC
+    </select>
+
+
+    <update id="updateAlarmOpenYByMbNo">
+        UPDATE it_member_alarm
+        SET mb_alarm_open_yn = 1
+        WHERE mb_no = #{mbNo} AND mb_alarm_open_yn = 0
+    </update>
+
+
+    <select id="selectAlarmSettingInfoByMbNo"
+            resultType="com.fanbakery.fancake.module.alarm.model.AlarmSettingInfo">
+        SELECT mb_no, mb_alarm_message_yn, mb_alarm_sound_yn, mb_alarm_vibration_yn
+        FROM it_member
+        WHERE mb_no = #{mbNo}
+    </select>
+    
+    
+    <update id="updateAlarmSettingByMbNo"
+            parameterType="com.fanbakery.fancake.module.alarm.model.AlarmSettingInfo">
+        UPDATE it_member
+            SET mb_alarm_message_yn = #{mbAlarmMessageYn}
+                , mb_alarm_sound_yn = #{mbAlarmSoundYn}
+                , mb_alarm_vibration_yn = #{mbAlarmVibrationYn}
+        WHERE mb_no = #{mbNo}
+    </update>
+</mapper>

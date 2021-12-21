@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanbakery.fancake.repository.mapper.ProductMapper">
+
+    <!--
+        it_item table
+     -->
+    <select id="selectItemInfoByItemSeq"
+            resultType="com.fanbakery.fancake.repository.model.ItItemEntity">
+        SELECT
+            *
+        FROM it_item
+        WHERE item_seq = #{itemSeq}
+    </select>
+
+
+    <select id="selectBidItemInfoByItemSeq"
+            resultType="com.fanbakery.fancake.repository.model.ItItemEntity">
+        SELECT
+            *
+        FROM it_item
+        WHERE item_seq = #{itemSeq}
+          and item_status = #{itemStatus}
+    </select>
+
+
+    <update id="updateBidInfoByItemSeq">
+        UPDATE it_item
+        SET item_sell_curr_price = #{biddingPrice}
+          , item_last_bidding_seq = #{biddingSeq}
+        WHERE item_seq = #{itemSeq}
+
+    </update>
+
+
+    <insert id="insertItem"
+            parameterType="com.fanbakery.fancake.repository.model.ItItemEntity"
+            useGeneratedKeys="true"
+            keyProperty="itemSeq">
+        INSERT INTO it_item
+        ( item_name, item_desc, item_adult
+        , item_sell_price
+        , item_sell_start_price, item_sell_curr_price
+        , item_sell_add_price
+        , item_status
+        , item_reg_date
+        , item_sell_start_date, item_sell_end_date
+        , item_register_id, item_reg_mb_no
+        , item_img1, item_img2, item_img3, item_img4, item_img5
+        , item_img6, item_img7, item_img8, item_img9, item_img10
+        , item_short_url
+        )
+        VALUES ( #{itemName}, #{itemDesc}, #{itemAdult}
+               , #{itemSellPrice}
+               , #{itemSellStartPrice}, #{itemSellCurrPrice}
+               , #{itemSellAddPrice}
+               , #{itemStatus}
+               , #{itemRegDate}
+               , #{itemSellStartDate},#{itemSellEndDate}
+               , #{itemRegisterId}, #{itemRegMbNo}
+               , #{itemImg1}, #{itemImg2}, #{itemImg3}, #{itemImg4}, #{itemImg5}
+               , #{itemImg6}, #{itemImg7}, #{itemImg8}, #{itemImg9}, #{itemImg10}
+               , #{itemShortUrl}
+               )
+    </insert>
+
+    
+    <update id="updateItem"
+            parameterType="com.fanbakery.fancake.repository.model.ItItemEntity">
+        UPDATE it_item
+            SET item_name = #{itemName}
+                , item_desc = #{itemDesc}
+                , item_img1 = #{itemImg1}, item_img2 = #{itemImg2}
+                , item_img3 = #{itemImg3}, item_img4 = #{itemImg4}
+                , item_img5 = #{itemImg5}, item_img6 = #{itemImg6}
+                , item_img7 = #{itemImg7}, item_img8 = #{itemImg8}
+                , item_img9 = #{itemImg9}, item_img10 = #{itemImg10}
+        WHERE item_seq = #{itemSeq} AND item_reg_mb_no = #{itemRegMbNo}
+    </update>
+    
+    
+    
+    <update id="updateShortUrl" >
+        UPDATE it_item
+        SET item_short_url = #{itemShortUrl}
+        WHERE item_seq = #{itemSeq}
+    </update>
+
+    <select id="getShortUrl" parameterType="String" resultType="Long">
+        SELECT item_seq
+        FROM it_item
+        WHERE item_short_url = #{itemShortUrl}
+    </select>
+
+
+
+
+    <update id="updateBidSuccEndSaleItemStatus">
+        UPDATE it_item
+            SET  item_status = #{selStatus}
+        where item_sell_end_date &lt;= #{endDate} AND item_last_bidding_seq &gt; 0;
+    </update>
+
+
+
+    <update id="updateNoBidEndSaleItemStatus">
+        UPDATE it_item
+        SET  item_sell_end_date = DATE_ADD(item_sell_end_date, INTERVAL 1 DAY)
+        where item_sell_end_date &lt;= #{endDate} AND item_last_bidding_seq = 0;
+    </update>
+
+    <!--
+        it_item_bidding table
+     -->
+    <select id="selectItemPayedMbInfo"
+            resultType="com.fanbakery.fancake.module.product.model.productInfo.ProductPayMbInfo">
+        SELECT im.mb_no, im.mb_nick, im.mb_profile, iib.bidding_succ_date
+        FROM it_item_bidding iib
+           LEFT JOIN it_member im ON im.mb_no = iib.bidding_mb_no
+        WHERE iib.item_seq = #{itemSeq} AND iib.bidding_status = #{status};
+    </select>
+
+</mapper>

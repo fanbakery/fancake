@@ -1,0 +1,212 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<script src="http://dmaps.daum.net/map_js_init/postcode.v2.js?autoload=false"></script>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>주소록, 배송지 관리</span></div>
+			<div class="pre"><a href="/account/address-book/"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<button type="button" class="bt searchOpen"><img src="/img/i_search.png" alt="검색"></button>
+				<a href="alarm.html" class="bt"><img src="/img/i_alarm.png" alt="알림"></a>
+			</div>
+		</div>
+	</header>
+	<main id="container">
+		<div class="addressbook">
+			<div class="form">
+				<form>
+					<input type="hidden" name="abookSeq" id="abookSeq" th:value="${addressBook.abookSeq}">
+					<dl>
+						<dt class="skip">배송지명</dt>
+						<dd>
+							<input type="text" id="abookTitle" name="abookTitle" placeholder="배송지명"
+								   th:attr="old_value=|${addressBook.abookTitle}|"
+								   th:value="${addressBook.abookTitle}"
+								   onkeyup="chg_validate()">
+							<label for="abookTitle" class="skip">배송지명</label>
+						</dd>
+					</dl>
+					<dl>
+						<dt class="skip">수령인</dt>
+						<dd>
+							<input type="text" id="abookReciever" name="abookReciever" placeholder="수령인"
+								   th:attr="old_value=|${addressBook.abookReciever}|"
+								   th:value="${addressBook.abookReciever}"
+								   onkeyup="chg_validate()">
+							<label for="abookReciever" class="skip">수령인</label>
+						</dd>
+					</dl>
+					<!--<dl>
+						<dt class="skip">우편번호</dt>
+						<dd>
+							<input type="text" name="abookZipCode" id="abookZipCode" placeholder="우편번호"
+								   th:attr="old_value=|${addressBook.abookZipCode}|"
+								   th:value="${addressBook.abookZipCode}"
+								   readonly>
+							<label for="abookZipCode" class="skip">우편번호</label>
+						</dd>
+					</dl>-->
+					<input type="hidden" name="abookZipCode" id="abookZipCode" placeholder="우편번호"
+						   th:attr="old_value=|${addressBook.abookZipCode}|"
+						   th:value="${addressBook.abookZipCode}"
+						   readonly>
+					<!--<dl>
+						<dt class="skip">기본 주소</dt>
+						<dd>
+							<input type="text" name="abookAddress1" id="abookAddress1" placeholder="기본 주소 입력"
+								   th:attr="old_value=|${addressBook.abookAddress1} ${addressBook.abookAddress2}|"
+								   th:value="${addressBook.abookAddress1 + ' ' + addressBook.abookAddress2}"
+								   readonly>
+							<label for="abookAddress1" class="skip">기본 주소 입력</label>
+						</dd>
+					</dl>-->
+					<dl>
+						<dt class="skip">기본 주소</dt>
+						<dd>
+							<input type="text" name="abookAddress1" id="abookAddress1" onclick="javascript:execPostCode();"
+								   th:attr="old_value=|${addressBook.abookAddress1}|"
+								   th:value="${addressBook.abookAddress1}"
+								   placeholder="기본 주소 입력" readonly>
+							<label for="abookAddress1" class="skip">기본 주소 입력</label>
+						</dd>
+					</dl>
+					<dl>
+						<dt class="skip">상세 주소</dt>
+						<dd>
+							<input type="text" name="abookAddress2" id="abookAddress2" placeholder="상세 주소 입력"
+								   th:attr="old_value=|${addressBook.abookAddress2}|"
+								   th:value="${addressBook.abookAddress2}"
+								   onkeyup="chg_validate()">
+							<label for="abookAddress2" class="skip"></label>
+						</dd>
+					</dl>
+					<dl>
+						<dt class="skip">휴대폰 번호 입력</dt>
+						<dd>
+							<input type="text" id="abookPhone" name="abookPhone" placeholder="휴대폰 번호 입력"
+								   th:attr="old_value=|${addressBook.abookPhone}|"
+								   th:value="${addressBook.abookPhone}"
+								   onkeyup="chg_validate()">
+							<label for="abookPhone" class="skip">휴대폰 번호 입력</label>
+						</dd>
+					</dl>
+					<div class="bot_bt">
+						<button id="btn_next" type="button" class="btn bt_submit" disabled onclick="regist();">저장</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</main>
+
+	<script>
+		function execPostCode(){
+			daum.postcode.load(function(){
+				new daum.Postcode({
+					oncomplete: function(data) {
+						// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+						// 각 주소의 노출 규칙에 따라 주소를 조합한다.
+						// 내려오는 변수가 값이 없을땐 공백('')값을 가지므로, 이를 참고하여 분기한다.
+						var addr = ''; // 주소 변수
+
+						//사용자가 선택한 주소 타입에 따라 해당 주소 값을 가져온다.
+						if (data.userSelectedType === 'R') { // 사용자가 도로명 주소를 선택했을 경우
+							addr = data.roadAddress;
+						} else { // 사용자가 지번 주소를 선택했을 경우(J)
+							addr = data.jibunAddress;
+						}
+
+						// 우편번호와 주소 정보를 해당 필드에 넣는다.
+						document.getElementById('abookZipCode').value = data.zonecode;
+						document.getElementById("abookAddress1").value = addr;
+
+						// 커서를 상세주소 필드로 이동한다.
+						//document.getElementById("userAddress").focus();
+
+						$("#abookAddress2").focus();
+						chg_validate();
+					}
+				}).open();
+			});
+		}
+
+
+		function regist(){
+			let bRst = true;
+			if(!$("#abookTitle").val()) {
+				alert('배송지명을 입력하세요');
+				$("#abookTitle").focus();
+				return;
+			}
+			if(!$("#abookReciever").val()) {
+				alert('수령인을 입력하세요');
+				$("#abookReciever").focus();
+				return;
+			}
+
+			if(!$("#abookZipCode").val() || !$("#abookAddress1").val()) {
+				alert('주소를 입력하세요');
+				return;
+			}
+			if(!$("#abookAddress2").val()) {
+				alert('상세 주소를 입력하세요');
+				$("#abookAddress2").focus();
+				return;
+			}
+
+			if(!$("#abookPhone").val()) {
+				alert('휴대폰 번호를 입력하세요');
+				$("#abookPhone").focus();
+				return;
+			}
+
+			const formData = new FormData();
+			formData.append("abookTitle", $("#abookTitle").val());
+			formData.append("abookReciever", $("#abookReciever").val());
+			formData.append("abookZipCode", $("#abookZipCode").val());
+			formData.append("abookAddress1", $("#abookAddress1").val());
+			formData.append("abookAddress2", $("#abookAddress2").val());
+			formData.append("abookPhone", $("#abookPhone").val());
+
+			$.ajax({
+				type: "POST",
+				url: "/api/account/address/edit",
+				dataType : 'json',
+				// data: formData
+				data: $("form").serialize()
+			})
+			.done(function(data) {
+				alert('주소지를 수정하였습니다.');
+				location.href='/account/address-book/'
+			})
+			.fail(function(xhr, status, errorThrown) {
+				let json = JSON.parse(xhr.responseText);
+				alert('주소지 수정을 실패하였습니다.');
+				location.href='/account/address-book/'
+			})
+		}
+
+		function chg_validate(){
+			let bRst = false;
+			if($("#abookTitle").val() && ($("#abookTitle").val()!==$("#abookTitle").attr('old_value'))) bRst = true;
+			if($("#abookReciever").val() && ($("#abookReciever").val()!==$("#abookReciever").attr('old_value'))) bRst = true;
+			if($("#abookZipCode").val() && ($("#abookZipCode").val()!==$("#abookZipCode").attr('old_value'))) bRst = true;
+			if($("#abookAddress1").val() && ($("#abookAddress1").val()!==$("#abookAddress1").attr('old_value'))) bRst = true;
+			if($("#abookAddress2").val() && ($("#abookAddress2").val()!==$("#abookAddress2").attr('old_value'))) bRst = true;
+			if($("#abookPhone").val() && ($("#abookPhone").val()!==$("#abookPhone").attr('old_value'))) bRst = true;
+
+			if (bRst) {
+				$("#btn_next").removeAttr("disabled");
+			}
+			else {
+				$("#btn_next").attr("disabled", true);
+			}
+		}
+	</script>
+</body>
+</html>

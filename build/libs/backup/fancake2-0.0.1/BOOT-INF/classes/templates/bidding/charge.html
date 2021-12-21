@@ -1,0 +1,88 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head skip">
+			<div class="h1"><span>팬케이크 머니 관리</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<button type="button" class="bt searchOpen"><img src="../img/i_search.png" alt="검색"></button>
+				<a href="alarm.html" class="bt"><img src="../img/i_alarm.png" alt="알림"></a>
+			</div>
+			<div class="search">
+				<div class="close"><i></i></div>
+				<div class="input">
+					<form>
+						<input type="text" placeholder="인플루언서명을 입력해주세요">
+						<button type="submit"></button>
+						<div class="list">
+							<ul>
+								<li>
+									<a href="#">
+										<div class="ico"><img src="../img/m_prof1.png" alt=""></div>
+										<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>				
+			</div>
+			<script>
+				$(".searchOpen").click(function(){
+					$("#header .search").addClass("sel");
+				});
+				$("#header .search .close").click(function(){
+					$("#header .search").removeClass("sel");
+				});
+				$("#header .search .input input").focus(function(){
+					$(this).siblings(".list").addClass("sel");
+				});
+				$("#header .search .input input").blur(function(){
+					$(this).siblings(".list").removeClass("sel");
+				});
+			</script>
+		</div>
+	</header>
+	<main id="container">
+		<div class="charge">
+			<form action="">
+				<div class="tit">비밀번호</div>
+				<div class="txt">
+					<input type="password" id="c_password" maxlength="6">
+					<label for="c_password">
+						<i></i><i></i><i></i><i></i><i></i><i></i>
+					</label>
+				</div>
+				<div class="btn skip">
+					<button type="submit">확인</button>
+				</div>
+			</form>
+			<script>
+			$('#c_password').keyup(function (e){
+				var content = $(this).val();
+				if (content.length == 0){
+					$(this).siblings('label').removeClass().addClass("word0");
+				} else if (content.length == 1){
+					$(this).siblings('label').removeClass().addClass("word1");
+				} else if (content.length == 2){
+					$(this).siblings('label').removeClass().addClass("word2");
+				} else if (content.length == 3){
+					$(this).siblings('label').removeClass().addClass("word3");
+				} else if (content.length == 4){
+					$(this).siblings('label').removeClass().addClass("word4");
+				} else if (content.length == 5){
+					$(this).siblings('label').removeClass().addClass("word5");
+				} else if (content.length == 6){
+					$(this).siblings('label').removeClass().addClass("word6");
+				}
+			});
+			</script>
+		</div>
+	</main>
+</body>
+</html>

@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanbakery.fancake.repository.mapper.SeenMapper">
+
+    <!--
+        it_item_mb_seen table
+     -->
+    <insert id="insertItemMbSeen">
+        INSERT INTO it_item_mb_seen
+            (item_seq, mb_no, item_seen_date)
+        VALUES(#{itemSeq}, #{mbNo}, #{itemSeenDate})
+            ON DUPLICATE KEY UPDATE item_seen_date = #{itemSeenDate};
+    </insert>
+
+</mapper>

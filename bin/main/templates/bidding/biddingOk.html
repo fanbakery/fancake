@@ -1,0 +1,96 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>입찰 완료</span></div>
+			<div class="pre skip"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<button type="button" class="bt searchOpen"><img src="../img/i_search.png" alt="검색"></button>
+				<a href="alarm.html" class="bt"><img src="../img/i_alarm.png" alt="알림"></a>
+			</div>
+			<div class="search">
+				<div class="close"><i></i></div>
+				<div class="input">
+					<form>
+						<input type="text" placeholder="인플루언서명을 입력해주세요">
+						<button type="submit"></button>
+						<div class="list">
+							<ul>
+								<li>
+									<a href="#">
+										<div class="ico"><img src="../img/m_prof1.png" alt=""></div>
+										<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>				
+			</div>
+			<script>
+				$(".searchOpen").click(function(){
+					$("#header .search").addClass("sel");
+				});
+				$("#header .search .close").click(function(){
+					$("#header .search").removeClass("sel");
+				});
+				$("#header .search .input input").focus(function(){
+					$(this).siblings(".list").addClass("sel");
+				});
+				$("#header .search .input input").blur(function(){
+					$(this).siblings(".list").removeClass("sel");
+				});
+			</script>
+		</div>
+	</header>
+	<main id="container">
+		<div class="bidding">
+			<form th:action="@{/bidding/biddingOk}" >
+				<div class="bidok">
+					<div class="tit">원터치 입찰주문이 완료되었습니다!</div>
+					<div class="txt" style="display:none;">
+						<dl>
+							<dt>받는 사람</dt>
+							<dd>이두한</dd>
+						</dl>
+						<dl>
+							<dt>받는 주소</dt>
+							<dd><small>서울시 강남구 도곡동 타워팰리스 105동 ***호</small></dd>
+							<dd><a href="#">변경하기 ></a></dd>
+						</dl>
+						<dl>
+							<dt>배송요청사항</dt>
+							<dd>직접 받고 부재시 문 앞</dd>
+							<dd><a href="#">변경하기 ></a></dd>
+						</dl>
+					</div>
+					<div class="cost">
+						<dl>
+							<dt>총 상품 가격</dt>
+							<dd>300,000원</dd>
+						</dl>
+						<dl style="display:none;">
+							<dt>배송비</dt>
+							<dd>3,000원</dd>
+						</dl>
+					</div>
+					<div class="total">
+						<dl>
+							<dt>총 결제금액</dt>
+							<dd><span style="display:none;">현대카드/일시불</span><strong>303,000원</strong></dd>
+						</dl>
+					</div> 
+				</div>
+				<div class="bot_bt">
+					<button type="submit" class="btn bt_submit">확인</button>
+				</div>
+			</form>
+		</div>
+	</main>
+</body>
+</html>

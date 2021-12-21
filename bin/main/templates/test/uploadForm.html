@@ -1,0 +1,356 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+	<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
+	<script type="text/javascript" src="/js/jquery.Jcrop.min.js"></script>
+	<!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.4.1.min.js"></script> -->
+</head>
+<style type="text/css">
+
+    .imgArea { text-align:center; }
+    canvas, #uploadFile, #editBtn, #cutBtn { display:none; }
+    body { overflow:hidden };
+
+</style>
+<body id="wrap">
+
+
+<input type="hidden" id="xAxis" value="0" placeholder="선택영여역의_x좌표"/>
+<input type="hidden" id="yAxis" value="0" placeholder="선택영여역의_y좌표"/>
+<input type="hidden" id="wLength" value="0" placeholder="선택영여역의_w넓이"/>
+<input type="hidden" id="hLength" value="0" placeholder="선택영여역의_h높이"/>
+<input type="file" id="uploadFile" onChange="uploadImgFilePrinted();" accept="image/*"/>
+
+<div class="contents">
+
+    <h1>1. 업로드할 이미지 선택. 2. 자르기 버튼 클릭. 3.자를 영역 드래그. 4. 파일업로드</h1>
+
+        <input id="editBtn" type="button" onClick="imgCropDesignate();" value="편집"/>
+        <input id="cutBtn" type="button" onClick="imgCropApply();" value="자르기"/>
+    <div class="imgArea">
+
+        <a href="javascript:;" onClick="jQuery('#uploadFile').click();">
+            <input id="uploadBtn"  type="button" value="이미지 선택"/>
+            <img id="editImg" src="/test.jpg"  alt="선택된 이미지 없음."/>
+        </a>
+        <br/><br/>
+    </div>
+    <canvas></canvas>
+</div>
+
+
+
+<form method="POST" enctype="multipart/form-data" id="fileUploadForm">
+	<input type="text" name="extraField"/><br/><br/>
+	파일 : <input type="file" id="uploadFile"/><br/><br/>
+
+	<input type="button" onclick="upload();" value="업로드 버튼">
+	</input>
+	
+	<br>
+	<input id="cutBtn" type="button" onClick="imgCropApply();" value="자르기"/>
+	<hr> ----------------- <br>
+	결과 <br>
+
+	<p id="result">
+
+		<canvas></canvas>
+	</p>
+</form> 
+</body>
+
+<script>
+
+var canvas = null;
+var finalformData = null;
+var _fileInfo = null;
+
+function upload() {
+		const uploadFile = $("#uploadFile")[0];
+		// 파일을 여러개 선택할 수 있으므로 files 라는 객체에 담긴다.
+		console.log("uploadFile: ", uploadFile.files)
+
+		if(uploadFile.files.length === 0){
+			alert("파일은 선택해주세요");
+			return;
+		}
+
+		
+		
+		
+		
+/*     	canvas.toBlob(function (blob) {
+    		var formData = new FormData();
+
+    		$.ajax('/test/uploadFile/image/temp', {
+           		method: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function () {
+                	alert('업로드 성공');
+                },
+                error: function () {
+                	alert('업로드 실패');
+                	$('.result_box').remove()
+                },
+    		});
+    	}) */
+		
+    	
+    	//var testForm = document.getElementById("fileUploadForm");
+		//var formData = new FormData(testForm);
+		
+/* 		const formData = new FormData();
+		//formData.append("uploadFile", uploadFile.files[0]);
+		formData.append("uploadFile", jQuery("#editImg"));
+		 */
+
+		// 임시 파일 업로드
+		$.ajax({
+			type:"POST",
+			url: "/test/uploadFile/image/temp",
+			processData: false,
+			contentType: false,
+			data: finalformData,
+			success: function(data){
+				$("#result").html("업로드 결과 :"+ data.msg +
+						"<br>" +
+						"업로드 URL : " + data.uploadFileUrl +
+						"<br>" +
+						"업로드 파일명 : " + data.uploadFileName +
+						"<br>" +
+						"업로드 파일 원파일명 : " + data.originalFileName +
+						"<br>" +
+						"<img id='editImg' src='"+ data.uploadFileUrl +"'>"
+				)
+				jQuery("#cutBtn").css("display", "inline");
+			},
+			err: function(err){
+				console.log("err:", err)
+			}
+		}) 
+	}
+
+</script>
+
+
+<script type="text/javascript">
+let jcropApi = null;
+
+
+
+// @breif 이미지 크롭 영역지정 UI 나타내기
+
+function imgCropDesignate() {
+
+
+    let editWidth = jQuery("#editImg").width();
+    let editHeight = jQuery("#editImg").height();
+
+    // @breif jcrop 실행시 크롭영역을 미리 세팅
+    /* let x1 = window.screen.width / 2 - editWidth;
+    let y1 = window.screen.height / 2 - editHeight;
+    let x2 = editWidth / 1.5;
+    let y2 = editHeight / 1.5; */
+    
+    let x1 = editWidth;
+    let y1 = editHeight;
+    let x2 = editWidth;
+    let y2 = editHeight;
+    
+
+    // @breif jcrop 실행
+    jQuery("#editImg").Jcrop({
+
+          bgFade : true
+        , bgOpacity : .2
+        , setSelect : [ x1, y1, x2, y2 ]
+        , onSelect : updateCoords
+
+    }, function() {
+
+        jcropApi = this;
+
+    });
+
+    jQuery("#editBtn").css("display", "none");
+    jQuery("#cutBtn").css("display", "inline");
+
+}
+
+
+
+// @breif 지정된 크롭 한 영역( 좌표, 넓이, 높이 )의 값을 보관하는 함수
+
+function updateCoords(crap) {
+
+    jQuery("#xAxis").val(crap.x);
+    jQuery("#yAxis").val(crap.y);
+    jQuery("#wLength").val(crap.w);
+    jQuery("#hLength").val(crap.h);
+
+}
+
+
+
+// @breif 크롭한 영역 잘라내고 추출하기
+
+function imgCropApply() {
+
+
+    if(parseInt(jQuery("#wLength").val()) == "NaN") {
+        alert("이미지를 크롭한 이후\n자르기 버튼을 클릭하세요.");
+        return false;
+
+    } else {
+
+
+        let editImage = new Image();
+        editImage.src = jQuery("#editImg").attr("src");
+        editImage.onload = function() {
+
+            // @breif 캔버스 위에 이미지 그리기
+            canvas = document.querySelector("canvas");
+            let canvasContext = canvas.getContext("2d");
+
+
+
+            // @breif 캔버스 크기를 이미지 크기와 동일하게 지정
+            canvas.width = jQuery("#wLength").val();
+            canvas.height = jQuery("#hLength").val();
+            canvasContext.drawImage(
+
+                  this
+                , jQuery("#xAxis").val()        // 자르기를 시작할 x좌표
+                , jQuery("#yAxis").val()        // 자르기를 시작할 y좌표
+                , jQuery("#wLength").val()    // 잘라낸 이미지의 넓이
+                , jQuery("#hLength").val()    // 잘라낸 이미지의 높이
+                , 0                                         // 캔버스에 이미지를 배치할 x좌표
+                , 0                                         // 캔버스에 이미지를 배치할 y좌표
+                , jQuery("#wLength").val()    // 사용할 이미지의 넓이(이미지 스트레칭 또는 축소)
+                , jQuery("#hLength").val()    // 사용할 이미지의 높이(이미지 스트레칭 또는 축소)
+
+            );
+
+
+
+            // @breif 편집한 캔버스의 이미지를 화면에 출력한다.
+
+            let dataURI = canvas.toDataURL("image/jpeg");
+            jQuery("#editImg").attr("src", dataURI);
+
+            // @breif 이미지의 크기는 자른 이미지와 동일하게 지정
+            jQuery("#editImg").css("width", jQuery("#wLength").val());
+            jQuery("#editImg").css("height", jQuery("#hLength").val());
+            
+            
+            const imgBase64 = canvas.toDataURL('image/jpeg', 'image/octet-stream');
+            const decodImg = atob(imgBase64.split(',')[1]);
+
+            let array = [];
+            for (let i = 0; i < decodImg .length; i++) {
+              array.push(decodImg .charCodeAt(i));
+            }
+
+/*             lastModified: 1594121078138
+            lastModifiedDate: Tue Jul 07 2020 20:24:38 GMT+0900 (한국 표준시) {}
+            name: "a1.png"
+            size: 66472
+            type: "image/png"
+            webkitRelativePath: ""
+            [[Prototype]]: File
+ */            
+            const file = new Blob([new Uint8Array(array)], {type: _fileInfo.type});
+            const fileName = _fileInfo.name;
+            finalformData = new FormData();
+            finalformData.append('uploadFile', file, fileName);
+
+        };
+
+
+
+        jQuery("#cutBtn").css("display", "none");
+        // @details JCROP을 종료한다.
+        jcropApi.destroy();
+
+    jcropApi = null;
+
+    }
+
+}
+
+
+
+// @breif 이미지 업로드 함수
+
+function uploadImgFilePrinted() {
+
+
+    // @details 업로드 파일 정보를 받아온다.
+    let fileInfo = document.getElementById("uploadFile").files[0];
+    let reader = new FileReader();
+    reader.onload = function() {
+
+        // @details 업로드 이미지 출력
+        jQuery("#editImg").attr("src", reader.result);
+        // @details 이미지 크기를 제목 영영과 같게 출력
+        jQuery("#editImg").css("width", jQuery("h1").width());
+
+        // @details 이미지 업로드 기능 제거, 추가 업로드 방지
+
+        jQuery("#editImg").parent("a").removeAttr("onClick");
+        // @details 편집버튼 노출
+        jQuery("#editBtn").css("display", "inline");
+        canvasDrawImage(function() {
+			$("#uploadBtn").hide();
+			alert("이미지 업로드가 완료되었습니다.");
+        });
+
+    };
+
+
+
+    if(fileInfo) {      	
+        // @details readAsDataURL을 통해 업로드한 파일의 URL을 읽어 들인다.
+        _fileInfo = fileInfo;
+        reader.readAsDataURL(fileInfo);
+
+    }
+
+}
+
+
+
+// @breif 캔버스 이미지 생성
+
+function canvasDrawImage(callback) {
+
+	
+
+    let prepImage = new Image();
+    prepImage.src = jQuery("#editImg").attr("src");
+    prepImage.onload = function() {
+
+        // @details 캔버스 위에 이미지 그리기
+        // jQuery("canvas") 와같은 명령은 사용할 수 없다.
+        canvas = document.querySelector("canvas");
+        let canvasContext = canvas.getContext("2d");
+
+        canvas.width = jQuery("#editImg").width();
+        canvas.height = jQuery("#editImg").height();
+        canvasContext.drawImage(this, 0, 0, jQuery("#editImg").width(), jQuery("#editImg").height());
+
+        // @details 캔버스의 이미지
+        let dataURI = canvas.toDataURL("image/jpeg");
+        jQuery("#editImg").attr("src", dataURI);
+        callback();
+
+
+    };
+
+}
+</script>
+</html>

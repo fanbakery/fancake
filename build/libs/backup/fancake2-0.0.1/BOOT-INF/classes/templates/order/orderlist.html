@@ -1,0 +1,191 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0,minimum-scale=1.0,maximum-scale=1.0, user-scalable=yes">
+<title>팬케이크 홈</title>
+	<link rel="stylesheet" type="text/css" href="../css/common.css">
+	<link rel="stylesheet" type="text/css" href="../css/app.css">
+	<link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+	<script type="text/javascript" src="../js/jquery-1.8.3.min.js"></script>
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.3/jquery-ui.min.js"></script>
+	<script type="text/javascript" src="../js/common.js"></script>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>구매 내역</span></div>
+			<div class="pre"><a href="/mypage/"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<a href="#" class="bt"><img src="../img/i_share.png" alt="공유하기"></a>
+				<button type="button" class="bt zzimOpen"><img src="../img/i_zzim_off.png" alt="찜하기"></button>
+			</div>
+			<div class="search">
+				<div class="close"><i></i></div>
+				<div class="input">
+					<form>
+						<input type="text" placeholder="인플루언서명을 입력해주세요">
+						<button type="submit"></button>
+						<div class="list">
+							<ul>
+								<li>
+									<a href="#">
+										<div class="ico"><img src="../img/m_prof1.png" alt=""></div>
+										<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>				
+			</div>
+			<script>
+				$(".searchOpen").click(function(){
+					$("#header .search").addClass("sel");
+				});
+				$("#header .search .close").click(function(){
+					$("#header .search").removeClass("sel");
+				});
+				$("#header .search .input input").focus(function(){
+					$(this).siblings(".list").addClass("sel");
+				});
+				$("#header .search .input input").blur(function(){
+					$(this).siblings(".list").removeClass("sel");
+				});
+			</script>
+		</div>
+	</header>
+	<main id="container">
+		<div class="orderlist">
+			<div class="total">
+				<ul class="tabs tabmenu">
+					<li><a href="/order/list?type=TOTAL"><strong>전체</strong>
+								<span th:text="${#numbers.formatDecimal(totalCnt, 0, 'COMMA', 0, 'POINT')}">12</span></a></li>
+					<li><a href="/order/list?type=SALE"><strong>진행 중</strong>
+								<span th:text="${#numbers.formatDecimal(saleBidCnt, 0, 'COMMA', 0, 'POINT')}">6</span></a></li>
+					<li><a href="/order/list?type=END"><strong>완료</strong>
+								<span th:text="${#numbers.formatDecimal(endSaleBidCnt, 0, 'COMMA', 0, 'POINT')}">6</span></a></li>
+				</ul>
+			</div>
+			<div class="list">
+				<div class="tabcons" id="tab_TOTAL" >
+					<ul class="head">
+						<li>
+							<div class="desc">제품 명</div>
+							<div class="desc">구매 희망가</div>
+							<div class="desc">현재 상태</div>
+						</li>
+					</ul>
+					<ul class="cons">
+						<li th:if="${type.toString().equals('TOTAL')}" th:each="item: ${hisList}">
+							<div class="desc" >
+								<a th:href="@{/product/product(itemNo=${item.itemSeq})}">
+									<img th:src="${item.itemImg1}" alt="">
+									<span th:text="${item.itemName}"> </span>
+								</a>
+							</div>
+							<div class="desc">
+								<span th:text="|${#numbers.formatDecimal(item.biddingPrice, 0, 'COMMA', 0, 'POINT')} 원|"></span>
+							</div>
+							<div class="desc">
+								<span class="ongo"
+									  th:if="${item.itemStatus.toString().equals('SALE')}"
+									  th:utext="|현재 가격 ${#numbers.formatDecimal(item.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} <br/> ${item.saleEndDateLimit}"></span>
+								<span th:if="${!item.itemStatus.toString().equals('SALE')}"
+									  th:utext="|판매가 ${#numbers.formatDecimal(item.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} <br> 완료|">
+								</span>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="tabcons" id="tab_SALE">
+					<ul class="head">
+						<li>
+							<div class="desc">제품 명</div>
+							<div class="desc">구매 희망가</div>
+							<div class="desc">현재 상태</div>
+						</li>
+					</ul>
+					<ul class="cons">
+						<li th:if="${type.toString().equals('SALE')}" th:each="item: ${hisList}">
+							<div class="desc">
+								<a th:href="@{/product/product(itemNo=${item.itemSeq})}">
+									<img th:src="${item.itemImg1}" alt="">
+									<span th:text="${item.itemName}"> </span>
+								</a>
+							</div>
+							<div class="desc">
+								<span th:text="|${#numbers.formatDecimal(item.biddingPrice, 0, 'COMMA', 0, 'POINT')} 원|"></span>
+							</div>
+							<div class="desc">
+								<span class="ongo"
+									  th:if="${item.itemStatus.toString().equals('SALE')}"
+									  th:utext="|현재 가격 ${#numbers.formatDecimal(item.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} <br/> ${item.saleEndDateLimit}"></span>
+								<span th:if="${!item.itemStatus.toString().equals('SALE')}"
+									  th:utext="|판매가 ${#numbers.formatDecimal(item.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} <br> 완료|">
+								</span>
+							</div>
+						</li>
+				</div>
+				<div class="tabcons" id="tab_END">
+					<ul class="head">
+						<li>
+							<div class="desc">제품 명</div>
+							<div class="desc">구매 희망가</div>
+							<div class="desc">현재 상태</div>
+						</li>
+					</ul>
+					<ul class="cons">
+						<li th:if="${type.toString().equals('END')}" th:each="item: ${hisList}">
+							<div class="desc">
+								<a th:href="@{/product/product(itemNo=${item.itemSeq})}">
+									<img th:src="${item.itemImg1}" alt="">
+									<span th:text="${item.itemName}"> </span>
+								</a>
+							</div>
+							<div class="desc">
+								<span th:text="|${#numbers.formatDecimal(item.biddingPrice, 0, 'COMMA', 0, 'POINT')} 원|"></span>
+							</div>
+							<div class="desc">
+								<span class="ongo"
+									  th:if="${item.itemStatus.toString().equals('SALE')}"
+									  th:utext="|현재 가격 ${#numbers.formatDecimal(item.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} <br/> ${item.saleEndDateLimit}"></span>
+								<span th:if="${!item.itemStatus.toString().equals('SALE')}"
+									  th:utext="|판매가 ${#numbers.formatDecimal(item.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} <br> 완료|">
+								</span>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</main>
+
+	<script type="text/javascript">
+		var typeVar = '[[${type}]]';
+
+		$( document ).ready(function() {
+			$(".tabs li:nth(0)").removeClass('sel')
+			$(".tabs li:nth(1)").removeClass('sel')
+			$(".tabs li:nth(2)").removeClass('sel')
+
+			if (typeVar === 'SALE') {
+				$(".tabs li:nth(1)").addClass('sel')
+				$("#tab_TOTAL").hide();
+				$("#tab_SALE").show();
+				$("#tab_END").hide();
+			} else if (typeVar === 'END') {
+				$(".tabs li:nth(2)").addClass('sel');
+				$("#tab_TOTAL").hide();
+				$("#tab_SALE").hide();
+				$("#tab_END").show();
+			} else {
+				$(".tabs li:nth(0)").addClass('sel');
+				$("#tab_TOTAL").show();
+				$("#tab_SALE").hide();
+				$("#tab_END").hide();
+			}
+		});
+	</script>
+</body>
+</html>

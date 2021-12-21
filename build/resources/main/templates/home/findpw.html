@@ -1,0 +1,110 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>비밀번호 재설정</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<button type="button" class="bt searchOpen"><img src="../img/i_search.png" alt="검색"></button>
+				<a href="alarm.html" class="bt"><img src="../img/i_alarm.png" alt="알림"></a>
+			</div>
+			<div class="search">
+				<div class="close"><i></i></div>
+				<div class="input">
+					<form>
+						<input type="text" placeholder="인플루언서명을 입력해주세요">
+						<button type="submit"></button>
+						<div class="list">
+							<ul>
+								<li>
+									<a href="#">
+										<div class="ico"><img src="../img/m_prof1.png" alt=""></div>
+										<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>				
+			</div>
+			<script>
+				$(".searchOpen").click(function(){
+					$("#header .search").addClass("sel");
+				});
+				$("#header .search .close").click(function(){
+					$("#header .search").removeClass("sel");
+				});
+				$("#header .search .input input").focus(function(){
+					$(this).siblings(".list").addClass("sel");
+				});
+				$("#header .search .input input").blur(function(){
+					$(this).siblings(".list").removeClass("sel");
+				});
+			</script>
+		</div>
+	</header>
+	<main id="container">
+		<div class="findid">
+			<div class="form">
+				<form method="post" th:action="@{/find-pw}" th:object="${findPwReq}" role="form">
+					<div class="desc">
+						<div class="flex">
+							<input type="text" id="userMail" name="userMail" placeholder="이메일 주소 입력"
+								   th:field="*{email}" th:value="${findPwReq.email}">
+						</div>
+						<p class="error_msg" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">존재하지 않는 이메일 주소입니다.</p>
+						<p class="error_msg" th:if="${result}" th:text="${result}"></p>
+					</div>
+					<div class="bot_bt bot_full">
+						<button type="submit" class="btn bt_submit"><span>확인</span></button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</main>
+	<footer id="footer" class="skip">
+		<div class="cs">
+			<strong>고객센터 cs@fanbakery.app</strong>
+			<span>운영시간 평일 11:00 - 18:00 (토,일,공휴일 휴무)</span>
+			<span>점심시간 12:00 - 13:00</span>
+		</div>
+		<div class="info">
+			<span><a href="#">이용약관</a></span>
+			<span><a href="#">개인정보처리방침</a></span>		
+		</div>
+		<div class="address">
+			<button type="button" class="addOpen"><span>사업자정보</span><i></i></button>
+			<address>
+				주식회사 팬베이커리·대표 이두한 <br>
+				사업자등록번호: 255-255-255555 <a href="#">사업자정보확인</a> <br>
+				통신판매업: 제2021-서울성동C-CCCCC <br>
+				사업장소재지: 서울시 성동구 아차산로<br>
+				호스팅서비스: AWS
+			</address>
+			<p>팬베이커리(주)는 통신판매중개자로서 통신판매의 당사자가 아니므로 개별 판매자가 등록한 상품정보에 대해서 책임을 지지 않습니다. 단, 거래과정에서 검수하고 보증하는 내용에 대한 책임은 당사에 있습니다.</p>
+			<div class="social">
+				<ul>
+					<li><a href="#"><img src="../img/i_insta.png" alt=""><span class="skip">인스타그</span></a></li>
+				</ul>
+			</div>
+			<script>
+				$(".addOpen").click(function(){
+					$(this).toggleClass('sel');
+					$("address").toggleClass('hide');
+				});
+			</script>
+		</div>
+	</footer>
+	<nav id="bottomMenu" class="bottom-menu skip">
+		<a href="home.html" class="home"><i></i><span>홈</span></a>
+		<a href="influencerInven.html" class="influ"><i></i><span>인플루언서</span></a>
+		<a href="zzim.html" class="zzim sel"><i></i><span>찜</span></a>
+		<a href="mypage.html" class="mypage"><i></i><span>마이페이지</span></a>
+	</nav>
+</body>
+</html>

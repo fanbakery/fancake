@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanbakery.fancake.repository.mapper.MypageMapper">
+
+    <!--
+        it_faq table
+     -->
+    <select id="selectFaqList"
+    resultType="com.fanbakery.fancake.repository.model.ItFaqEntity">
+        SELECT * FROM it_faq
+        ORDER BY fa_order;
+    </select>
+
+    <select id="selectFaqMasterByFmId"
+            resultType="com.fanbakery.fancake.repository.model.ItFaqMasterEntity">
+        SELECT * FROM it_faq_master
+        WHERE fm_id = #{fmId};
+    </select>
+
+</mapper>

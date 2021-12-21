@@ -1,0 +1,107 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head skip">
+			<div class="h1"><span>인플루언서용 페이지</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<button type="button" class="bt searchOpen"><img src="../img/i_search.png" alt="검색"></button>
+				<a href="alarm.html" class="bt"><img src="../img/i_alarm.png" alt="알림"></a>
+			</div>
+			<div class="search">
+				<div class="close"><i></i></div>
+				<div class="input">
+					<form>
+						<input type="text" placeholder="인플루언서명을 입력해주세요">
+						<button type="submit"></button>
+						<div class="list">
+							<ul>
+								<li>
+									<a href="#">
+										<div class="ico"><img src="../img/m_prof1.png" alt=""></div>
+										<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>				
+			</div>
+			<script>
+				$(".searchOpen").click(function(){
+					$("#header .search").addClass("sel");
+				});
+				$("#header .search .close").click(function(){
+					$("#header .search").removeClass("sel");
+				});
+				$("#header .search .input input").focus(function(){
+					$(this).siblings(".list").addClass("sel");
+				});
+				$("#header .search .input input").blur(function(){
+					$(this).siblings(".list").removeClass("sel");
+				});
+			</script>
+		</div>
+	</header>
+	<main id="container">
+		<div class="influencer">
+			<div class="home">
+				<div class="image"><img src="../img/yeonnabi_img.png" alt="인플루언서 이미지"></div>
+				<div class="info">
+					<div class="tit">
+						<div class="ico"><img src="../img/m_prof2.png" alt=""></div>
+						<div class="name">연나비</div>
+					</div>
+					<div class="txt">팬케이크 팔로워 5,000명</div>
+				</div>
+				<div class="bene">
+					<dl><dt><img src="../img/i_donation.png" alt=""></dt><dd>기부 해요</dd></dl>
+					<dl><dt><img src="../img/i_sign.png" alt=""></dt><dd>친필 싸인 동봉</dd></dl>
+					<dl><dt><img src="../img/i_delivery.png" alt=""></dt><dd>평균 배송일 4일</dd></dl>
+				</div>
+				<div class="text">
+					<div class="tit">자기 소개</div>
+					<div class="txt">안녕하세요 트위치 스트리머 연나비입니다!<br> 많은 관심 부탁드려요!</div>
+				</div>
+				<div class="rank">
+					<div class="tit">구매랭킹</div>
+					<div class="txt">
+						<div class="empty">
+							<strong>😢</strong>
+							<span>아직 판매 내역이 없어요</span>
+						</div>
+					</div>
+				</div>
+				<div class="sell">
+					<div class="tit">판매 중인 상품</div>
+					<div class="list">
+						<div class="empty">
+							<strong>🤔</strong>
+							<span>현재 판매 중인 상품이 없어요</span>
+						</div>
+					</div>
+				</div>
+				<div class="comp">
+					<div class="tit">판매 완료된 상품</div>
+					<div class="list">
+						<div class="empty">
+							<strong>😵‍</strong>
+							<span>아직 판매 완료된 상품이 없어요</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</main>
+	<!-- footer 영역 -->
+<!--	<th:block th:replace="fragment/footer :: footerFragment"> </th:block>-->
+
+	<!-- bottom 메뉴 영역 -->
+	<th:block th:replace="fragment/bottom_menu :: bottomMenuFragment"> </th:block>
+</body>
+</html>

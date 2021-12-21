@@ -1,0 +1,294 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1 skip"><span>상품 선택화면</span></div>
+			<div class="pre"><a href="javascript:history.back()"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn">
+				<a th:href="|javascript:copyShortUrl('http://${#httpServletRequest.serverName}:${#httpServletRequest.serverPort}${productInfo.product.itemShortUrl}');|"  class="bt">
+					<img src="../img/i_share.png" alt="공유하기" >
+				</a>
+				<button type="button" class="bt zzimOpen"
+						th:if="${productInfo.product.itemRegMbNo != session.user.mbNo}"
+						th:onclick="|zzim_desc('${productInfo.product.itemSeq}');|">
+					<img th:attr="id=|bidding_${productInfo.product.itemSeq}|" th:src="${productInfo.myZzim ? '../img/i_zzim_on.png' : '../img/i_zzim_off2.png'}" alt="찜하기">
+				</button>
+			</div>
+			<div class="search">
+				<div class="close"><i></i></div>
+				<div class="input">
+					<form>
+						<input type="text" placeholder="인플루언서명을 입력해주세요">
+						<button type="submit"></button>
+						<div class="list">
+							<ul>
+								<li>
+									<a href="#">
+										<div class="ico"><img src="../img/m_prof1.png" alt=""></div>
+										<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>				
+			</div>
+			<script>
+				$(".searchOpen").click(function(){
+					$("#header .search").addClass("sel");
+				});
+				$("#header .search .close").click(function(){
+					$("#header .search").removeClass("sel");
+				});
+				$("#header .search .input input").focus(function(){
+					$(this).siblings(".list").addClass("sel");
+				});
+				$("#header .search .input input").blur(function(){
+					$(this).siblings(".list").removeClass("sel");
+				});
+			</script>
+		</div>
+	</header>
+	<main id="container">
+		<div class="product">
+			<!--<div class="image">
+				<img th:src="${productInfo.product.itemImg1}" alt="인플루언서 이미지">
+			</div>-->
+
+			<div class="image slider">
+				<div class="swiper-wrapper">
+					<div class="swiper-slide">
+						<img th:src="${productInfo.product.itemImg1}" alt="인플루언서 이미지">
+					</div>
+					<div class="swiper-slide" th:if="${productInfo.product.itemImg2!=null}" >
+						<img th:src="${productInfo.product.itemImg2}" alt="인플루언서 이미지">
+					</div>
+					<div class="swiper-slide" th:if="${productInfo.product.itemImg3!=null}" >
+						<img th:src="${productInfo.product.itemImg3}" alt="인플루언서 이미지">
+					</div>
+					<div class="swiper-slide" th:if="${productInfo.product.itemImg4!=null}" >
+						<img th:src="${productInfo.product.itemImg4}" alt="인플루언서 이미지">
+					</div>
+					<div class="swiper-slide" th:if="${productInfo.product.itemImg5!=null}" >
+						<img th:if="${productInfo.product.itemImg5!=null}" th:src="${productInfo.product.itemImg5}" alt="인플루언서 이미지">
+					</div>
+					<div class="swiper-slide" th:if="${productInfo.product.itemImg6!=null}" >
+						<img th:if="${productInfo.product.itemImg6!=null}" th:src="${productInfo.product.itemImg6}" alt="인플루언서 이미지">
+					</div>
+					<div class="swiper-slide" th:if="${productInfo.product.itemImg7!=null}" >
+						<img th:if="${productInfo.product.itemImg7!=null}" th:src="${productInfo.product.itemImg7}" alt="인플루언서 이미지">
+					</div>
+					<div class="swiper-slide" th:if="${productInfo.product.itemImg8!=null}" >
+						<img th:if="${productInfo.product.itemImg8!=null}" th:src="${productInfo.product.itemImg8}" alt="인플루언서 이미지">
+					</div>
+					<div class="swiper-slide" th:if="${productInfo.product.itemImg9!=null}" >
+						<img th:if="${productInfo.product.itemImg9!=null}" th:src="${productInfo.product.itemImg9}" alt="인플루언서 이미지">
+					</div>
+				</div>
+				<div class="swiper-dots"></div>
+				<div class="swiper-ctrl"><div class="arrow prev"><span>이전</span></div><div class="arrow next"><span>다음</span></div></div>
+			</div>
+
+			<div class="name">
+				<div class="ico"><img th:src="${productInfo.influencer.mbProfile}" alt=""></div>
+				<div class="tit" th:text="${productInfo.influencer.mbNick}"></div>
+				<div class="txt" th:text="|팬케이크 팔로워 ${#numbers.formatDecimal(productInfo.influencer.zzimCnt, 0, 'COMMA', 0, 'POINT')} 명|"></div>
+			</div>
+			<div class="text">
+				<div class="tit" th:text="${productInfo.product.itemName}"></div>
+				<div class="txt" th:utext="${productInfo.product.itemDesc}"></div>
+			</div>
+			<div class="info" th:if="${productInfo.product.itemStatus.toString().equals('SALE')}">
+				<dl><dt>현재 가격</dt><dd><strong th:text="|${#numbers.formatDecimal(productInfo.product.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} 원|"></strong></dd></dl>
+				<dl><dt>시작 가격</dt>
+					<dd th:text="|${#numbers.formatDecimal(productInfo.product.itemSellStartPrice, 0, 'COMMA', 0, 'POINT')} 원|"></dd>
+				</dl>
+				<dl><dt>찜 수</dt>
+					<dd th:text="${#numbers.formatDecimal(productInfo.zzimCount, 0, 'COMMA', 0, 'POINT')}"></dd>
+				</dl>
+				<dl><dt>신청 수</dt>
+					<dd th:text="${#numbers.formatDecimal(productInfo.biddingCount, 0, 'COMMA', 0, 'POINT')}"></dd>
+				</dl>
+				<dl><dt>시작일자</dt>
+					<dd th:text="${#temporals.format(productInfo.product.itemSellStartDate, 'yyyy.MM.dd')}"></dd>
+				</dl>
+				<dl><dt>종료일자</dt>
+					<dd th:text="${#temporals.format(productInfo.product.itemSellEndDate, 'yyyy.MM.dd')}"></dd>
+				</dl>
+			</div>
+			<div class="info" th:if="${!productInfo.product.itemStatus.toString().equals('SALE')}">
+				<dl><dt>판매 가격</dt>
+					<dd>
+						<strong th:text="|${#numbers.formatDecimal(productInfo.product.itemSellCurrPrice, 0, 'COMMA', 0, 'POINT')} 원|"></strong>
+					</dd>
+				</dl>
+				<dl><dt>시작 가격</dt>
+					<dd>
+						<strong th:text="|${#numbers.formatDecimal(productInfo.product.itemSellStartPrice, 0, 'COMMA', 0, 'POINT')} 원|"></strong>
+					</dd>
+				</dl>
+				<dl><dt>구매한 팬</dt>
+					<dd th:if="${productInfo.payFan != null}" >
+						<img  th:src="${productInfo.payFan.mbProfile}" alt="">
+						<span th:text="${productInfo.payFan.mbNick}"></span>
+					</dd>
+				</dl>
+				<!--<dl><dt>판매일자</dt>
+					<dd th:if="${productInfo.payFan != null}"
+						th:text="${#temporals.format(productInfo.payFan.biddingSuccDate, 'yyyy.MM.dd')}"></dd>
+				</dl>-->
+				<dl><dt>시작일자</dt>
+					<dd th:text="${#temporals.format(productInfo.product.itemSellStartDate, 'yyyy.MM.dd')}"></dd>
+				</dl>
+				<dl><dt>종료일자</dt>
+					<dd th:text="${#temporals.format(productInfo.product.itemSellEndDate, 'yyyy.MM.dd')}"></dd>
+				</dl>
+			</div>
+
+			<div class="bene">
+				<dl><dt><img src="../img/i_donation.png" alt=""></dt><dd>기부 해요</dd></dl>
+				<dl><dt><img src="../img/i_sign.png" alt=""></dt><dd>친필 싸인 동봉</dd></dl>
+				<dl><dt><img src="../img/i_delivery.png" alt=""></dt><dd>평균 배송일 4일</dd></dl>
+			</div>
+			<div class="caut" th:if="${productInfo.product.itemStatus.toString().equals('SALE')}">
+				<p>주식회사 팬베이커리는 통신판매 중개자로서 통신판매의 당사자가 아니므로 개별 판매자가 등록한 상품정보에 대해서 책임은 지지 않습니다. 단 거래과정에서 검수하고 보증하는 내용에 대한 책임은 당사에 있습니다.</p>		
+			</div>
+			<div class="bt" >
+				<a th:if="${productInfo.product.itemRegMbNo != session.user.mbNo
+								and productInfo.product.itemStatus.toString().equals('SALE')
+								and !productInfo.myBidding}"
+				   			th:href="@{/bidding/bidding(itemNo=${productInfo.product.itemSeq})}"
+				   			class="btn bt_bid popOpenBtnCmmn1" data-num="1">구매하기</a>
+				<!--<a th:if="${productInfo.product.itemRegMbNo == session.user.mbNo
+								and productInfo.product.itemStatus.toString().equals('SALE')}"
+						   th:href="@{/product/edit(itemNo=${productInfo.product.itemSeq})}"
+						   class="btn bt_bid" data-num="1">수정하기</a>-->
+				<a th:if="${productInfo.product.itemRegMbNo != session.user.mbNo
+								and productInfo.product.itemStatus.toString().equals('SALE')
+								and productInfo.myBidding}"
+				   			href="javascript:history.go(-1);" class="btn bt_comp">구매 신청 중</a>
+				<a th:if="${!productInfo.product.itemStatus.toString().equals('SALE')}" href="javascript:history.go(-1);" class="btn bt_comp">판매완료</a>
+			</div>
+		</div>
+	</main>
+
+	<div th:if="${bidReqRet != null and bidReqRet.toString().equals('BID_NO_ADDR_FANPAY')}"
+		 	id="popup_1" class="popCmmn">
+		<div class="popup basic">
+			<div class="cons">
+				<div class="tit">결제 정보/배송지 정보 등록</div>
+				<div class="txt">최초 구매신청 시에는<br> 결제 정보/배송지 정보를 등록하셔야합니다.</div>
+				<div class="cau">* 최초 구매신청시 결제 정보/배송지 등록 필수</div>
+			</div>
+			<div class="btns">
+				<a href="/fanpay/manage" class="btn btn_02">결제 정보 등록</a>
+				<a href="/account/address-book/" class="btn btn_01">배송지 등록</a>
+			</div>
+		   <div class="close popCloseBtnCmmn" data-num="1"><img src="../img/i_close.png" alt=""></div>
+		</div>
+		<div class="popbg" data-num="1"></div>
+	</div>
+
+
+	<div th:if="${bidReqRet != null and bidReqRet.toString().equals('BID_REQ_OK')}"
+		 	id="popup_2" class="popCmmn" style="display:block">
+		<div class="popup basic">
+			<div class="cons">
+				<div class="tit">구매 신청 완료</div>
+				<div class="txt">구매 확정은 알림을 통해<br> 확인 부탁드립니다.</div>
+			</div>
+			<div class="btns">
+				<a th:href="@{/}" class="btn btn_01">확인</a>
+			</div>
+			<div class="close popCloseBtnCmmn" data-num="1"><img src="../img/i_close.png" alt=""></div>
+		</div>
+		<div class="popbg" data-num="1"></div>
+	</div>
+
+
+	<div th:if="${bidReqRet != null and bidReqRet.toString().equals('BID_REQ_DUP')}"
+		 	id="popup_3" class="popCmmn" style="display:block">
+		<div class="popup basic">
+			<div class="cons">
+				<div class="tit">죄송합니다 😢</div>
+				<div class="txt">그 짧은 시간 동안 다른 분께서 먼저 신청하셨네요<br> 다시 신청 부탁드립니다</div>
+			</div>
+			<div class="btns">
+				<a th:href="@{/}" class="btn btn_03">취소</a>
+				<a th:href="@{/bidding/bidding(itemNo=${itemNo})}" class="btn btn_01">구매 신청하기</a>
+			</div>
+			<div class="close popCloseBtnCmmn" data-num="1"><img src="../img/i_close.png" alt=""></div>
+		</div>
+		<div class="popbg" data-num="1"></div>
+	</div>
+
+
+	<div th:if="${bidReqRet != null and bidReqRet.toString().equals('BID_NO_ADDR_BOOK')}"
+		 	id="popup_4" class="popCmmn" style="display:block">
+		<div class="popup basic">
+			<div class="cons">
+				<div class="tit">배송지 정보 입력</div>
+				<div class="txt">구매신청이 완료되었습니다.<br> 구매 시 배송 받을 주소를 입력해주세요.</div>
+			</div>
+			<div class="btns">
+				<a href="/" class="btn btn_03">취소</a>
+				<a href="/account/address-book/" class="btn btn_01">등록하기</a>
+			</div>
+			<div class="close popCloseBtnCmmn" data-num="1"><img src="../img/i_close.png" alt=""></div>
+			<div class="close popCloseBtnCmmn" data-num="1"><img src="../img/i_close.png" alt=""></div>
+		</div>
+		<div class="popbg" data-num="1"></div>
+	</div>
+
+
+	<script type="text/javascript">
+		//<![CDATA[
+		$(function () {
+			var mainSwiper = new Swiper('.slider', {
+				slidesPerView:1,
+				speed:600,
+				pagination: false,
+				navigation: {
+					nextEl: '.swiper-ctrl .next',
+					prevEl: '.swiper-ctrl .prev',
+				}
+			});
+			$(".addOpen").click(function(){
+				$(this).toggleClass('sel');
+				$("address").toggleClass('hide');
+			});
+		});
+		//]]>
+	</script>
+
+	<script>
+	$(function(){
+	  setPop();
+	});
+	// 팝업 세팅
+	function setPop() {
+		var popOpenBtn = $('.popOpenBtnCmmn');
+
+		//팝업 열기
+		popOpenBtn.on('click',function(){
+			var clickNum = $(this).attr('data-num');
+			$('#popup_'+clickNum).fadeIn(200);
+			$('body').css("overflow","hidden");
+		})
+
+	  //팝업 닫기
+	  $('.popbg, .popCloseBtnCmmn').on('click',function(){
+		var clickNum = $(this).attr('data-num');
+
+		$('#popup_'+clickNum).fadeOut(200);
+		  $('body').css("overflow","initial");
+	  })
+	}
+	</script>
+</body>
+</html>

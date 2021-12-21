@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanbakery.fancake.repository.mapper.OrderMapper">
+
+    <!--
+        it_item_bidding table
+    -->
+
+    <select id="selectSaleMyBidCntByMbNoStatus"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="integer">
+        SELECT COUNT(a.item_seq)
+        FROM ( SELECT iib.item_seq
+                FROM it_item_bidding iib
+                LEFT JOIN it_item ii ON ii.item_seq = iib.item_seq
+                WHERE iib.bidding_mb_no = #{mbNo}
+                        AND ii.item_seq &gt; 0 AND ii.item_status = #{itemStatus}
+                        AND (ii.item_sell_start_date &lt;= #{startDate} AND ii.item_sell_end_date &gt;= #{startDate})
+                GROUP BY iib.item_seq
+            )a
+    </select>
+    
+    
+    <select id="selectSaleBidHisByMbNo"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="com.fanbakery.fancake.repository.model.OrderListInfoEntity">
+        SELECT iib.item_seq, iib.bidding_mb_no
+             , MAX(iib.bidding_price) as bidding_price
+             , ii.item_name, ii.item_img1
+             , ii.item_status
+             , ii.item_sell_curr_price
+             , ii.item_sell_start_date , ii.item_sell_end_date
+             , ii.item_sell_add_price
+             , ii.item_last_bidding_seq
+        FROM it_item_bidding iib
+            LEFT JOIN it_item ii ON ii.item_seq = iib.item_seq
+        WHERE iib.bidding_mb_no = #{mbNo}
+              AND ii.item_seq &gt; 0 AND ii.item_status = #{itemStatus}
+              AND (ii.item_sell_start_date &lt;= #{startDate} AND ii.item_sell_end_date &gt;= #{startDate})
+        GROUP BY iib.item_seq
+        ORDER BY ii.item_sell_start_date, ii.item_sell_end_date DESC
+    </select>
+    
+    
+    
+    <select id="selectEndSaleMyBidCntByMbNoStatus"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="integer">
+        SELECT COUNT(a.item_seq)
+        FROM ( SELECT iib.item_seq
+               FROM it_item_bidding iib
+                        LEFT JOIN it_item ii ON ii.item_seq = iib.item_seq
+               WHERE iib.bidding_mb_no = #{mbNo} AND iib.bidding_status = #{biddingStatus}
+                 AND ii.item_seq &gt; 0
+                 AND ii.item_status != #{itemStatus} AND item_sell_end_date &lt; #{startDate}
+               GROUP BY iib.item_seq
+             )a
+    </select>
+
+
+    <select id="selectEndSaleBidHisByMbNo"
+            parameterType="com.fanbakery.fancake.common.model.ContentListReq"
+            resultType="com.fanbakery.fancake.repository.model.OrderListInfoEntity">
+        SELECT iib.item_seq, iib.bidding_mb_no
+             , MAX(iib.bidding_price) as biddingPrice
+             , ii.item_name, ii.item_img1
+             , ii.item_status
+             , ii.item_sell_curr_price
+             , ii.item_sell_start_date , ii.item_sell_end_date
+             , ii.item_sell_add_price
+             , ii.item_last_bidding_seq
+        FROM it_item_bidding iib
+            LEFT JOIN it_item ii ON ii.item_seq = iib.item_seq
+        WHERE iib.bidding_mb_no = #{mbNo} AND iib.bidding_status = #{biddingStatus}
+          AND ii.item_seq &gt; 0 AND ii.item_status != #{itemStatus}
+          AND item_sell_end_date &lt; #{startDate}
+        GROUP BY iib.item_seq
+        ORDER BY ii.item_sell_start_date, ii.item_sell_end_date DESC
+    </select>
+
+    
+    <select id="selectTotalSaleBidHisByMbNo"
+            resultType="com.fanbakery.fancake.repository.model.OrderListInfoEntity">
+
+        SELECT iib.item_seq, iib.bidding_mb_no
+             , MAX(iib.bidding_price) as bidding_price
+             , ii.item_name, ii.item_img1
+             , ii.item_status
+             , ii.item_sell_curr_price
+             , ii.item_sell_start_date , ii.item_sell_end_date
+             , ii.item_sell_add_price
+             , ii.item_last_bidding_seq
+        FROM it_item_bidding iib
+                 LEFT JOIN it_item ii ON ii.item_seq = iib.item_seq
+        WHERE iib.bidding_mb_no = #{mbNo}
+          AND ii.item_seq &gt; 0
+        GROUP BY iib.item_seq
+        ORDER BY ii.item_sell_start_date, ii.item_sell_end_date DESC
+    </select>
+</mapper>

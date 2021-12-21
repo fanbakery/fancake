@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fanbakery.fancake.repository.mapper.BiddingMapper">
+
+    <!--
+        it_item_bidding table
+    -->
+
+    <select id="existBidJoinItemByMbNo"
+            resultType="boolean">
+        SELECT EXISTS(
+                       SELECT ii.item_seq FROM it_item ii
+                            LEFT JOIN it_item_bidding iib ON iib.item_seq = ii.item_seq
+                       WHERE iib.bidding_mb_no = #{mbNo} AND ii.item_status != #{itemStatus}
+                    )
+    </select>
+    
+    
+    <select id="selectBiddingCunt"
+            resultType="long">
+        SELECT COUNT(bidding_mb_no)
+        FROM it_item_bidding
+        WHERE item_seq = #{itemSeq}
+    </select>
+
+    <select id="existBidItemMbNoStatus"
+            resultType="boolean">
+    SELECT EXISTS( SELECT bidding_mb_no
+                    FROM it_item_bidding
+                    WHERE item_seq = #{itemSeq} and bidding_mb_no = #{mbNo}
+                        and bidding_status = #{status}
+                )
+    </select>
+
+
+    <select id="selectLastBidPriceByItemSeq"
+            resultType="long">
+        SELECT MAX(bidding_price)
+        FROM it_item_bidding
+        WHERE item_seq = #{itemSeq}
+    </select>
+
+
+    <select id="selectLastBidInfoByItemSeq"
+            parameterType="long"
+            resultType="com.fanbakery.fancake.repository.model.ItItemBiddingEntity">
+        SELECT *
+        FROM it_item_bidding
+        WHERE item_seq = #{itemSeq} ORDER BY bidding_price DESC LIMIT 1
+    </select>
+
+
+    <update id="updateCancelBeforeBiddingByItem">
+        UPDATE it_item_bidding
+            SET bidding_status = #{biddingStatus}
+                , bidding_cancel_date = #{cancelTime}
+            WHERE item_seq = #{itemSeq}
+    </update>
+
+
+
+    <insert id="insertBidding" parameterType="com.fanbakery.fancake.repository.model.ItItemBiddingEntity"
+            useGeneratedKeys="true"
+            keyProperty="biddingSeq">
+        INSERT INTO it_item_bidding
+                ( item_seq, bidding_mb_no
+                , bidding_price, bidding_status
+                , bidding_date
+                )
+        VALUES ( #{itemSeq}, #{biddingMbNo}
+                , #{biddingPrice}, #{biddingStatus}
+                , #{biddingDate}
+                )
+    </insert>
+
+
+    <update id="updateBidSuccEndSaleItem">
+        UPDATE it_item_bidding iib, it_item ii
+            SET iib.bidding_status = #{bidSuccStatus}
+               , iib.bidding_succ_date = now()
+        WHERE iib.bidding_seq = ii.item_last_bidding_seq
+            AND ii.item_sell_end_date &lt;= #{endDate}
+    </update>
+</mapper>

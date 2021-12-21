@@ -1,0 +1,103 @@
+<!doctype html>
+<html  xmlns="http://www.w3.org/1999/xhtml"
+	   xmlns:th="http://www.thymeleaf.org">
+<head>
+	<th:block th:replace="fragment/header :: headerFragment"></th:block>
+</head>
+<body id="wrap">
+	<header id="header">
+		<div class="head">
+			<div class="h1"><span>주소록, 배송지 관리</span></div>
+			<div class="pre"><a href="/mypage/"><span class="skip">뒤로가기</span></a></div>
+			<div class="btn skip">
+				<button type="button" class="bt searchOpen"><img src="/img/i_search.png" alt="검색"></button>
+				<a href="alarm.html" class="bt"><img src="/img/i_alarm.png" alt="알림"></a>
+			</div>
+			<div class="search">
+				<div class="close"><i></i></div>
+				<div class="input">
+					<form>
+						<input type="text" placeholder="인플루언서명을 입력해주세요">
+						<button type="submit"></button>
+						<div class="list">
+							<ul>
+								<li>
+									<a href="#">
+										<div class="ico"><img src="/img/m_prof1.png" alt=""></div>
+										<div class="txt"><span class="on">연</span><span class="on">나</span><span>비</span></div>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</form>
+				</div>				
+			</div>
+			<script>
+				$(".searchOpen").click(function(){
+					$("#header .search").addClass("sel");
+				});
+				$("#header .search .close").click(function(){
+					$("#header .search").removeClass("sel");
+				});
+				$("#header .search .input input").focus(function(){
+					$(this).siblings(".list").addClass("sel");
+				});
+				$("#header .search .input input").blur(function(){
+					$(this).siblings(".list").removeClass("sel");
+				});
+			</script>
+		</div>
+	</header>
+	<main id="container">
+		<div class="addressbook">
+			<div class="list">
+				<ul th:if="${not #lists.isEmpty(addrBookList)}">
+					<li th:each="item : ${addrBookList}">
+						<div class="box">
+							<div class="tit" th:text="${item.abookTitle}">홍길동</div>
+							<div class="txt" th:text="${item.abookReciever}">홍길동</div>
+							<div class="txt" th:text="|${item.abookAddress1} ${item.abookAddress2} ${item.abookAddress3}|">서울특별시 성동구 금호동4가 340 서울숲 푸르지오 2차 108동 ***호</div>
+							<div class="tel" th:text="${item.abookPhone}">010-7505-****</div>
+							<div class="inf" th:text="${item.abookInfo}">일반: 직접 받고 부재 시 문앞</div>
+							<div class="bot">
+								<a th:href="@{/account/address-book/edit(seq=${item.abookSeq})}" class="bt edit">수정</a>
+								<button th:if="${item.abookBaseYn}" th:onclick="|reqBase('${item.abookSeq}');|" type="button" class="bt" disabled>기본</button>
+								<button th:if="${!item.abookBaseYn}" th:onclick="|reqBase('${item.abookSeq}');|" type="button" class="bt" style="background:#ffffff">기본</button>
+							</div>
+						</div>
+					</li>					
+				</ul>
+			</div>
+			<div class="bot_bt bot_length">
+				<!-- <a href="#" class="btn bt_01"><span>결제 정보 등록하기</span></a> -->
+				<a href="/account/address-book/add" class="btn bt_submit"><i class="i_plus"></i><span>배송지 추가</span></a>
+			</div>
+		</div>
+	</main>
+
+
+	<script type="text/javascript">
+		function reqBase(seq) {
+			const formData = new FormData();
+			formData.append("seq", seq);
+
+			$.ajax({
+				type: "POST",
+				url: "/api/account/address/set_base",
+				processData: false,
+				contentType: false,
+				data: formData
+			})
+					.done(function(data) {
+						location.href='/account/address-book/'
+					})
+					.fail(function(xhr, status, errorThrown) {
+						let json = JSON.parse(xhr.responseText);
+						alert(json.errMsg);
+					})
+		}
+
+	</script>
+
+</body>
+</html>
